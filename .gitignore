@@ -1,3 +1,5 @@
+__pycache__/
+
 # only use config.py
 .config/qutebrowser/autoconfig.yml
 
