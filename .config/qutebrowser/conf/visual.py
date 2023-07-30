@@ -147,89 +147,35 @@ class Visual:
     def _set_statusbar(self) -> None:
         self._config.set("statusbar.show", "in-mode")
 
-        # Background color of the statusbar in caret mode.
-        self._config.set("colors.statusbar.caret.bg", self._palette["background"])
+        base = "colors.statusbar."
 
-        # Foreground color of the statusbar in caret mode.
-        self._config.set("colors.statusbar.caret.fg", self._palette["orange"])
+        for mode in [
+            "normal",
+            "private",
+            "insert",
+            "command",
+            "command.private",
+            "caret",
+            "caret.selection",
+            "passthrough",
+        ]:
+            self._config.set(base + mode + ".bg", self._palette_ours["black"])
+            self._config.set(base + mode + ".fg", self._palette_ours["white"])
 
-        # Background color of the statusbar in caret mode with a selection.
+        self._config.set(base + "progress.bg", self._palette_ours["grey_bright"])
+
+        self._config.set(base + "url.fg", self._palette_ours["white"])
+        self._config.set(base + "url.success.http.fg", self._palette_ours["white"])
+        self._config.set(base + "url.success.https.fg", self._palette_ours["white"])
+
+        self._config.set(base + "url.hover.fg", self._palette_ours["cyan"])
+        self._config.set(base + "url.warn.fg", self._palette_ours["red"])
+        self._config.set(base + "url.error.fg", self._palette_ours["red"])
+
         self._config.set(
-            "colors.statusbar.caret.selection.bg", self._palette["background"]
+            "statusbar.padding",
+            {"top": 1, "bottom": 1, "left": 2, "right": 2},
         )
-
-        # Foreground color of the statusbar in caret mode with a selection.
-        self._config.set("colors.statusbar.caret.selection.fg", self._palette["orange"])
-
-        # Background color of the statusbar in command mode.
-        self._config.set("colors.statusbar.command.bg", self._palette["background"])
-
-        # Foreground color of the statusbar in command mode.
-        self._config.set("colors.statusbar.command.fg", self._palette["pink"])
-
-        # Background color of the statusbar in private browsing + command mode.
-        self._config.set(
-            "colors.statusbar.command.private.bg", self._palette["background"]
-        )
-
-        # Foreground color of the statusbar in private browsing + command mode.
-        self._config.set(
-            "colors.statusbar.command.private.fg", self._palette["foreground-alt"]
-        )
-
-        # Background color of the statusbar in insert mode.
-        self._config.set(
-            "colors.statusbar.insert.bg", self._palette["background-attention"]
-        )
-
-        # Foreground color of the statusbar in insert mode.
-        self._config.set(
-            "colors.statusbar.insert.fg", self._palette["foreground-attention"]
-        )
-
-        # Background color of the statusbar.
-        self._config.set("colors.statusbar.normal.bg", self._palette["background"])
-
-        # Foreground color of the statusbar.
-        self._config.set("colors.statusbar.normal.fg", self._palette["foreground"])
-
-        # Background color of the statusbar in passthrough mode.
-        self._config.set("colors.statusbar.passthrough.bg", self._palette["background"])
-
-        # Foreground color of the statusbar in passthrough mode.
-        self._config.set("colors.statusbar.passthrough.fg", self._palette["orange"])
-
-        # Background color of the statusbar in private browsing mode.
-        self._config.set("colors.statusbar.private.bg", self._palette["background-alt"])
-
-        # Foreground color of the statusbar in private browsing mode.
-        self._config.set("colors.statusbar.private.fg", self._palette["foreground-alt"])
-
-        # Background color of the progress bar.
-        self._config.set("colors.statusbar.progress.bg", self._palette["background"])
-
-        # Foreground color of the URL in the statusbar on error.
-        self._config.set("colors.statusbar.url.error.fg", self._palette["red"])
-
-        # Default foreground color of the URL in the statusbar.
-        self._config.set("colors.statusbar.url.fg", self._palette["foreground"])
-
-        # Foreground color of the URL in the statusbar for hovered links.
-        self._config.set("colors.statusbar.url.hover.fg", self._palette["cyan"])
-
-        # Foreground color of the URL in the statusbar on successful load
-        self._config.set("colors.statusbar.url.success.http.fg", self._palette["green"])
-
-        # Foreground color of the URL in the statusbar on successful load
-        self._config.set(
-            "colors.statusbar.url.success.https.fg", self._palette["green"]
-        )
-
-        # Foreground color of the URL in the statusbar when there's a warning.
-        self._config.set("colors.statusbar.url.warn.fg", self._palette["yellow"])
-
-        # Status bar padding
-        self._config.set("statusbar.padding", self._padding)
 
     def _set_tabs(self) -> None:
         self._config.set(
@@ -282,6 +228,7 @@ class Visual:
             self._config.set(".".join([base, specification]), fonts["shevska"])
         self._config.set("fonts.default_size", "11pt")
         self._config.set("fonts.hints", "14pt Shevska")
+        self._config.set("fonts.statusbar", "17pt Shevska")
 
         for specification in ["standard", "sans_serif", "cursive", "fantasy"]:
             self._config.set(
