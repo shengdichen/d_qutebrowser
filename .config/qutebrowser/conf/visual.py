@@ -290,66 +290,40 @@ class Visual:
         self._config.set("statusbar.padding", self._padding)
 
     def _set_tabs(self) -> None:
-        self._config.set("tabs.show", "switching")
+        self._config.set(
+            "tabs.show", "multiple"
+        )  # only show if multiple tabs are present
+        self._config.set("tabs.position", "left")
+        self._config.set("tabs.width", "11%")
+        self._config.set("tabs.title.alignment", "left")
 
-        # Background color of the tab bar.
-        # Type: QtColor
-        self._config.set("colors.tabs.bar.bg", self._palette["selection"])
+        self._config.set("tabs.favicons.show", "never")
+        self._config.set("tabs.title.format", "{current_title}")
+        self._config.set(
+            "tabs.padding",
+            {"top": 0, "bottom": 5, "left": 2, "right": 5},
+        )
+        self._config.set("tabs.indicator.width", 0)  # disable completely
 
-        # Background color of unselected even tabs.
-        # Type: QtColor
-        self._config.set("colors.tabs.even.bg", self._palette["selection"])
+        item_base = "colors.tabs"
 
-        # Foreground color of unselected even tabs.
-        # Type: QtColor
-        self._config.set("colors.tabs.even.fg", self._palette["foreground"])
+        for specification in ["bar", "even", "odd"]:
+            self._config.set(
+                ".".join([item_base, specification, "bg"]), self._palette_ours["black"]
+            )
+        for specification in ["even", "odd"]:
+            self._config.set(
+                ".".join([item_base, specification, "fg"]),
+                self._palette_ours["grey_bright"],
+            )
 
-        # Color for the tab indicator on errors.
-        # Type: QtColor
-        self._config.set("colors.tabs.indicator.error", self._palette["red"])
-
-        # Color gradient start for the tab indicator.
-        # Type: QtColor
-        self._config.set("colors.tabs.indicator.start", self._palette["orange"])
-
-        # Color gradient end for the tab indicator.
-        # Type: QtColor
-        self._config.set("colors.tabs.indicator.stop", self._palette["green"])
-
-        # Color gradient interpolation system for the tab indicator.
-        # Type: ColorSystem
-        # Valid values:
-        #   - rgb: Interpolate in the RGB color system.
-        #   - hsv: Interpolate in the HSV color system.
-        #   - hsl: Interpolate in the HSL color system.
-        #   - none: Don't show a gradient.
-        self._config.set("colors.tabs.indicator.system", "none")
-
-        # Background color of unselected odd tabs.
-        # Type: QtColor
-        self._config.set("colors.tabs.odd.bg", self._palette["selection"])
-
-        # Foreground color of unselected odd tabs.
-        # Type: QtColor
-        self._config.set("colors.tabs.odd.fg", self._palette["foreground"])
-
-        #  Background color of selected even tabs.
-        #  Type: QtColor
-        self._config.set("colors.tabs.selected.even.bg", self._palette["background"])
-
-        #  Foreground color of selected even tabs.
-        #  Type: QtColor
-        self._config.set("colors.tabs.selected.even.fg", self._palette["foreground"])
-
-        #  Background color of selected odd tabs.
-        #  Type: QtColor
-        self._config.set("colors.tabs.selected.odd.bg", self._palette["background"])
-
-        #  Foreground color of selected odd tabs.
-        #  Type: QtColor
-        self._config.set("colors.tabs.selected.odd.fg", self._palette["foreground"])
-
-        # Tab padding
-        self._config.set("tabs.padding", self._padding)
-        self._config.set("tabs.indicator.width", 1)
-        self._config.set("tabs.favicons.scale", 1)
+        for specification in ["even", "odd"]:
+            self._config.set(
+                ".".join([item_base, "selected", specification, "bg"]),
+                self._palette_ours["black"],
+            )
+        for specification in ["even", "odd"]:
+            self._config.set(
+                ".".join([item_base, "selected", specification, "fg"]),
+                self._palette_ours["white"],
+            )
