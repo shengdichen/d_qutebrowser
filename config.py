@@ -1,18 +1,8 @@
-from conf import visual
+from conf import visual, bind
 
 # REF:
 #   qute://help/configuring.html
 #   qute://help/settings.html
-
-
-class Bind:
-    @staticmethod
-    def concat(commands: list[str]) -> str:
-        return ";; ".join(commands)
-
-    @staticmethod
-    def repeat(command: str, repeat_for: int) -> list[str]:
-        return repeat_for * [command]
 
 
 class Configuration:
@@ -153,28 +143,8 @@ class Configuration:
         v.apply()
 
     def _bind(self) -> None:
-        self._config.set(
-            "bindings.key_mappings",
-            {
-                "<Ctrl+6>": "<Ctrl+^>",
-                "<Ctrl+Enter>": "<Ctrl+Return>",
-                "<Ctrl+i>": "<Tab>",
-                "<Ctrl+j>": "<Return>",
-                "<Ctrl+m>": "<Return>",
-                "<Ctrl+[>": "<Escape>",
-                "<Enter>": "<Return>",
-                "<Shift+Enter>": "<Return>",
-                "<Shift+Return>": "<Return>",
-            },
-        )
-
-        # Bindings for normal mode
-        self._config.bind("M", "hint links spawn mpv {hint-url}")
-
-        self._config.bind("<Ctrl+h>", "tab-prev")
-        self._config.bind("<Ctrl+l>", "tab-next")
-        self._config.bind("K", Bind.concat(Bind.repeat("scroll up", 7)))
-        self._config.bind("J", Bind.concat(Bind.repeat("scroll down", 7)))
+        b = bind.Bind(self._config)
+        b.apply()
 
 
 Configuration(config)
