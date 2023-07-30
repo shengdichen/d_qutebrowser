@@ -149,7 +149,9 @@ class Configuration:
         )
 
     def _colorscheme(self, quick_conf) -> None:
-        visual.Visual.blood(quick_conf)
+        v = visual.Visual()
+        v.apply(quick_conf)
+
         self._config.set("colors.webpage.preferred_color_scheme", "dark")
 
         self._config.set("colors.webpage.darkmode.enabled", False)
