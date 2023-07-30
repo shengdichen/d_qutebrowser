@@ -27,11 +27,13 @@ class MiscConf:
 
     def _search(self) -> None:
         duck = "https://duckduckgo.com/?q={}"
+        duck_tor = "https://duckduckgogg42xjoc72x3sjasowoarfbgcmvfimaftt6twagswzczad.onion/?q={}"
         brave = "https://search.brave.com/search?q={}"
+        brave_tor = "https://search.brave4u7jddbv7cyviptqjc7jusxh72uik7zt6adtckl5f4nwy2v72qd.onion/search?q={}"
 
         self._config.set(
             "url.searchengines",
-            {"DEFAULT": duck, "d": duck, "b": brave},
+            {"DEFAULT": duck, "d": duck, "dt": duck_tor, "b": brave, "bt": brave_tor},
         )
 
     def _edit(self) -> None:
