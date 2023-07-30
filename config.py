@@ -3,6 +3,16 @@
 #   qute://help/settings.html
 
 
+class Bind:
+    @staticmethod
+    def concat(commands: list[str]) -> str:
+        return ";; ".join(commands)
+
+    @staticmethod
+    def repeat(command: str, repeat_for: int) -> list[str]:
+        return repeat_for * [command]
+
+
 class Configuration:
     def __init__(self, c, config):
         self._c, self._config = c, config
@@ -352,6 +362,11 @@ class Configuration:
 
         # Bindings for normal mode
         self._config.bind("M", "hint links spawn mpv {hint-url}")
+
+        self._config.bind("<Ctrl+h>", "tab-prev")
+        self._config.bind("<Ctrl+l>", "tab-next")
+        self._config.bind("K", Bind.concat(Bind.repeat("scroll up", 4)))
+        self._config.bind("J", Bind.concat(Bind.repeat("scroll down", 4)))
 
 
 Configuration(c, config)
