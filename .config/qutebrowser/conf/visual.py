@@ -42,6 +42,7 @@ class Visual:
 
     def apply(self) -> None:
         self._set_colorscheme()
+        self._set_font()
 
         self._config.set("colors.webpage.preferred_color_scheme", "dark")
         self._config.set("colors.webpage.darkmode.enabled", True)
@@ -327,3 +328,27 @@ class Visual:
                 ".".join([item_base, "selected", specification, "fg"]),
                 self._palette_ours["white"],
             )
+
+    def _set_font(self) -> None:
+        fonts = {
+            "shevska": "Shevska",
+            "avenir": "Avenir LT Std",
+            "constantia": "Constantia",
+        }
+
+        base = "fonts"
+        for specification in ["default_family", "web.family.fixed"]:
+            self._config.set(".".join([base, specification]), fonts["shevska"])
+        self._config.set("fonts.default_size", "11pt")
+
+        for specification in ["standard", "sans_serif", "cursive", "fantasy"]:
+            self._config.set(
+                ".".join([base, "web", "family", specification]), fonts["avenir"]
+            )
+        for specification in ["serif"]:
+            self._config.set(
+                ".".join([base, "web", "family", specification]), fonts["constantia"]
+            )
+
+        self._config.set("fonts.web.size.default", 19)
+        self._config.set("fonts.web.size.default_fixed", 15)
