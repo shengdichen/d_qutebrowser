@@ -193,6 +193,8 @@ class Visual:
         self._config.set("colors.prompts.selected.bg", self._palette["selection"])
 
     def _set_statusbar(self) -> None:
+        self._config.set("statusbar.show", "in-mode")
+
         # Background color of the statusbar in caret mode.
         self._config.set("colors.statusbar.caret.bg", self._palette["background"])
 
@@ -278,6 +280,8 @@ class Visual:
         self._config.set("statusbar.padding", self._padding)
 
     def _set_tabs(self) -> None:
+        self._config.set("tabs.show", "switching")
+
         # Background color of the tab bar.
         # Type: QtColor
         self._config.set("colors.tabs.bar.bg", self._palette["selection"])
