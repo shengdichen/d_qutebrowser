@@ -4,7 +4,9 @@
 
 
 class Configuration:
-    def __init__(self):
+    def __init__(self, c, config):
+        self._c, self._config = c, config
+
         self._misc()
         self._cookies()
         self._headers()
@@ -14,17 +16,15 @@ class Configuration:
         self._colorscheme()
         self._bind()
 
-    @staticmethod
-    def _misc() -> None:
-        # only use config.py
-        config.load_autoconfig(False)
+    def _misc(self) -> None:
+        # only use self._config.py
+        self._config.load_autoconfig(False)
 
-        c.changelog_after_upgrade = "never"
+        self._c.changelog_after_upgrade = "never"
 
-        c.auto_save.session = True
+        self._c.auto_save.session = True
 
-    @staticmethod
-    def _cookies() -> None:
+    def _cookies(self) -> None:
         # Which cookies to accept. With QtWebEngine, this setting also controls
         # other features with tracking capabilities similar to those of cookies;
         # including IndexedDB, DOM storage, filesystem API, service workers, and
@@ -47,7 +47,7 @@ class Configuration:
         #   - no-3rdparty: Accept cookies from the same origin only. This is known to break some sites, such as GMail.
         #   - no-unknown-3rdparty: Accept cookies from the same origin only, unless a cookie is already set for the domain. On QtWebEngine, this is the same as no-3rdparty.
         #   - never: Don't accept cookies at all.
-        config.set("content.cookies.accept", "all", "chrome-devtools://*")
+        self._config.set("content.cookies.accept", "all", "chrome-devtools://*")
 
         # Which cookies to accept. With QtWebEngine, this setting also controls
         # other features with tracking capabilities similar to those of cookies;
@@ -71,14 +71,13 @@ class Configuration:
         #   - no-3rdparty: Accept cookies from the same origin only. This is known to break some sites, such as GMail.
         #   - no-unknown-3rdparty: Accept cookies from the same origin only, unless a cookie is already set for the domain. On QtWebEngine, this is the same as no-3rdparty.
         #   - never: Don't accept cookies at all.
-        config.set("content.cookies.accept", "all", "devtools://*")
+        self._config.set("content.cookies.accept", "all", "devtools://*")
 
-    @staticmethod
-    def _headers() -> None:
+    def _headers(self) -> None:
         # Value to send in the `Accept-Language` header. Note that the value
         # read from JavaScript is always the global value.
         # Type: String
-        config.set(
+        self._config.set(
             "content.headers.accept_language", "", "https://matchmaker.krunker.io/*"
         )
 
@@ -96,7 +95,7 @@ class Configuration:
         # between 5.12 and 5.14 (inclusive), changing the value exposed to
         # JavaScript requires a restart.
         # Type: FormatString
-        c.content.headers.user_agent = "/Mozilla/5.0 ({os_info}) AppleWebKit/{webkit_version} (KHTML, like Gecko) {qt_key}/{qt_version} {upstream_browser_key}/{upstream_browser_version} Safari/{webkit_version}"
+        self._c.content.headers.user_agent = "/Mozilla/5.0 ({os_info}) AppleWebKit/{webkit_version} (KHTML, like Gecko) {qt_key}/{qt_version} {upstream_browser_key}/{upstream_browser_version} Safari/{webkit_version}"
 
         # User agent to send.  The following placeholders are defined:  *
         # `{os_info}`: Something like "X11; Linux x86_64". * `{webkit_version}`:
@@ -112,7 +111,7 @@ class Configuration:
         # between 5.12 and 5.14 (inclusive), changing the value exposed to
         # JavaScript requires a restart.
         # Type: FormatString
-        config.set(
+        self._config.set(
             "content.headers.user_agent",
             "Mozilla/5.0 ({os_info}) AppleWebKit/{webkit_version} (KHTML, like Gecko) {upstream_browser_key}/{upstream_browser_version} Safari/{webkit_version}",
             "https://web.whatsapp.com/",
@@ -132,7 +131,7 @@ class Configuration:
         # between 5.12 and 5.14 (inclusive), changing the value exposed to
         # JavaScript requires a restart.
         # Type: FormatString
-        config.set(
+        self._config.set(
             "content.headers.user_agent",
             "Mozilla/5.0 ({os_info}; rv:90.0) Gecko/20100101 Firefox/90.0",
             "https://accounts.google.com/*",
@@ -152,14 +151,13 @@ class Configuration:
         # between 5.12 and 5.14 (inclusive), changing the value exposed to
         # JavaScript requires a restart.
         # Type: FormatString
-        config.set(
+        self._config.set(
             "content.headers.user_agent",
             "Mozilla/5.0 ({os_info}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99 Safari/537.36",
             "https://*.slack.com/*",
         )
 
-    @staticmethod
-    def _ad_block() -> None:
+    def _ad_block(self) -> None:
         # Which method of blocking ads should be used.  Support for Adblock Plus
         # (ABP) syntax blocklists using Brave's Rust library requires the
         # `adblock` Python package to be installed, which is an optional
@@ -171,7 +169,7 @@ class Configuration:
         #   - adblock: Use Brave's ABP-style adblocker
         #   - hosts: Use hosts blocking
         #   - both: Use both hosts blocking and Brave's ABP-style adblocker
-        c.content.blocking.method = "both"
+        self._c.content.blocking.method = "both"
 
         # List of URLs to ABP-style adblocking rulesets.  Only used when Brave's
         # ABP-style adblocker is used (see `content.blocking.method`).  You can
@@ -182,7 +180,7 @@ class Configuration:
         # extracting it from the `location` parameter of the subscribe URL and
         # URL-decoding it).
         # Type: List of Url
-        c.content.blocking.adblock.lists = [
+        self._c.content.blocking.adblock.lists = [
             "https://pgl.yoyo.org/adservers/serverlist.php?hostformat=adblockplus&showintro=1&mimetype=plaintext",
             "https://github.com/uBlockOrigin/uAssets/raw/master/filters/filters.txt",
             "https://github.com/uBlockOrigin/uAssets/raw/master/filters/badware.txt",
@@ -193,34 +191,32 @@ class Configuration:
             "https://easylist.to/easylist/easyprivacy.txt",
         ]
 
-    @staticmethod
-    def _contents_to_load() -> None:
+    def _contents_to_load(self) -> None:
         # Load images automatically in web pages.
         # Type: Bool
-        config.set("content.images", True, "chrome-devtools://*")
+        self._config.set("content.images", True, "chrome-devtools://*")
 
         # Load images automatically in web pages.
         # Type: Bool
-        config.set("content.images", True, "devtools://*")
+        self._config.set("content.images", True, "devtools://*")
 
         # Enable JavaScript.
         # Type: Bool
-        config.set("content.javascript.enabled", True, "chrome-devtools://*")
+        self._config.set("content.javascript.enabled", True, "chrome-devtools://*")
 
         # Enable JavaScript.
         # Type: Bool
-        config.set("content.javascript.enabled", True, "devtools://*")
+        self._config.set("content.javascript.enabled", True, "devtools://*")
 
         # Enable JavaScript.
         # Type: Bool
-        config.set("content.javascript.enabled", True, "chrome://*/*")
+        self._config.set("content.javascript.enabled", True, "chrome://*/*")
 
         # Enable JavaScript.
         # Type: Bool
-        config.set("content.javascript.enabled", True, "qute://*/*")
+        self._config.set("content.javascript.enabled", True, "qute://*/*")
 
-    @staticmethod
-    def _edit() -> None:
+    def _edit(self) -> None:
         # Editor (and arguments) to use for the `edit-*` commands. The following
         # placeholders are defined:  * `{file}`: Filename of the file to be
         # edited. * `{line}`: Line in which the caret is found in the text. *
@@ -228,7 +224,13 @@ class Configuration:
         # `{line0}`: Same as `{line}`, but starting from index 0. * `{column0}`:
         # Same as `{column}`, but starting from index 0.
         # Type: ShellCommand
-        c.editor.command = ["foot", "nvim", "{file}", "-c", "normal {line}G{column0}l"]
+        self._c.editor.command = [
+            "foot",
+            "nvim",
+            "{file}",
+            "-c",
+            "normal {line}G{column0}l",
+        ]
 
         # Languages to use for spell checking. You can check for available
         # languages and install dictionaries using scripts/dictcli.py. Run the
@@ -278,7 +280,7 @@ class Configuration:
         #   - tr-TR: Turkish (Turkey)
         #   - uk-UA: Ukrainian (Ukraine)
         #   - vi-VN: Vietnamese (Viet Nam)
-        c.spellcheck.languages = [
+        self._c.spellcheck.languages = [
             "en-US",
             "fr-FR",
             "sv-SE",
@@ -289,15 +291,14 @@ class Configuration:
             "ru-RU",
         ]
 
-    @staticmethod
-    def _colorscheme() -> None:
+    def _colorscheme(self) -> None:
         # Background color of a warning message.
         # Type: QssColor
-        c.colors.messages.warning.bg = "darkorange"
+        self._c.colors.messages.warning.bg = "darkorange"
 
         # Background color of pinned unselected even tabs.
         # Type: QtColor
-        c.colors.tabs.pinned.even.bg = "darkseagreen"
+        self._c.colors.tabs.pinned.even.bg = "darkseagreen"
 
         # Value to use for `prefers-color-scheme:` for websites. The "light"
         # value is only available with QtWebEngine 5.15.2+. On older versions,
@@ -309,7 +310,7 @@ class Configuration:
         #   - auto: Use the system-wide color scheme setting.
         #   - light: Force a light theme.
         #   - dark: Force a dark theme.
-        c.colors.webpage.preferred_color_scheme = "dark"
+        self._c.colors.webpage.preferred_color_scheme = "dark"
 
         # Render all web contents using a dark theme. Example configurations
         # from Chromium's `chrome://flags`:  - "With simple HSL/CIELAB/RGB-based
@@ -321,10 +322,9 @@ class Configuration:
         # `colors.webpage.darkmode.threshold.background` to 205.  - "With
         # selective inversion of everything": Combines the two variants   above.
         # Type: Bool
-        c.colors.webpage.darkmode.enabled = False
+        self._c.colors.webpage.darkmode.enabled = False
 
-    @staticmethod
-    def _bind() -> None:
+    def _bind(self) -> None:
         # Map keys to other keys, so that they are equivalent in all modes. When
         # the key used as dictionary-key is pressed, the binding for the key
         # used as dictionary-value is invoked instead. This is useful for global
@@ -332,13 +332,13 @@ class Configuration:
         # This should only be used if two keys should always be equivalent, i.e.
         # for things like <Enter> (keypad) and <Return> (non-keypad). For normal
         # command bindings, qutebrowser works differently to vim: You always
-        # bind keys to commands, usually via `:bind` or `config.bind()`. Instead
+        # bind keys to commands, usually via `:bind` or `self._config.bind()`. Instead
         # of using this setting, consider finding the command a key is bound to
         # (e.g. via `:bind gg`) and then binding the same command to the desired
         # key. Note that when a key is bound (via `bindings.default` or
         # `bindings.commands`), the mapping is ignored.
         # Type: Dict
-        c.bindings.key_mappings = {
+        self._c.bindings.key_mappings = {
             "<Ctrl+6>": "<Ctrl+^>",
             "<Ctrl+Enter>": "<Ctrl+Return>",
             "<Ctrl+i>": "<Tab>",
@@ -351,7 +351,7 @@ class Configuration:
         }
 
         # Bindings for normal mode
-        config.bind("M", "hint links spawn mpv {hint-url}")
+        self._config.bind("M", "hint links spawn mpv {hint-url}")
 
 
-Configuration()
+Configuration(c, config)
