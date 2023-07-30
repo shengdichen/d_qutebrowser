@@ -335,19 +335,6 @@ class Configuration:
         self._c.colors.webpage.darkmode.enabled = False
 
     def _bind(self) -> None:
-        # Map keys to other keys, so that they are equivalent in all modes. When
-        # the key used as dictionary-key is pressed, the binding for the key
-        # used as dictionary-value is invoked instead. This is useful for global
-        # remappings of keys, for example to map <Ctrl-[> to <Escape>. NOTE:
-        # This should only be used if two keys should always be equivalent, i.e.
-        # for things like <Enter> (keypad) and <Return> (non-keypad). For normal
-        # command bindings, qutebrowser works differently to vim: You always
-        # bind keys to commands, usually via `:bind` or `self._config.bind()`. Instead
-        # of using this setting, consider finding the command a key is bound to
-        # (e.g. via `:bind gg`) and then binding the same command to the desired
-        # key. Note that when a key is bound (via `bindings.default` or
-        # `bindings.commands`), the mapping is ignored.
-        # Type: Dict
         self._c.bindings.key_mappings = {
             "<Ctrl+6>": "<Ctrl+^>",
             "<Ctrl+Enter>": "<Ctrl+Return>",
