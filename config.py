@@ -227,13 +227,6 @@ class Configuration:
         self._config.set("content.javascript.enabled", True, "qute://*/*")
 
     def _edit(self) -> None:
-        # Editor (and arguments) to use for the `edit-*` commands. The following
-        # placeholders are defined:  * `{file}`: Filename of the file to be
-        # edited. * `{line}`: Line in which the caret is found in the text. *
-        # `{column}`: Column in which the caret is found in the text. *
-        # `{line0}`: Same as `{line}`, but starting from index 0. * `{column0}`:
-        # Same as `{column}`, but starting from index 0.
-        # Type: ShellCommand
         self._c.editor.command = [
             "foot",
             "nvim",
@@ -242,54 +235,6 @@ class Configuration:
             "normal {line}G{column0}l",
         ]
 
-        # Languages to use for spell checking. You can check for available
-        # languages and install dictionaries using scripts/dictcli.py. Run the
-        # script with -h/--help for instructions.
-        # Type: List of String
-        # Valid values:
-        #   - af-ZA: Afrikaans (South Africa)
-        #   - bg-BG: Bulgarian (Bulgaria)
-        #   - ca-ES: Catalan (Spain)
-        #   - cs-CZ: Czech (Czech Republic)
-        #   - da-DK: Danish (Denmark)
-        #   - de-DE: German (Germany)
-        #   - el-GR: Greek (Greece)
-        #   - en-AU: English (Australia)
-        #   - en-CA: English (Canada)
-        #   - en-GB: English (United Kingdom)
-        #   - en-US: English (United States)
-        #   - es-ES: Spanish (Spain)
-        #   - et-EE: Estonian (Estonia)
-        #   - fa-IR: Farsi (Iran)
-        #   - fo-FO: Faroese (Faroe Islands)
-        #   - fr-FR: French (France)
-        #   - he-IL: Hebrew (Israel)
-        #   - hi-IN: Hindi (India)
-        #   - hr-HR: Croatian (Croatia)
-        #   - hu-HU: Hungarian (Hungary)
-        #   - id-ID: Indonesian (Indonesia)
-        #   - it-IT: Italian (Italy)
-        #   - ko: Korean
-        #   - lt-LT: Lithuanian (Lithuania)
-        #   - lv-LV: Latvian (Latvia)
-        #   - nb-NO: Norwegian (Norway)
-        #   - nl-NL: Dutch (Netherlands)
-        #   - pl-PL: Polish (Poland)
-        #   - pt-BR: Portuguese (Brazil)
-        #   - pt-PT: Portuguese (Portugal)
-        #   - ro-RO: Romanian (Romania)
-        #   - ru-RU: Russian (Russia)
-        #   - sh: Serbo-Croatian
-        #   - sk-SK: Slovak (Slovakia)
-        #   - sl-SI: Slovenian (Slovenia)
-        #   - sq: Albanian
-        #   - sr: Serbian
-        #   - sv-SE: Swedish (Sweden)
-        #   - ta-IN: Tamil (India)
-        #   - tg-TG: Tajik (Tajikistan)
-        #   - tr-TR: Turkish (Turkey)
-        #   - uk-UA: Ukrainian (Ukraine)
-        #   - vi-VN: Vietnamese (Viet Nam)
         self._c.spellcheck.languages = [
             "en-US",
             "fr-FR",
