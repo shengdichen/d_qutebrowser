@@ -31,6 +31,15 @@ class Visual:
         }
 
     def apply(self) -> None:
+        self._set_completion()
+        self._set_downloads()
+        self._set_hints()
+        self._set_messages()
+        self._set_prompts()
+        self._set_statusbar()
+        self._set_tabs()
+
+    def _set_completion(self) -> None:
         # Background color of the completion widget category headers.
         self._config.set("colors.completion.category.bg", self._palette["background"])
 
@@ -85,6 +94,7 @@ class Visual:
         # Color of the scrollbar handle in completion view.
         self._config.set("colors.completion.scrollbar.fg", self._palette["foreground"])
 
+    def _set_downloads(self) -> None:
         # Background color for the download bar.
         self._config.set("colors.downloads.bar.bg", self._palette["background"])
 
@@ -106,6 +116,7 @@ class Visual:
         #   - none: Don't show a gradient.
         self._config.set("colors.downloads.system.bg", "none")
 
+    def _set_hints(self) -> None:
         # Background color for hints. Note that you can use a `rgba(...)` value
         # for transparency.
         self._config.set("colors.hints.bg", self._palette["background"])
@@ -128,6 +139,7 @@ class Visual:
         # Highlight color for keys to complete the current keychain.
         self._config.set("colors.keyhint.suffix.fg", self._palette["selection"])
 
+    def _set_messages(self) -> None:
         # Background color of an error message.
         self._config.set("colors.messages.error.bg", self._palette["background"])
 
@@ -159,6 +171,7 @@ class Visual:
         # Foreground color a warning message.
         self._config.set("colors.messages.warning.fg", self._palette["red"])
 
+    def _set_prompts(self) -> None:
         # Background color for prompts.
         self._config.set("colors.prompts.bg", self._palette["background"])
 
@@ -173,6 +186,7 @@ class Visual:
         # Background color for the selected item in filename prompts.
         self._config.set("colors.prompts.selected.bg", self._palette["selection"])
 
+    def _set_statusbar(self) -> None:
         # Background color of the statusbar in caret mode.
         self._config.set("colors.statusbar.caret.bg", self._palette["background"])
 
@@ -257,6 +271,7 @@ class Visual:
         # Status bar padding
         self._config.set("statusbar.padding", self._padding)
 
+    def _set_tabs(self) -> None:
         # Background color of the tab bar.
         # Type: QtColor
         self._config.set("colors.tabs.bar.bg", self._palette["selection"])
