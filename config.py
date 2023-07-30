@@ -168,30 +168,13 @@ class Configuration:
         )
 
     def _ad_block(self) -> None:
-        # Which method of blocking ads should be used.  Support for Adblock Plus
-        # (ABP) syntax blocklists using Brave's Rust library requires the
-        # `adblock` Python package to be installed, which is an optional
-        # dependency of qutebrowser. It is required when either `adblock` or
-        # `both` are selected.
-        # Type: String
-        # Valid values:
-        #   - auto: Use Brave's ABP-style adblocker if available, host blocking otherwise
-        #   - adblock: Use Brave's ABP-style adblocker
-        #   - hosts: Use hosts blocking
-        #   - both: Use both hosts blocking and Brave's ABP-style adblocker
-        self._c.content.blocking.method = "both"
+        self._config.set("content.blocking.method", "both")
 
-        # List of URLs to ABP-style adblocking rulesets.  Only used when Brave's
-        # ABP-style adblocker is used (see `content.blocking.method`).  You can
-        # find an overview of available lists here:
-        # https://adblockplus.org/en/subscriptions - note that the special
-        # `subscribe.adblockplus.org` links aren't handled by qutebrowser, you
-        # will instead need to find the link to the raw `.txt` file (e.g. by
-        # extracting it from the `location` parameter of the subscribe URL and
-        # URL-decoding it).
-        # Type: List of Url
-        self._c.content.blocking.adblock.lists = [
-            "https://pgl.yoyo.org/adservers/serverlist.php?hostformat=adblockplus&showintro=1&mimetype=plaintext",
+        adblock_lists = [
+            (
+                "https://pgl.yoyo.org/adservers/serverlist.php?"
+                "hostformat=adblockplus&showintro=1&mimetype=plaintext"
+            ),
             "https://github.com/uBlockOrigin/uAssets/raw/master/filters/filters.txt",
             "https://github.com/uBlockOrigin/uAssets/raw/master/filters/badware.txt",
             "https://github.com/uBlockOrigin/uAssets/raw/master/filters/privacy.txt",
@@ -200,6 +183,7 @@ class Configuration:
             "https://easylist.to/easylist/easylist.txt",
             "https://easylist.to/easylist/easyprivacy.txt",
         ]
+        self._config.set("content.blocking.adblock.lists", adblock_lists)
 
     def _contents_to_load(self) -> None:
         # Load images automatically in web pages.
