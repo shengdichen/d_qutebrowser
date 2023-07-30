@@ -21,6 +21,16 @@ class Visual:
             "red": "#ff5555",
             "yellow": "#f1fa8c",
         }
+        self._palette_ours = {
+            "black": "#000000",
+            "grey_dark": "#352c37",
+            "grey_bright": "#897397",
+            "white": "#ede3f7",
+            "red": "#ef3347",
+            "pink": "#ff79c6",
+            "magenta": "#bd93f9",
+            "cyan": "#8be9fd",
+        }
 
         spacing = {"vertical": 6, "horizontal": 8}
         self._padding = {
