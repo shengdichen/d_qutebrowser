@@ -57,59 +57,31 @@ class Visual:
         self._set_tabs()
 
     def _set_completion(self) -> None:
-        # Background color of the completion widget category headers.
-        self._config.set("colors.completion.category.bg", self._palette["background"])
+        base = "colors.completion."
 
-        # Bottom border color of the completion widget category headers.
-        self._config.set(
-            "colors.completion.category.border.bottom", self._palette["border"]
-        )
+        self._config.set(base + "even.bg", self._palette_ours["black"])
+        self._config.set(base + "odd.bg", self._palette_ours["black"])
+        self._config.set(base + "fg", self._palette_ours["white"])
+        self._config.set(base + "match.fg", self._palette_ours["pink"])
 
-        # Top border color of the completion widget category headers.
-        self._config.set(
-            "colors.completion.category.border.top", self._palette["border"]
-        )
+        self._config.set(base + "category.bg", self._palette_ours["black"])
+        self._config.set(base + "category.fg", self._palette_ours["white"])
+        for specification in ["bottom", "top"]:
+            self._config.set(
+                ".".join([base + "category.border", specification]),
+                self._palette_ours["grey_bright"],
+            )
 
-        # Foreground color of completion widget category headers.
-        self._config.set("colors.completion.category.fg", self._palette["foreground"])
+        self._config.set(base + "item.selected.bg", self._palette_ours["grey_dark"])
+        self._config.set(base + "item.selected.fg", self._palette_ours["white"])
+        for specification in ["bottom", "top"]:
+            self._config.set(
+                ".".join([base + "item.selected.border", specification]),
+                self._palette_ours["white"],
+            )
 
-        # Background color of the completion widget for even rows.
-        self._config.set("colors.completion.even.bg", self._palette["background"])
-
-        # Background color of the completion widget for odd rows.
-        self._config.set("colors.completion.odd.bg", self._palette["background-alt"])
-
-        # Text color of the completion widget.
-        self._config.set("colors.completion.fg", self._palette["foreground"])
-
-        # Background color of the selected completion item.
-        self._config.set(
-            "colors.completion.item.selected.bg", self._palette["selection"]
-        )
-
-        # Bottom border color of the selected completion item.
-        self._config.set(
-            "colors.completion.item.selected.border.bottom", self._palette["selection"]
-        )
-
-        # Top border color of the completion widget category headers.
-        self._config.set(
-            "colors.completion.item.selected.border.top", self._palette["selection"]
-        )
-
-        # Foreground color of the selected completion item.
-        self._config.set(
-            "colors.completion.item.selected.fg", self._palette["foreground"]
-        )
-
-        # Foreground color of the matched text in the completion.
-        self._config.set("colors.completion.match.fg", self._palette["orange"])
-
-        # Color of the scrollbar in completion view
-        self._config.set("colors.completion.scrollbar.bg", self._palette["background"])
-
-        # Color of the scrollbar handle in completion view.
-        self._config.set("colors.completion.scrollbar.fg", self._palette["foreground"])
+        self._config.set(base + "scrollbar.bg", self._palette_ours["black"])
+        self._config.set(base + "scrollbar.fg", self._palette_ours["grey_dark"])
 
     def _set_downloads(self) -> None:
         # Background color for the download bar.
