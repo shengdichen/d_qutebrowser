@@ -16,6 +16,7 @@ class MiscConf:
     def _default_pages(self) -> None:
         self._config.set("auto_save.session", False)
         self._config.set("session.default_name", "def")
+        self._config.set("session.lazy_restore", True)
 
         self._config.set("url.start_pages", "https://shengdichen.xyz")  # on launch
         self._config.set("url.default_page", "about:blank")  # when opening new tab
