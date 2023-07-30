@@ -302,36 +302,8 @@ class Configuration:
         ]
 
     def _colorscheme(self) -> None:
-        # Background color of a warning message.
-        # Type: QssColor
-        self._c.colors.messages.warning.bg = "darkorange"
-
-        # Background color of pinned unselected even tabs.
-        # Type: QtColor
-        self._c.colors.tabs.pinned.even.bg = "darkseagreen"
-
-        # Value to use for `prefers-color-scheme:` for websites. The "light"
-        # value is only available with QtWebEngine 5.15.2+. On older versions,
-        # it is the same as "auto". The "auto" value is broken on QtWebEngine
-        # 5.15.2 due to a Qt bug. There, it will fall back to "light"
-        # unconditionally.
-        # Type: String
-        # Valid values:
-        #   - auto: Use the system-wide color scheme setting.
-        #   - light: Force a light theme.
-        #   - dark: Force a dark theme.
         self._c.colors.webpage.preferred_color_scheme = "dark"
 
-        # Render all web contents using a dark theme. Example configurations
-        # from Chromium's `chrome://flags`:  - "With simple HSL/CIELAB/RGB-based
-        # inversion": Set   `colors.webpage.darkmode.algorithm` accordingly.  -
-        # "With selective image inversion": Set
-        # `colors.webpage.darkmode.policy.images` to `smart`.  - "With selective
-        # inversion of non-image elements": Set
-        # `colors.webpage.darkmode.threshold.text` to 150 and
-        # `colors.webpage.darkmode.threshold.background` to 205.  - "With
-        # selective inversion of everything": Combines the two variants   above.
-        # Type: Bool
         self._c.colors.webpage.darkmode.enabled = False
 
     def _bind(self) -> None:
