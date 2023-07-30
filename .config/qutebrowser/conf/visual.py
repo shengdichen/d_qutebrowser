@@ -145,36 +145,17 @@ class Visual:
         self._config.set("colors.keyhint.suffix.fg", self._palette_ours["magenta"])
 
     def _set_messages(self) -> None:
-        # Background color of an error message.
-        self._config.set("colors.messages.error.bg", self._palette["background"])
+        self._config.set("colors.messages.info.bg", self._palette_ours["black"])
+        self._config.set("colors.messages.info.border", self._palette_ours["black"])
+        self._config.set("colors.messages.info.fg", self._palette_ours["white"])
 
-        # Border color of an error message.
-        self._config.set(
-            "colors.messages.error.border", self._palette["background-alt"]
-        )
+        self._config.set("colors.messages.warning.bg", self._palette_ours["black"])
+        self._config.set("colors.messages.warning.border", self._palette_ours["red"])
+        self._config.set("colors.messages.warning.fg", self._palette_ours["white"])
 
-        # Foreground color of an error message.
-        self._config.set("colors.messages.error.fg", self._palette["red"])
-
-        # Background color of an info message.
-        self._config.set("colors.messages.info.bg", self._palette["background"])
-
-        # Border color of an info message.
-        self._config.set("colors.messages.info.border", self._palette["background-alt"])
-
-        # Foreground color an info message.
-        self._config.set("colors.messages.info.fg", self._palette["comment"])
-
-        # Background color of a warning message.
-        self._config.set("colors.messages.warning.bg", self._palette["background"])
-
-        # Border color of a warning message.
-        self._config.set(
-            "colors.messages.warning.border", self._palette["background-alt"]
-        )
-
-        # Foreground color a warning message.
-        self._config.set("colors.messages.warning.fg", self._palette["red"])
+        self._config.set("colors.messages.error.bg", self._palette_ours["black"])
+        self._config.set("colors.messages.error.border", self._palette_ours["black"])
+        self._config.set("colors.messages.error.fg", self._palette_ours["red"])
 
     def _set_prompts(self) -> None:
         # Background color for prompts.
