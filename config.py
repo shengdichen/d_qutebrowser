@@ -1,3 +1,5 @@
+from conf import visual
+
 # REF:
 #   qute://help/configuring.html
 #   qute://help/settings.html
@@ -14,7 +16,7 @@ class Bind:
 
 
 class Configuration:
-    def __init__(self, config):
+    def __init__(self, config, quick_conf):
         self._config = config
 
         self._misc()
@@ -23,7 +25,7 @@ class Configuration:
         self._ad_block()
         self._contents_to_load()
         self._edit()
-        self._colorscheme()
+        self._colorscheme(quick_conf)
         self._bind()
 
     def _misc(self) -> None:
@@ -146,7 +148,8 @@ class Configuration:
             ],
         )
 
-    def _colorscheme(self) -> None:
+    def _colorscheme(self, quick_conf) -> None:
+        visual.Visual.blood(quick_conf)
         self._config.set("colors.webpage.preferred_color_scheme", "dark")
 
         self._config.set("colors.webpage.darkmode.enabled", False)
@@ -176,4 +179,4 @@ class Configuration:
         self._config.bind("J", Bind.concat(Bind.repeat("scroll down", 4)))
 
 
-Configuration(config)
+Configuration(config, c)
