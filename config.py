@@ -25,7 +25,7 @@ class Configuration:
         self._ad_block()
         self._contents_to_load()
         self._edit()
-        self._colorscheme()
+        self._visual()
         self._bind()
 
     def _misc(self) -> None:
@@ -148,13 +148,9 @@ class Configuration:
             ],
         )
 
-    def _colorscheme(self) -> None:
+    def _visual(self) -> None:
         v = visual.Visual(self._config)
         v.apply()
-
-        self._config.set("colors.webpage.preferred_color_scheme", "dark")
-
-        self._config.set("colors.webpage.darkmode.enabled", False)
 
     def _bind(self) -> None:
         self._config.set(

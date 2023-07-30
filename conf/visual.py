@@ -31,6 +31,12 @@ class Visual:
         }
 
     def apply(self) -> None:
+        self._set_colorscheme()
+
+        self._config.set("colors.webpage.preferred_color_scheme", "dark")
+        self._config.set("colors.webpage.darkmode.enabled", True)
+
+    def _set_colorscheme(self) -> None:
         self._set_completion()
         self._set_downloads()
         self._set_hints()
