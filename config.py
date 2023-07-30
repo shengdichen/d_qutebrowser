@@ -16,7 +16,7 @@ class Bind:
 
 
 class Configuration:
-    def __init__(self, config, quick_conf):
+    def __init__(self, config):
         self._config = config
 
         self._misc()
@@ -25,7 +25,7 @@ class Configuration:
         self._ad_block()
         self._contents_to_load()
         self._edit()
-        self._colorscheme(quick_conf)
+        self._colorscheme()
         self._bind()
 
     def _misc(self) -> None:
@@ -148,9 +148,9 @@ class Configuration:
             ],
         )
 
-    def _colorscheme(self, quick_conf) -> None:
-        v = visual.Visual()
-        v.apply(quick_conf)
+    def _colorscheme(self) -> None:
+        v = visual.Visual(self._config)
+        v.apply()
 
         self._config.set("colors.webpage.preferred_color_scheme", "dark")
 
@@ -177,8 +177,8 @@ class Configuration:
 
         self._config.bind("<Ctrl+h>", "tab-prev")
         self._config.bind("<Ctrl+l>", "tab-next")
-        self._config.bind("K", Bind.concat(Bind.repeat("scroll up", 4)))
-        self._config.bind("J", Bind.concat(Bind.repeat("scroll down", 4)))
+        self._config.bind("K", Bind.concat(Bind.repeat("scroll up", 7)))
+        self._config.bind("J", Bind.concat(Bind.repeat("scroll down", 7)))
 
 
-Configuration(config, c)
+Configuration(config)
