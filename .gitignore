@@ -1,0 +1,5 @@
+# only use config.py
+.config/qutebrowser/autoconfig.yml
+
+.config/qutebrowser/bookmarks/
+.config/qutebrowser/quickmarks
