@@ -134,27 +134,15 @@ class Visual:
         self._config.set("colors.downloads.system.bg", "none")
 
     def _set_hints(self) -> None:
-        # Background color for hints. Note that you can use a `rgba(...)` value
-        # for transparency.
-        self._config.set("colors.hints.bg", self._palette["background"])
+        self._config.set("colors.hints.bg", self._palette_ours["black"])
+        # slight hack to increase the area of background
+        self._config.set("hints.border", "3.7px solid " + self._palette_ours["black"])
+        self._config.set("colors.hints.fg", self._palette_ours["magenta"])
+        self._config.set("colors.hints.match.fg", self._palette_ours["white"])
 
-        # Font color for hints.
-        self._config.set("colors.hints.fg", self._palette["purple"])
-
-        # Hints
-        self._config.set("hints.border", "1px solid " + self._palette["background-alt"])
-
-        # Font color for the matched part of hints.
-        self._config.set("colors.hints.match.fg", self._palette["foreground-alt"])
-
-        # Background color of the keyhint widget.
-        self._config.set("colors.keyhint.bg", self._palette["background"])
-
-        # Text color for the keyhint widget.
-        self._config.set("colors.keyhint.fg", self._palette["purple"])
-
-        # Highlight color for keys to complete the current keychain.
-        self._config.set("colors.keyhint.suffix.fg", self._palette["selection"])
+        self._config.set("colors.keyhint.bg", self._palette_ours["black"])
+        self._config.set("colors.keyhint.fg", self._palette_ours["white"])
+        self._config.set("colors.keyhint.suffix.fg", self._palette_ours["magenta"])
 
     def _set_messages(self) -> None:
         # Background color of an error message.
@@ -340,6 +328,7 @@ class Visual:
         for specification in ["default_family", "web.family.fixed"]:
             self._config.set(".".join([base, specification]), fonts["shevska"])
         self._config.set("fonts.default_size", "11pt")
+        self._config.set("fonts.hints", "14pt Shevska")
 
         for specification in ["standard", "sans_serif", "cursive", "fantasy"]:
             self._config.set(
