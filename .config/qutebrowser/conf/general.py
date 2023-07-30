@@ -14,6 +14,7 @@ class MiscConf:
         self._config.set("changelog_after_upgrade", "never")
 
     def _default_pages(self) -> None:
+        self._config.set("session.default_name", "def")
         self._config.set("auto_save.session", True)
 
         self._config.set("url.start_pages", "https://shengdichen.xyz")  # on launch
