@@ -3,6 +3,7 @@ class MiscConf:
         self._config = config
 
         self._misc()
+        self._use_tor()
         self._default_pages()
         self._search()
         self._edit()
@@ -12,6 +13,9 @@ class MiscConf:
         self._config.load_autoconfig(False)
 
         self._config.set("changelog_after_upgrade", "never")
+
+    def _use_tor(self) -> None:
+        self._config.set("content.proxy", "socks://localhost:9050/")
 
     def _default_pages(self) -> None:
         self._config.set("auto_save.session", False)
