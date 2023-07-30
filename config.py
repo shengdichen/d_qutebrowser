@@ -14,8 +14,8 @@ class Bind:
 
 
 class Configuration:
-    def __init__(self, c, config):
-        self._c, self._config = c, config
+    def __init__(self, config):
+        self._config = config
 
         self._misc()
         self._cookies()
@@ -30,9 +30,9 @@ class Configuration:
         # only use self._config.py
         self._config.load_autoconfig(False)
 
-        self._c.changelog_after_upgrade = "never"
+        self._config.set("changelog_after_upgrade", "never")
 
-        self._c.auto_save.session = True
+        self._config.set("auto_save.session", True)
 
     def _cookies(self) -> None:
         # accept cookies by default
@@ -121,42 +121,51 @@ class Configuration:
         self._config.set("content.javascript.enabled", True, "qute://*/*")
 
     def _edit(self) -> None:
-        self._c.editor.command = [
-            "foot",
-            "nvim",
-            "{file}",
-            "-c",
-            "normal {line}G{column0}l",
-        ]
+        self._config.set(
+            "editor.command",
+            [
+                "foot",
+                "nvim",
+                "{file}",
+                "-c",
+                "normal {line}G{column0}l",
+            ],
+        )
 
-        self._c.spellcheck.languages = [
-            "en-US",
-            "fr-FR",
-            "sv-SE",
-            "de-DE",
-            "it-IT",
-            "es-ES",
-            "pt-BR",
-            "ru-RU",
-        ]
+        self._config.set(
+            "spellcheck.languages",
+            [
+                "en-US",
+                "fr-FR",
+                "sv-SE",
+                "de-DE",
+                "it-IT",
+                "es-ES",
+                "pt-BR",
+                "ru-RU",
+            ],
+        )
 
     def _colorscheme(self) -> None:
-        self._c.colors.webpage.preferred_color_scheme = "dark"
+        self._config.set("colors.webpage.preferred_color_scheme", "dark")
 
-        self._c.colors.webpage.darkmode.enabled = False
+        self._config.set("colors.webpage.darkmode.enabled", False)
 
     def _bind(self) -> None:
-        self._c.bindings.key_mappings = {
-            "<Ctrl+6>": "<Ctrl+^>",
-            "<Ctrl+Enter>": "<Ctrl+Return>",
-            "<Ctrl+i>": "<Tab>",
-            "<Ctrl+j>": "<Return>",
-            "<Ctrl+m>": "<Return>",
-            "<Ctrl+[>": "<Escape>",
-            "<Enter>": "<Return>",
-            "<Shift+Enter>": "<Return>",
-            "<Shift+Return>": "<Return>",
-        }
+        self._config.set(
+            "bindings.key_mappings",
+            {
+                "<Ctrl+6>": "<Ctrl+^>",
+                "<Ctrl+Enter>": "<Ctrl+Return>",
+                "<Ctrl+i>": "<Tab>",
+                "<Ctrl+j>": "<Return>",
+                "<Ctrl+m>": "<Return>",
+                "<Ctrl+[>": "<Escape>",
+                "<Enter>": "<Return>",
+                "<Shift+Enter>": "<Return>",
+                "<Shift+Return>": "<Return>",
+            },
+        )
 
         # Bindings for normal mode
         self._config.bind("M", "hint links spawn mpv {hint-url}")
@@ -167,4 +176,4 @@ class Configuration:
         self._config.bind("J", Bind.concat(Bind.repeat("scroll down", 4)))
 
 
-Configuration(c, config)
+Configuration(config)
