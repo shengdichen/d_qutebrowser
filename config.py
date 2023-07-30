@@ -11,16 +11,8 @@ class Configuration:
 
         general.MiscConf(self._config)
         webcontent.WebContent(self._config)
-        self._visual()
-        self._bind()
-
-    def _visual(self) -> None:
-        v = visual.Visual(self._config)
-        v.apply()
-
-    def _bind(self) -> None:
-        b = bind.Bind(self._config)
-        b.apply()
+        visual.Visual(self._config).apply()
+        bind.Bind(self._config).apply()
 
 
 Configuration(config)
