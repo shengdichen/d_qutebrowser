@@ -3,6 +3,7 @@ class MiscConf:
         self._config = config
 
         self._misc()
+        self._search()
         self._edit()
 
     def _misc(self) -> None:
@@ -12,6 +13,15 @@ class MiscConf:
         self._config.set("changelog_after_upgrade", "never")
 
         self._config.set("auto_save.session", True)
+
+    def _search(self) -> None:
+        duck = "https://duckduckgo.com/?q={}"
+        brave = "https://search.brave.com/search?q={}"
+
+        self._config.set(
+            "url.searchengines",
+            {"DEFAULT": duck, "d": duck, "b": brave},
+        )
 
     def _edit(self) -> None:
         self._config.set(
