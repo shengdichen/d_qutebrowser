@@ -4,6 +4,7 @@ class MiscConf:
 
         self._misc()
         self._default_pages()
+        self._tabs()
         self._edit()
 
     def _misc(self) -> None:
@@ -19,6 +20,13 @@ class MiscConf:
 
         self._config.set("url.start_pages", "https://shengdichen.xyz")  # on launch
         self._config.set("url.default_page", "about:blank")  # when opening new tab
+
+    def _tabs(self) -> None:
+        base = "tabs."
+        self._config.set(f"{base}last_close", "default-page")
+        self._config.set(f"{base}mousewheel_switching", False)
+        for item in ["related", "unrelated"]:
+            self._config.set(f"{base}new_position.{item}", "next")
 
     def _edit(self) -> None:
         self._config.set(
