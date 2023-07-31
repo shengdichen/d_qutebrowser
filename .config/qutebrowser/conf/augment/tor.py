@@ -79,6 +79,9 @@ class Tor:
             proxy = self._proxy_deactivated
             engines = self._engines_deactivated
 
-        return Cmd.set_config_items(
+        cmd_config = Cmd.set_config_items(
             zip([self._config_proxy, self._config_engines], [proxy, engines])
         )
+        cmd_check_site = "open -w https://check.torproject.org/?lang=ru"
+
+        return Cmd.concat([cmd_config, cmd_check_site])
