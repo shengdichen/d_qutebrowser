@@ -28,6 +28,12 @@ class Bind:
 
         self._unbind("d")
 
+        self._open()
+
+    def _open(self) -> None:
+        self._unbind(["o", "O"])
+        self._bind("o", self._enter_as_prompt("open --tab"))
+
     @staticmethod
     def _concat(commands: list[str]) -> str:
         return ";; ".join(commands)
@@ -42,5 +48,17 @@ class Bind:
         else:
             self._config.bind(combi, cmd, mode)
 
-    def _unbind(self, combi: str, mode: str = "normal") -> None:
-        self._config.bind(combi, "nop", mode)
+    def _unbind(self, combis: list[str] | str, mode: str = "normal") -> None:
+        if isinstance(combis, str):
+            combis = [combis]
+
+        for combi in combis:
+            self._config.bind(combi, "nop", mode)
+
+    @staticmethod
+    def _enter_as_prompt(cmd: str, append_space: bool = True) -> str:
+        base = "set-cmd-text "
+        if append_space:
+            return f"{base}--space :{cmd}"
+
+        return f"{base}:{cmd}"
