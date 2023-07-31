@@ -7,10 +7,9 @@ class Alias:
 
     def _exit(self) -> None:
         self._aliases |= {
-            "w": "session-save",
-            "wq": "quit --save",
-            "q": "close",
-            "q!": "quit",
+            "w": "session-save def",
+            "wq": "quit --save def",
+            "q": "tab-close",
         }
 
     def apply(self) -> None:
