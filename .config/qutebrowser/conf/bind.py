@@ -29,10 +29,15 @@ class Bind:
         self._unbind("d")
 
         self._open()
+        self._show_gui()
 
     def _open(self) -> None:
         self._unbind(["o", "O"])
         self._bind("o", self._enter_as_prompt("open --tab"))
+
+    def _show_gui(self) -> None:
+        self._bind("z", "gui_show")
+        self._bind("Z", "gui_hide")
 
     @staticmethod
     def _concat(commands: list[str]) -> str:
