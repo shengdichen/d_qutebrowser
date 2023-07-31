@@ -4,12 +4,12 @@ from ..util.cmd import Cmd
 class Tor:
     def __init__(self):
         self._config_engines = "url.searchengines"
-        self._engines_nontor = {
+
+        engines_nontor = {
             "duck": self._make_duck_search_string("https://duckduckgo.com/"),
             "brave": self._make_brave_search_string("https://search.brave.com/"),
         }
-
-        self._engines_tor = {
+        engines_tor = {
             "duck": self._make_duck_search_string(
                 "https://duckduckgogg42xjoc72x3sjasowoarfbgcmvfimaftt6twagswzczad.onion/"
             ),
@@ -17,18 +17,17 @@ class Tor:
                 "https://search.brave4u7jddbv7cyviptqjc7jusxh72uik7zt6adtckl5f4nwy2v72qd.onion/"
             ),
         }
-
         self._engines_activated = {
-            "DEFAULT": self._engines_tor["duck"],
-            "d": self._engines_tor["duck"],
-            "dn": self._engines_nontor["duck"],
-            "b": self._engines_tor["brave"],
-            "bn": self._engines_nontor["brave"],
+            "DEFAULT": engines_tor["duck"],
+            "d": engines_tor["duck"],
+            "dn": engines_nontor["duck"],
+            "b": engines_tor["brave"],
+            "bn": engines_nontor["brave"],
         }
         self._engines_deactivated = {
-            "DEFAULT": self._engines_nontor["duck"],
-            "d": self._engines_nontor["duck"],
-            "b": self._engines_nontor["brave"],
+            "DEFAULT": engines_nontor["duck"],
+            "d": engines_nontor["duck"],
+            "b": engines_nontor["brave"],
         }
 
         self._config_proxy = "content.proxy"
