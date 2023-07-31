@@ -26,6 +26,8 @@ class Bind:
         self._config.bind("K", self._concat(Bind._repeat("scroll up", 7)))
         self._config.bind("J", self._concat(Bind._repeat("scroll down", 7)))
 
+        self._unbind("d")
+
     @staticmethod
     def _concat(commands: list[str]) -> str:
         return ";; ".join(commands)
@@ -33,3 +35,12 @@ class Bind:
     @staticmethod
     def _repeat(command: str, repeat_for: int) -> list[str]:
         return repeat_for * [command]
+
+    def _bind(self, combi: str, cmd: str = "", mode: str = "normal") -> None:
+        if not cmd:
+            self._unbind(combi, mode)
+        else:
+            self._config.bind(combi, cmd, mode)
+
+    def _unbind(self, combi: str, mode: str = "normal") -> None:
+        self._config.bind(combi, "nop", mode)
