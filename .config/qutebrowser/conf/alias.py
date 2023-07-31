@@ -3,13 +3,7 @@ class Alias:
         self._config = config
 
         self._aliases = {}
-
-    def apply(self) -> None:
         self._exit()
-        self._tor_activate()
-        self._tor_deactivate()
-
-        self._config.set("aliases", self._aliases)
 
     def _exit(self) -> None:
         self._aliases |= {
@@ -19,10 +13,8 @@ class Alias:
             "q!": "quit",
         }
 
-    def _tor_activate(self) -> None:
-        cmd = " ".join(["set", "content.proxy", "socks://localhost:9050/"])
-        self._aliases.update(tor_on=cmd)
+    def apply(self) -> None:
+        self._config.set("aliases", self._aliases)
 
-    def _tor_deactivate(self) -> None:
-        cmd = " ".join(["set", "content.proxy", "system"])
-        self._aliases.update(tor_off=cmd)
+    def add(self, name: str, cmd: str) -> None:
+        self._aliases.update({name: cmd})
