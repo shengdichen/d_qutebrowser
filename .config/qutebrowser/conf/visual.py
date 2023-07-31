@@ -52,6 +52,7 @@ class Visual:
         self._set_completion()
         self._set_downloads()
         self._set_hints()
+        self._set_keyhint()
         self._set_messages()
         self._set_prompts()
         self._set_statusbar()
@@ -100,15 +101,21 @@ class Visual:
         self._config.set(base + "error.fg", self._palette_ours["red"])
 
     def _set_hints(self) -> None:
-        self._config.set("colors.hints.bg", self._palette_ours["black"])
-        # slight hack to increase the area of background
-        self._config.set("hints.border", "3.7px solid " + self._palette_ours["black"])
-        self._config.set("colors.hints.fg", self._palette_ours["magenta"])
-        self._config.set("colors.hints.match.fg", self._palette_ours["white"])
+        base = "colors.hints."
 
-        self._config.set("colors.keyhint.bg", self._palette_ours["black"])
-        self._config.set("colors.keyhint.fg", self._palette_ours["white"])
-        self._config.set("colors.keyhint.suffix.fg", self._palette_ours["magenta"])
+        self._config.set(f"{base}bg", self._palette_ours["black"])
+        self._config.set(f"{base}fg", self._palette_ours["magenta"])
+        self._config.set(f"{base}match.fg", self._palette_ours["white"])
+
+        # slight hack to increase the area of background
+        self._config.set("hints.border", f"3.7px solid {self._palette_ours['black']}")
+
+    def _set_keyhint(self) -> None:
+        base = "colors.keyhint."
+
+        self._config.set(f"{base}bg", self._palette_ours["black"])
+        self._config.set(f"{base}fg", self._palette_ours["white"])
+        self._config.set(f"{base}suffix.fg", self._palette_ours["magenta"])
 
     def _set_messages(self) -> None:
         self._config.set("colors.messages.info.bg", self._palette_ours["black"])
