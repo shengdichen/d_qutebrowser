@@ -1,4 +1,5 @@
 from ..util.cmd import Cmd
+from ..util.addr import Addr
 
 
 class Tor:
@@ -17,15 +18,15 @@ class Tor:
 
     def _make_engines(self) -> tuple[str, dict, dict]:
         engines_nontor = {
-            "duck": self._make_duck_search_string("https://duckduckgo.com/"),
-            "brave": self._make_brave_search_string("https://search.brave.com/"),
+            "duck": self._make_duck_search_string("duckduckgo.com/"),
+            "brave": self._make_brave_search_string("search.brave.com/"),
         }
         engines_tor = {
             "duck": self._make_duck_search_string(
-                "https://duckduckgogg42xjoc72x3sjasowoarfbgcmvfimaftt6twagswzczad.onion/"
+                "duckduckgogg42xjoc72x3sjasowoarfbgcmvfimaftt6twagswzczad.onion/"
             ),
             "brave": self._make_brave_search_string(
-                "https://search.brave4u7jddbv7cyviptqjc7jusxh72uik7zt6adtckl5f4nwy2v72qd.onion/"
+                "search.brave4u7jddbv7cyviptqjc7jusxh72uik7zt6adtckl5f4nwy2v72qd.onion/"
             ),
         }
 
@@ -47,11 +48,11 @@ class Tor:
 
     @staticmethod
     def _make_duck_search_string(url) -> str:
-        return url + "?q={}"
+        return Addr.make_https(url) + "?q={}"
 
     @staticmethod
     def _make_brave_search_string(url) -> str:
-        return url + "search?q={}"
+        return Addr.make_https(url) + "search?q={}"
 
     @staticmethod
     def _make_proxy() -> tuple[str, str, str]:
