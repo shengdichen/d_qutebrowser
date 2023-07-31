@@ -1,3 +1,6 @@
+from ..util.cmd import Cmd
+
+
 class Tor:
     def __init__(self):
         self._config_engines = "url.searchengines"
@@ -63,7 +66,6 @@ class Tor:
             proxy = self._proxy_deactivated
             engines = self._engines_deactivated
 
-        cmd_proxy = " ".join(["set", self._config_proxy, proxy])
-        cmd_engines = " ".join(["set", self._config_engines, f'"{engines}"'])
-
-        return ";; ".join([cmd_proxy, cmd_engines])
+        return Cmd.set_config_items(
+            zip([self._config_proxy, self._config_engines], [proxy, engines])
+        )
