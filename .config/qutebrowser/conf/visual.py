@@ -43,6 +43,7 @@ class Visual:
     def apply(self) -> None:
         self._set_colorscheme()
         self._set_font()
+        self._set_window()
 
         self._config.set("colors.webpage.preferred_color_scheme", "dark")
         self._config.set("colors.webpage.darkmode.enabled", True)
@@ -241,3 +242,7 @@ class Visual:
 
         self._config.set("fonts.web.size.default", 19)
         self._config.set("fonts.web.size.default_fixed", 15)
+
+    def _set_window(self) -> None:
+        self._config.set("window.hide_decoration", True)
+        self._config.set("window.title_format", "{current_title}")
