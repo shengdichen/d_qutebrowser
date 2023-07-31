@@ -131,19 +131,13 @@ class Visual:
         self._config.set("colors.messages.error.fg", self._palette_ours["red"])
 
     def _set_prompts(self) -> None:
-        # Background color for prompts.
-        self._config.set("colors.prompts.bg", self._palette["background"])
+        base = "colors.prompts."
 
-        #  Border used around UI elements in prompts.
-        self._config.set(
-            "colors.prompts.border", "1px solid " + self._palette["background-alt"]
-        )
-
-        # Foreground color for prompts.
-        self._config.set("colors.prompts.fg", self._palette["cyan"])
-
-        # Background color for the selected item in filename prompts.
-        self._config.set("colors.prompts.selected.bg", self._palette["selection"])
+        self._config.set(base + "bg", self._palette_ours["black"])
+        self._config.set(base + "fg", self._palette_ours["white"])
+        self._config.set(base + "selected.bg", self._palette_ours["grey_dark"])
+        self._config.set(base + "selected.fg", self._palette_ours["white"])
+        self._config.set(base + "border", "1px solid " + self._palette_ours["white"])
 
     def _set_statusbar(self) -> None:
         self._config.set("statusbar.show", "in-mode")
@@ -230,6 +224,7 @@ class Visual:
         self._config.set("fonts.default_size", "11pt")
         self._config.set("fonts.hints", "14pt Shevska")
         self._config.set("fonts.statusbar", "17pt Shevska")
+        self._config.set("fonts.prompts", "13pt default_family")
 
         for specification in ["standard", "sans_serif", "cursive", "fantasy"]:
             self._config.set(
