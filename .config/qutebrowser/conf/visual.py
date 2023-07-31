@@ -21,6 +21,16 @@ class Visual:
             "red": "#ff5555",
             "yellow": "#f1fa8c",
         }
+        self._palette_ours = {
+            "black": "#000000",
+            "grey_dark": "#352c37",
+            "grey_bright": "#897397",
+            "white": "#ede3f7",
+            "red": "#ef3347",
+            "pink": "#ff79c6",
+            "magenta": "#bd93f9",
+            "cyan": "#8be9fd",
+        }
 
         spacing = {"vertical": 6, "horizontal": 8}
         self._padding = {
@@ -32,6 +42,8 @@ class Visual:
 
     def apply(self) -> None:
         self._set_colorscheme()
+        self._set_font()
+        self._set_window()
 
         self._config.set("colors.webpage.preferred_color_scheme", "dark")
         self._config.set("colors.webpage.darkmode.enabled", True)
@@ -40,302 +52,192 @@ class Visual:
         self._set_completion()
         self._set_downloads()
         self._set_hints()
+        self._set_keyhint()
         self._set_messages()
         self._set_prompts()
         self._set_statusbar()
         self._set_tabs()
 
     def _set_completion(self) -> None:
-        # Background color of the completion widget category headers.
-        self._config.set("colors.completion.category.bg", self._palette["background"])
+        base = "colors.completion."
 
-        # Bottom border color of the completion widget category headers.
-        self._config.set(
-            "colors.completion.category.border.bottom", self._palette["border"]
-        )
+        self._config.set(base + "even.bg", self._palette_ours["black"])
+        self._config.set(base + "odd.bg", self._palette_ours["black"])
+        self._config.set(base + "fg", self._palette_ours["white"])
+        self._config.set(base + "match.fg", self._palette_ours["pink"])
 
-        # Top border color of the completion widget category headers.
-        self._config.set(
-            "colors.completion.category.border.top", self._palette["border"]
-        )
+        self._config.set(base + "category.bg", self._palette_ours["black"])
+        self._config.set(base + "category.fg", self._palette_ours["white"])
+        for specification in ["bottom", "top"]:
+            self._config.set(
+                ".".join([base + "category.border", specification]),
+                self._palette_ours["grey_bright"],
+            )
 
-        # Foreground color of completion widget category headers.
-        self._config.set("colors.completion.category.fg", self._palette["foreground"])
+        self._config.set(base + "item.selected.bg", self._palette_ours["grey_dark"])
+        self._config.set(base + "item.selected.fg", self._palette_ours["white"])
+        for specification in ["bottom", "top"]:
+            self._config.set(
+                ".".join([base + "item.selected.border", specification]),
+                self._palette_ours["white"],
+            )
 
-        # Background color of the completion widget for even rows.
-        self._config.set("colors.completion.even.bg", self._palette["background"])
-
-        # Background color of the completion widget for odd rows.
-        self._config.set("colors.completion.odd.bg", self._palette["background-alt"])
-
-        # Text color of the completion widget.
-        self._config.set("colors.completion.fg", self._palette["foreground"])
-
-        # Background color of the selected completion item.
-        self._config.set(
-            "colors.completion.item.selected.bg", self._palette["selection"]
-        )
-
-        # Bottom border color of the selected completion item.
-        self._config.set(
-            "colors.completion.item.selected.border.bottom", self._palette["selection"]
-        )
-
-        # Top border color of the completion widget category headers.
-        self._config.set(
-            "colors.completion.item.selected.border.top", self._palette["selection"]
-        )
-
-        # Foreground color of the selected completion item.
-        self._config.set(
-            "colors.completion.item.selected.fg", self._palette["foreground"]
-        )
-
-        # Foreground color of the matched text in the completion.
-        self._config.set("colors.completion.match.fg", self._palette["orange"])
-
-        # Color of the scrollbar in completion view
-        self._config.set("colors.completion.scrollbar.bg", self._palette["background"])
-
-        # Color of the scrollbar handle in completion view.
-        self._config.set("colors.completion.scrollbar.fg", self._palette["foreground"])
+        self._config.set(base + "scrollbar.bg", self._palette_ours["black"])
+        self._config.set(base + "scrollbar.fg", self._palette_ours["grey_dark"])
 
     def _set_downloads(self) -> None:
-        # Background color for the download bar.
-        self._config.set("colors.downloads.bar.bg", self._palette["background"])
+        base = "colors.downloads."
 
-        # Background color for downloads with errors.
-        self._config.set("colors.downloads.error.bg", self._palette["background"])
+        # disable gradient
+        self._config.set(base + "system.bg", "none")
+        self._config.set(base + "system.fg", "none")
 
-        # Foreground color for downloads with errors.
-        self._config.set("colors.downloads.error.fg", self._palette["red"])
+        for item in ["bar", "start", "stop"]:
+            self._config.set(f"{base}{item}.bg", self._palette_ours["black"])
+        for item in ["start", "stop"]:
+            self._config.set(f"{base}{item}.fg", self._palette_ours["white"])
 
-        # Color gradient stop for download backgrounds.
-        self._config.set("colors.downloads.stop.bg", self._palette["background"])
-
-        # Color gradient interpolation system for download backgrounds.
-        # Type: ColorSystem
-        # Valid values:
-        #   - rgb: Interpolate in the RGB color system.
-        #   - hsv: Interpolate in the HSV color system.
-        #   - hsl: Interpolate in the HSL color system.
-        #   - none: Don't show a gradient.
-        self._config.set("colors.downloads.system.bg", "none")
+        self._config.set(base + "error.bg", self._palette_ours["black"])
+        self._config.set(base + "error.fg", self._palette_ours["red"])
 
     def _set_hints(self) -> None:
-        # Background color for hints. Note that you can use a `rgba(...)` value
-        # for transparency.
-        self._config.set("colors.hints.bg", self._palette["background"])
+        base = "colors.hints."
 
-        # Font color for hints.
-        self._config.set("colors.hints.fg", self._palette["purple"])
+        self._config.set(f"{base}bg", self._palette_ours["black"])
+        self._config.set(f"{base}fg", self._palette_ours["magenta"])
+        self._config.set(f"{base}match.fg", self._palette_ours["white"])
 
-        # Hints
-        self._config.set("hints.border", "1px solid " + self._palette["background-alt"])
+        # slight hack to increase the area of background
+        self._config.set("hints.border", f"3.7px solid {self._palette_ours['black']}")
 
-        # Font color for the matched part of hints.
-        self._config.set("colors.hints.match.fg", self._palette["foreground-alt"])
+    def _set_keyhint(self) -> None:
+        base = "colors.keyhint."
 
-        # Background color of the keyhint widget.
-        self._config.set("colors.keyhint.bg", self._palette["background"])
-
-        # Text color for the keyhint widget.
-        self._config.set("colors.keyhint.fg", self._palette["purple"])
-
-        # Highlight color for keys to complete the current keychain.
-        self._config.set("colors.keyhint.suffix.fg", self._palette["selection"])
+        self._config.set(f"{base}bg", self._palette_ours["black"])
+        self._config.set(f"{base}fg", self._palette_ours["white"])
+        self._config.set(f"{base}suffix.fg", self._palette_ours["magenta"])
 
     def _set_messages(self) -> None:
-        # Background color of an error message.
-        self._config.set("colors.messages.error.bg", self._palette["background"])
+        self._config.set("colors.messages.info.bg", self._palette_ours["black"])
+        self._config.set("colors.messages.info.border", self._palette_ours["black"])
+        self._config.set("colors.messages.info.fg", self._palette_ours["white"])
 
-        # Border color of an error message.
-        self._config.set(
-            "colors.messages.error.border", self._palette["background-alt"]
-        )
+        self._config.set("colors.messages.warning.bg", self._palette_ours["black"])
+        self._config.set("colors.messages.warning.border", self._palette_ours["red"])
+        self._config.set("colors.messages.warning.fg", self._palette_ours["white"])
 
-        # Foreground color of an error message.
-        self._config.set("colors.messages.error.fg", self._palette["red"])
-
-        # Background color of an info message.
-        self._config.set("colors.messages.info.bg", self._palette["background"])
-
-        # Border color of an info message.
-        self._config.set("colors.messages.info.border", self._palette["background-alt"])
-
-        # Foreground color an info message.
-        self._config.set("colors.messages.info.fg", self._palette["comment"])
-
-        # Background color of a warning message.
-        self._config.set("colors.messages.warning.bg", self._palette["background"])
-
-        # Border color of a warning message.
-        self._config.set(
-            "colors.messages.warning.border", self._palette["background-alt"]
-        )
-
-        # Foreground color a warning message.
-        self._config.set("colors.messages.warning.fg", self._palette["red"])
+        self._config.set("colors.messages.error.bg", self._palette_ours["black"])
+        self._config.set("colors.messages.error.border", self._palette_ours["black"])
+        self._config.set("colors.messages.error.fg", self._palette_ours["red"])
 
     def _set_prompts(self) -> None:
-        # Background color for prompts.
-        self._config.set("colors.prompts.bg", self._palette["background"])
+        base = "colors.prompts."
 
-        #  Border used around UI elements in prompts.
-        self._config.set(
-            "colors.prompts.border", "1px solid " + self._palette["background-alt"]
-        )
-
-        # Foreground color for prompts.
-        self._config.set("colors.prompts.fg", self._palette["cyan"])
-
-        # Background color for the selected item in filename prompts.
-        self._config.set("colors.prompts.selected.bg", self._palette["selection"])
+        self._config.set(base + "bg", self._palette_ours["black"])
+        self._config.set(base + "fg", self._palette_ours["white"])
+        self._config.set(base + "selected.bg", self._palette_ours["grey_dark"])
+        self._config.set(base + "selected.fg", self._palette_ours["white"])
+        self._config.set(base + "border", "1px solid " + self._palette_ours["white"])
 
     def _set_statusbar(self) -> None:
-        # Background color of the statusbar in caret mode.
-        self._config.set("colors.statusbar.caret.bg", self._palette["background"])
+        self._config.set("statusbar.show", "in-mode")
 
-        # Foreground color of the statusbar in caret mode.
-        self._config.set("colors.statusbar.caret.fg", self._palette["orange"])
+        base = "colors.statusbar."
 
-        # Background color of the statusbar in caret mode with a selection.
+        for mode in [
+            "normal",
+            "private",
+            "insert",
+            "command",
+            "command.private",
+            "caret",
+            "caret.selection",
+            "passthrough",
+        ]:
+            self._config.set(base + mode + ".bg", self._palette_ours["black"])
+            self._config.set(base + mode + ".fg", self._palette_ours["white"])
+
+        self._config.set(base + "progress.bg", self._palette_ours["grey_bright"])
+
+        self._config.set(base + "url.fg", self._palette_ours["white"])
+        self._config.set(base + "url.success.http.fg", self._palette_ours["white"])
+        self._config.set(base + "url.success.https.fg", self._palette_ours["white"])
+
+        self._config.set(base + "url.hover.fg", self._palette_ours["cyan"])
+        self._config.set(base + "url.warn.fg", self._palette_ours["red"])
+        self._config.set(base + "url.error.fg", self._palette_ours["red"])
+
         self._config.set(
-            "colors.statusbar.caret.selection.bg", self._palette["background"]
+            "statusbar.padding",
+            {"top": 1, "bottom": 1, "left": 2, "right": 2},
         )
-
-        # Foreground color of the statusbar in caret mode with a selection.
-        self._config.set("colors.statusbar.caret.selection.fg", self._palette["orange"])
-
-        # Background color of the statusbar in command mode.
-        self._config.set("colors.statusbar.command.bg", self._palette["background"])
-
-        # Foreground color of the statusbar in command mode.
-        self._config.set("colors.statusbar.command.fg", self._palette["pink"])
-
-        # Background color of the statusbar in private browsing + command mode.
-        self._config.set(
-            "colors.statusbar.command.private.bg", self._palette["background"]
-        )
-
-        # Foreground color of the statusbar in private browsing + command mode.
-        self._config.set(
-            "colors.statusbar.command.private.fg", self._palette["foreground-alt"]
-        )
-
-        # Background color of the statusbar in insert mode.
-        self._config.set(
-            "colors.statusbar.insert.bg", self._palette["background-attention"]
-        )
-
-        # Foreground color of the statusbar in insert mode.
-        self._config.set(
-            "colors.statusbar.insert.fg", self._palette["foreground-attention"]
-        )
-
-        # Background color of the statusbar.
-        self._config.set("colors.statusbar.normal.bg", self._palette["background"])
-
-        # Foreground color of the statusbar.
-        self._config.set("colors.statusbar.normal.fg", self._palette["foreground"])
-
-        # Background color of the statusbar in passthrough mode.
-        self._config.set("colors.statusbar.passthrough.bg", self._palette["background"])
-
-        # Foreground color of the statusbar in passthrough mode.
-        self._config.set("colors.statusbar.passthrough.fg", self._palette["orange"])
-
-        # Background color of the statusbar in private browsing mode.
-        self._config.set("colors.statusbar.private.bg", self._palette["background-alt"])
-
-        # Foreground color of the statusbar in private browsing mode.
-        self._config.set("colors.statusbar.private.fg", self._palette["foreground-alt"])
-
-        # Background color of the progress bar.
-        self._config.set("colors.statusbar.progress.bg", self._palette["background"])
-
-        # Foreground color of the URL in the statusbar on error.
-        self._config.set("colors.statusbar.url.error.fg", self._palette["red"])
-
-        # Default foreground color of the URL in the statusbar.
-        self._config.set("colors.statusbar.url.fg", self._palette["foreground"])
-
-        # Foreground color of the URL in the statusbar for hovered links.
-        self._config.set("colors.statusbar.url.hover.fg", self._palette["cyan"])
-
-        # Foreground color of the URL in the statusbar on successful load
-        self._config.set("colors.statusbar.url.success.http.fg", self._palette["green"])
-
-        # Foreground color of the URL in the statusbar on successful load
-        self._config.set(
-            "colors.statusbar.url.success.https.fg", self._palette["green"]
-        )
-
-        # Foreground color of the URL in the statusbar when there's a warning.
-        self._config.set("colors.statusbar.url.warn.fg", self._palette["yellow"])
-
-        # Status bar padding
-        self._config.set("statusbar.padding", self._padding)
 
     def _set_tabs(self) -> None:
-        # Background color of the tab bar.
-        # Type: QtColor
-        self._config.set("colors.tabs.bar.bg", self._palette["selection"])
+        self._config.set(
+            "tabs.show", "multiple"
+        )  # only show if multiple tabs are present
+        self._config.set("tabs.position", "left")
+        self._config.set("tabs.width", "11%")
+        self._config.set("tabs.title.alignment", "left")
 
-        # Background color of unselected even tabs.
-        # Type: QtColor
-        self._config.set("colors.tabs.even.bg", self._palette["selection"])
+        self._config.set("tabs.favicons.show", "never")
+        self._config.set("tabs.title.format", "{current_title}")
+        self._config.set(
+            "tabs.padding",
+            {"top": 0, "bottom": 5, "left": 2, "right": 5},
+        )
+        self._config.set("tabs.indicator.width", 0)  # disable completely
 
-        # Foreground color of unselected even tabs.
-        # Type: QtColor
-        self._config.set("colors.tabs.even.fg", self._palette["foreground"])
+        item_base = "colors.tabs"
 
-        # Color for the tab indicator on errors.
-        # Type: QtColor
-        self._config.set("colors.tabs.indicator.error", self._palette["red"])
+        for specification in ["bar", "even", "odd"]:
+            self._config.set(
+                ".".join([item_base, specification, "bg"]), self._palette_ours["black"]
+            )
+        for specification in ["even", "odd"]:
+            self._config.set(
+                ".".join([item_base, specification, "fg"]),
+                self._palette_ours["grey_bright"],
+            )
 
-        # Color gradient start for the tab indicator.
-        # Type: QtColor
-        self._config.set("colors.tabs.indicator.start", self._palette["orange"])
+        for specification in ["even", "odd"]:
+            self._config.set(
+                ".".join([item_base, "selected", specification, "bg"]),
+                self._palette_ours["black"],
+            )
+        for specification in ["even", "odd"]:
+            self._config.set(
+                ".".join([item_base, "selected", specification, "fg"]),
+                self._palette_ours["white"],
+            )
 
-        # Color gradient end for the tab indicator.
-        # Type: QtColor
-        self._config.set("colors.tabs.indicator.stop", self._palette["green"])
+    def _set_font(self) -> None:
+        fonts = {
+            "shevska": "Shevska",
+            "avenir": "Avenir LT Std",
+            "constantia": "Constantia",
+        }
 
-        # Color gradient interpolation system for the tab indicator.
-        # Type: ColorSystem
-        # Valid values:
-        #   - rgb: Interpolate in the RGB color system.
-        #   - hsv: Interpolate in the HSV color system.
-        #   - hsl: Interpolate in the HSL color system.
-        #   - none: Don't show a gradient.
-        self._config.set("colors.tabs.indicator.system", "none")
+        base = "fonts"
+        for specification in ["default_family", "web.family.fixed"]:
+            self._config.set(".".join([base, specification]), fonts["shevska"])
+        self._config.set("fonts.default_size", "11pt")
+        self._config.set("fonts.hints", "14pt default_family")
+        self._config.set("fonts.statusbar", "17pt default_family")
+        self._config.set("fonts.prompts", "13pt default_family")
 
-        # Background color of unselected odd tabs.
-        # Type: QtColor
-        self._config.set("colors.tabs.odd.bg", self._palette["selection"])
+        for specification in ["standard", "sans_serif", "cursive", "fantasy"]:
+            self._config.set(
+                ".".join([base, "web", "family", specification]), fonts["avenir"]
+            )
+        for specification in ["serif"]:
+            self._config.set(
+                ".".join([base, "web", "family", specification]), fonts["constantia"]
+            )
 
-        # Foreground color of unselected odd tabs.
-        # Type: QtColor
-        self._config.set("colors.tabs.odd.fg", self._palette["foreground"])
+        self._config.set("fonts.web.size.default", 19)
+        self._config.set("fonts.web.size.default_fixed", 15)
 
-        #  Background color of selected even tabs.
-        #  Type: QtColor
-        self._config.set("colors.tabs.selected.even.bg", self._palette["background"])
-
-        #  Foreground color of selected even tabs.
-        #  Type: QtColor
-        self._config.set("colors.tabs.selected.even.fg", self._palette["foreground"])
-
-        #  Background color of selected odd tabs.
-        #  Type: QtColor
-        self._config.set("colors.tabs.selected.odd.bg", self._palette["background"])
-
-        #  Foreground color of selected odd tabs.
-        #  Type: QtColor
-        self._config.set("colors.tabs.selected.odd.fg", self._palette["foreground"])
-
-        # Tab padding
-        self._config.set("tabs.padding", self._padding)
-        self._config.set("tabs.indicator.width", 1)
-        self._config.set("tabs.favicons.scale", 1)
+    def _set_window(self) -> None:
+        self._config.set("window.hide_decoration", True)
+        self._config.set("window.title_format", "{current_title}")
