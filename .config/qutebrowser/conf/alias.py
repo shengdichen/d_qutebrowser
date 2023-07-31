@@ -18,12 +18,15 @@ class Alias:
 
     def _gui(self) -> None:
         items = ["statusbar.show", "tabs.show"]
-        cmd_show = Cmd.set_config_items(zip(items, ["always", "always"]))
-        cmd_hide = Cmd.set_config_items(zip(items, ["never", "never"]))
+        states = ["always", "never"]
+        cmd_toggle = Cmd.cycle_config_items(zip(items, 2 * [states]))
+        cmd_show = Cmd.set_config_items(zip(items, 2 * [states[0]]))
+        cmd_hide = Cmd.set_config_items(zip(items, 2 * [states[1]]))
 
         self._aliases |= {
             "gui_show": cmd_show,
             "gui_hide": cmd_hide,
+            "gui_toggle": cmd_toggle,
         }
 
     def apply(self) -> None:
