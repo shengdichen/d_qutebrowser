@@ -85,26 +85,19 @@ class Visual:
         self._config.set(base + "scrollbar.fg", self._palette_ours["grey_dark"])
 
     def _set_downloads(self) -> None:
-        # Background color for the download bar.
-        self._config.set("colors.downloads.bar.bg", self._palette["background"])
+        base = "colors.downloads."
 
-        # Background color for downloads with errors.
-        self._config.set("colors.downloads.error.bg", self._palette["background"])
+        # disable gradient
+        self._config.set(base + "system.bg", "none")
+        self._config.set(base + "system.fg", "none")
 
-        # Foreground color for downloads with errors.
-        self._config.set("colors.downloads.error.fg", self._palette["red"])
+        for item in ["bar", "start", "stop"]:
+            self._config.set(f"{base}{item}.bg", self._palette_ours["black"])
+        for item in ["start", "stop"]:
+            self._config.set(f"{base}{item}.fg", self._palette_ours["white"])
 
-        # Color gradient stop for download backgrounds.
-        self._config.set("colors.downloads.stop.bg", self._palette["background"])
-
-        # Color gradient interpolation system for download backgrounds.
-        # Type: ColorSystem
-        # Valid values:
-        #   - rgb: Interpolate in the RGB color system.
-        #   - hsv: Interpolate in the HSV color system.
-        #   - hsl: Interpolate in the HSL color system.
-        #   - none: Don't show a gradient.
-        self._config.set("colors.downloads.system.bg", "none")
+        self._config.set(base + "error.bg", self._palette_ours["black"])
+        self._config.set(base + "error.fg", self._palette_ours["red"])
 
     def _set_hints(self) -> None:
         self._config.set("colors.hints.bg", self._palette_ours["black"])
