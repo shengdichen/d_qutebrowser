@@ -71,7 +71,7 @@ class Tor:
     def _set_engines(self, config, engines: dict) -> None:
         config.set(self._config_engines, engines)
 
-    def as_cmd(self, activate: bool) -> str:
+    def as_cmd(self, activate: bool, tor_check_site_lang: str = "ru") -> str:
         if activate:
             proxy = self._proxy_activated
             engines = self._engines_activated
@@ -82,6 +82,8 @@ class Tor:
         cmd_config = Cmd.set_config_items(
             zip([self._config_proxy, self._config_engines], [proxy, engines])
         )
-        cmd_check_site = "open -w https://check.torproject.org/?lang=ru"
+        cmd_check_site = (
+            f"open -w https://check.torproject.org/?lang={tor_check_site_lang}"
+        )
 
         return Cmd.concat([cmd_config, cmd_check_site])
