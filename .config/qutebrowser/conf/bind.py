@@ -1,3 +1,6 @@
+from .util.cmd import Cmd
+
+
 class Bind:
     def __init__(self, config):
         self._config = config
@@ -33,7 +36,19 @@ class Bind:
 
     def _open(self) -> None:
         self._unbind(["o", "O"])
-        self._bind("o", self._enter_as_prompt("open --tab"))
+        self._bind("oo", self._enter_as_prompt(self._do_in_new_tab("")))
+        self._bind("OO", self._enter_as_prompt("open --window"))
+
+        self._bind("ob", self._enter_as_prompt("bookmark-load --tab"))
+        self._bind("oB", self._enter_as_prompt("quickmark-load --tab"))
+
+    @staticmethod
+    def _do_in_new_tab(cmd: str) -> str:
+        base = "open --tab"
+
+        if not cmd:
+            return base
+        return Cmd.concat([base, cmd])
 
     def _gui(self) -> None:
         self._bind("z", "gui_toggle")
