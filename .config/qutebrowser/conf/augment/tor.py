@@ -9,11 +9,11 @@ class Tor:
             self._engines_deactivated,
         ) = self._make_engines()
 
-        self._config_proxy = "content.proxy"
-        self._proxy_activated, self._proxy_deactivated = (
-            "socks://localhost:9050/",
-            "system",
-        )
+        (
+            self._config_proxy,
+            self._proxy_activated,
+            self._proxy_deactivated,
+        ) = self._make_proxy()
 
     def _make_engines(self) -> tuple[str, dict, dict]:
         engines_nontor = {
@@ -52,6 +52,10 @@ class Tor:
     @staticmethod
     def _make_brave_search_string(url) -> str:
         return url + "search?q={}"
+
+    @staticmethod
+    def _make_proxy() -> tuple[str, str, str]:
+        return "content.proxy", "socks://localhost:9050/", "system"
 
     def activate(self, config) -> None:
         config.set(self._config_proxy, self._proxy_activated)
