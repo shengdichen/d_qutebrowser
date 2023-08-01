@@ -83,9 +83,9 @@ class ModeMulti:
             "<Ctrl+d>", f"{self._cmd_edit}kill-word", modes
         )  # delete until end-o-w
 
-    def _bind_modes(self, combi: str, cmd: str, modes: list[str]) -> None:
+    def _bind_modes(self, combis: list[str] | str, cmd: str, modes: list[str]) -> None:
         for mode in modes:
-            _Util(self._config).bind(combi, cmd, mode=mode)
+            _Util(self._config).bind(combis, cmd, mode=mode)
 
 
 class _ModeSpecific:
@@ -93,8 +93,8 @@ class _ModeSpecific:
         self._mode = mode
         self._config = config
 
-    def _bind(self, combi: str, cmd: str = "") -> None:
-        _Util(self._config).bind(combi, cmd, mode=self._mode)
+    def _bind(self, combis: list[str] | str, cmd: str = "") -> None:
+        _Util(self._config).bind(combis, cmd, mode=self._mode)
 
 
 class ModeNormal(_ModeSpecific):
