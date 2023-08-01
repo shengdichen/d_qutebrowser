@@ -127,6 +127,7 @@ class Bind:
         m = "command"
 
         self._bind("<Return>", "command-accept", mode=m)
+        self._bind("<Ctrl+Return>", "command-accept --rapid", mode=m)
 
         cmd_completion = "completion-item-focus "
         self._bind("<Ctrl+p>", f"{cmd_completion} prev", mode=m)
