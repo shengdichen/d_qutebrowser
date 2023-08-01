@@ -52,7 +52,7 @@ class ModeMulti:
 
     def _exit(self) -> None:
         cmd = "mode-leave"
-        modes = ["command", "insert", "hint", "caret", "prompt", "register", "yesno"]
+        modes = ["command", "hint", "caret", "prompt", "register", "yesno"]
 
         for combi in ["<Ctrl+c>", "<Escape>"]:
             self._bind_modes(combi, cmd, modes)
@@ -234,6 +234,21 @@ class ModeCommand(_ModeSpecific):
         self._bind("<Ctrl+j>", "command-history-next")
 
 
+class ModeInsert(_ModeSpecific):
+    def __init__(self, config):
+        super().__init__("insert", config)
+
+        self._exit()
+
+    def _exit(self) -> None:
+        # REF:
+        #   https://github.com/qutebrowser/qutebrowser/issues/2668
+        self._bind(
+            [_Util.make_combi("esc"), _Util.make_combi("c", decorators="c")],
+            Cmd.concat(["mode-leave", "jseval -q document.activeElement.blur()"]),
+        )
+
+
 class ModePrompt(_ModeSpecific):
     def __init__(self, config):
         super().__init__("prompt", config)
@@ -289,5 +304,6 @@ class Bind:
 
         ModeNormal(self._config)
         ModeCommand(self._config)
+        ModeInsert(self._config)
         ModePrompt(self._config)
         ModePassthrough(self._config)
