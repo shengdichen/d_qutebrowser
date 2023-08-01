@@ -187,7 +187,7 @@ class Visual:
         self._config.set("tabs.title.alignment", "left")
 
         self._config.set("tabs.favicons.show", "never")
-        self._config.set("tabs.title.format", "{id}/{current_title}")
+        self._config.set("tabs.title.format", "{index}/{current_title}")
         self._config.set(
             "tabs.padding",
             {"top": 0, "bottom": 5, "left": 2, "right": 5},
