@@ -156,8 +156,10 @@ class Bind:
         self._bind("J", self._concat(self._repeat(cmd_down, 7)))
         self._bind("H", self._concat(self._repeat(cmd_left, 4)))
         self._bind("L", self._concat(self._repeat(cmd_right, 4)))
-        self._bind("<Ctrl+D>", "scroll-page 0 +0.5")
-        self._bind("<Ctrl+U>", "scroll-page 0 -0.5")
+        self._bind("u", "scroll-page 0 -0.5")
+        self._bind("d", "scroll-page 0 +0.5")
+        self._bind("b", "scroll-page 0 -1.0")
+        self._bind("f", "scroll-page 0 +1.0")
 
         self._bind("gg", "scroll-to-perc 0")
         self._bind("G", "scroll-to-perc")
