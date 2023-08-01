@@ -13,7 +13,7 @@ class Configuration:
         general.MiscConf(self._config)
         webcontent.WebContent(self._config)
         visual.Visual(self._config).apply()
-        bind.Bind(self._config).apply()
+        bind.Bind(self._config)
 
         self._alias = alias.Alias(self._config)
 

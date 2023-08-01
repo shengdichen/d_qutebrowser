@@ -188,10 +188,13 @@ class Bind:
         self._config = config
         self._remove_default()
 
+        self._set_equal_keys()
+        self._bind()
+
     def _remove_default(self) -> None:
         self._config.set("bindings.default", {})
 
-    def apply(self):
+    def _set_equal_keys(self) -> None:
         self._config.set(
             "bindings.key_mappings",
             {
@@ -207,7 +210,9 @@ class Bind:
             },
         )
 
+    def _bind(self) -> None:
         ModeMulti(self._config)
+
         ModeNormal(self._config)
         ModeCommand(self._config)
         ModePrompt(self._config)
