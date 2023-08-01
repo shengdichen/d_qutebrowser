@@ -12,6 +12,8 @@ class _Util:
     @staticmethod
     def make_combi(key_base: str, decorators: str = None) -> str:
         if decorators is None:
+            if key_base in _Util._key_translation:
+                return f"<{_Util._key_translation[key_base]}>"
             return key_base
 
         decorators_translated = "+".join(
