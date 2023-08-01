@@ -136,6 +136,7 @@ class Bind:
         self._navigation()
         self._command()
         self._open()
+        self._mark()
         self._gui()
 
         ModeMulti(self._config)
@@ -168,12 +169,15 @@ class Bind:
         self._bind(":", self._enter_as_prompt("", append_space=False))
 
     def _open(self) -> None:
-        self._unbind(["o", "O"])
-        self._bind("oo", self._enter_as_prompt(self._do_in_new_tab("")))
-        self._bind("OO", self._enter_as_prompt("open --window"))
+        self._bind("o", self._enter_as_prompt(self._do_in_new_tab("")))
+        self._bind("O", self._enter_as_prompt("open --window"))
 
-        self._bind("ob", self._enter_as_prompt("bookmark-load --tab"))
-        self._bind("oB", self._enter_as_prompt("quickmark-load --tab"))
+    def _mark(self) -> None:
+        self._bind("ba", self._enter_as_prompt("bookmark-add"))
+        self._bind("Ba", self._enter_as_prompt("quickmark-add"))
+
+        self._bind("bo", self._enter_as_prompt("bookmark-load --tab"))
+        self._bind("Bo", self._enter_as_prompt("quickmark-load --tab"))
 
     @staticmethod
     def _do_in_new_tab(cmd: str) -> str:
