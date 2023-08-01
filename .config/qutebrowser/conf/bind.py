@@ -129,10 +129,10 @@ class Bind:
         self._bind("<Return>", "command-accept", mode=m)
 
         cmd_completion = "completion-item-focus "
-        self._bind("<Tab>", f"{cmd_completion} next", mode=m)
-        self._bind("<Shift+Tab>", f"{cmd_completion} prev", mode=m)
-        self._bind("<Ctrl+Tab>", f"{cmd_completion} next-category", mode=m)
-        self._bind("<Ctrl+Shift+Tab>", f"{cmd_completion} prev-category", mode=m)
+        self._bind("<Ctrl+p>", f"{cmd_completion} prev", mode=m)
+        self._bind("<Ctrl+n>", f"{cmd_completion} next", mode=m)
+        self._bind("<Shift+Tab>", f"{cmd_completion} prev-category", mode=m)
+        self._bind("<Tab>", f"{cmd_completion} next-category", mode=m)
 
         self._bind("<Ctrl+k>", "command-history-prev", mode=m)
         self._bind("<Ctrl+j>", "command-history-next", mode=m)
