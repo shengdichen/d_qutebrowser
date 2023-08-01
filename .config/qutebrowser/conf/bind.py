@@ -290,4 +290,4 @@ class Bind:
         ModeNormal(self._config)
         ModeCommand(self._config)
         ModePrompt(self._config)
-        ModePrompt(self._config)
+        ModePassthrough(self._config)
