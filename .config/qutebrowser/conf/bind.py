@@ -1,6 +1,28 @@
 from .util.cmd import Cmd
 
 
+class _Util:
+    def __init__(self, config):
+        self._config = config
+
+    def bind(self, combis: list[str] | str, cmd: str, mode: str) -> None:
+        if isinstance(combis, str):
+            combis = [combis]
+
+        if not cmd:
+            self.unbind(combis, mode)
+        else:
+            for combi in combis:
+                self._config.bind(combi, cmd, mode)
+
+    def unbind(self, combis: list[str] | str, mode: str) -> None:
+        if isinstance(combis, str):
+            combis = [combis]
+
+        for combi in combis:
+            self._config.bind(combi, "nop", mode)
+
+
 class ModeMulti:
     def __init__(self, config):
         self._config = config
@@ -46,7 +68,7 @@ class ModeMulti:
 
     def _bind_modes(self, combi: str, cmd: str, modes: list[str]) -> None:
         for mode in modes:
-            self._config.bind(combi, cmd, mode=mode)
+            _Util(self._config).bind(combi, cmd, mode=mode)
 
 
 class _ModeSpecific:
@@ -55,7 +77,7 @@ class _ModeSpecific:
         self._config = config
 
     def _bind(self, combi: str, cmd: str = "") -> None:
-        self._config.bind(combi, cmd, mode=self._mode)
+        _Util(self._config).bind(combi, cmd, mode=self._mode)
 
 
 class ModeNormal(_ModeSpecific):
@@ -190,16 +212,3 @@ class Bind:
         ModeCommand(self._config)
         ModePrompt(self._config)
         ModePrompt(self._config)
-
-    def _bind(self, combi: str, cmd: str = "", mode: str = "normal") -> None:
-        if not cmd:
-            self._unbind(combi, mode)
-        else:
-            self._config.bind(combi, cmd, mode)
-
-    def _unbind(self, combis: list[str] | str, mode: str = "normal") -> None:
-        if isinstance(combis, str):
-            combis = [combis]
-
-        for combi in combis:
-            self._config.bind(combi, "nop", mode)
