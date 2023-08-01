@@ -162,6 +162,10 @@ class ModeNormal(_ModeSpecific):
         self._bind("<Ctrl+h>", "tab-prev")
         self._bind("<Ctrl+l>", "tab-next")
 
+        self._bind(
+            _Util.make_combi("`", decorators="a"), Cmd.enter_as_prompt("tab-select")
+        )
+
         cmd_focus = "tab-focus --no-last "  # do NOT switch back on multiple inputs of same index
         for num in range(1, 4):  # [1, 2, 3]
             self._bind(_Util.make_combi(str(num), decorators="a"), f"{cmd_focus}{num}")
