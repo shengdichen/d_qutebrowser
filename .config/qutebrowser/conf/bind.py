@@ -136,3 +136,18 @@ class Bind:
 
         self._bind("<Ctrl+k>", "command-history-prev", mode=m)
         self._bind("<Ctrl+j>", "command-history-next", mode=m)
+
+        cmd_edit = "rl-"
+        self._bind("<Ctrl+h>", f"{cmd_edit}backward-char", mode=m)
+        self._bind("<Ctrl+l>", f"{cmd_edit}forward-char", mode=m)
+        self._bind("<Ctrl+b>", f"{cmd_edit}backward-word", mode=m)
+        self._bind("<Ctrl+f>", f"{cmd_edit}forward-word", mode=m)
+        self._bind("<Ctrl+a>", f"{cmd_edit}beginning-of-line", mode=m)
+        self._bind("<Ctrl+e>", f"{cmd_edit}end-of-line", mode=m)
+
+        self._bind(
+            "<Ctrl+j>", f"{cmd_edit}unix-line-discard", mode=m
+        )  # delete  beg-o-l
+        self._bind("<Ctrl+k>", f"{cmd_edit}kill-line", mode=m)  # delete until end-o-l
+        self._bind("<Ctrl+w>", f'{cmd_edit}rubout " "', mode=m)  # delete until beg-o-w
+        self._bind("<Ctrl+d>", f"{cmd_edit}kill-word", mode=m)  # delete until end-o-w
