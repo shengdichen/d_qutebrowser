@@ -36,6 +36,8 @@ class Bind:
         self._open()
         self._gui()
 
+        self._common()
+
     def _navigation(self) -> None:
         cmd_up, cmd_down = "scroll up", "scroll down"
         cmd_left, cmd_right = "scroll left", "scroll right"
@@ -105,3 +107,17 @@ class Bind:
             return f"{base}--space :{cmd}"
 
         return f"{base}:{cmd}"
+
+    def _common(self) -> None:
+        for m in [
+            "command",
+            "insert",
+            "hint",
+            "caret",
+            "prompt",
+            "register",
+            "yesno",
+        ]:
+            self._bind("<Escape>", "mode-leave", mode=m)
+
+        self._bind("<Shift+Escape>", "mode-leave", mode="passthrough")
