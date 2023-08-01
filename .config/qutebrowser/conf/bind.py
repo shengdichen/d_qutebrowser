@@ -37,6 +37,7 @@ class Bind:
         self._gui()
 
         self._common()
+        self._mode_command()
 
     def _navigation(self) -> None:
         cmd_up, cmd_down = "scroll up", "scroll down"
@@ -121,3 +122,17 @@ class Bind:
             self._bind("<Escape>", "mode-leave", mode=m)
 
         self._bind("<Shift+Escape>", "mode-leave", mode="passthrough")
+
+    def _mode_command(self) -> None:
+        m = "command"
+
+        self._bind("<Return>", "command-accept", mode=m)
+
+        cmd_completion = "completion-item-focus "
+        self._bind("<Tab>", f"{cmd_completion} next", mode=m)
+        self._bind("<Shift+Tab>", f"{cmd_completion} prev", mode=m)
+        self._bind("<Ctrl+Tab>", f"{cmd_completion} next-category", mode=m)
+        self._bind("<Ctrl+Shift+Tab>", f"{cmd_completion} prev-category", mode=m)
+
+        self._bind("<Ctrl+k>", "command-history-prev", mode=m)
+        self._bind("<Ctrl+j>", "command-history-next", mode=m)
