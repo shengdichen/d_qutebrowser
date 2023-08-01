@@ -146,6 +146,10 @@ class ModeNormal(_ModeSpecific):
         self._bind("n", "search-next")
         self._bind("N", "search-prev")
 
+        cmd_follow = "selection-follow"
+        self._bind(_Util.make_combi("enter"), "selection-follow")
+        self._bind(_Util.make_combi("enter", decorators="c"), f"{cmd_follow} --tab")
+
     def _hint(self) -> None:
         base = "hint "
         hint_links, hint_inputs, hint_all = "links", "input", "all"
