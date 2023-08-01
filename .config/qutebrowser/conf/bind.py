@@ -7,8 +7,15 @@ class ModeMulti:
 
         self._cmd_edit = "rl-"
 
+        self._exit()
         self._navigate()
         self._edit()
+
+    def _exit(self) -> None:
+        cmd = "mode-leave"
+        modes = ["command", "insert", "hint", "caret", "prompt", "register", "yesno"]
+
+        self._bind_modes("<Escape>", cmd, modes)
 
     def _navigate(self) -> None:
         modes = ["command", "prompt"]
@@ -85,6 +92,16 @@ class ModePrompt(_ModeSpecific):
         self._bind("<Shift+Tab>", "prompt-item-focus prev")
 
 
+class ModePassthrough(_ModeSpecific):
+    def __init__(self, config):
+        super().__init__("passthrough", config)
+
+        self._exit()
+
+    def _exit(self) -> None:
+        self._bind("<Shift+Escape>", "mode-leave")
+
+
 class Bind:
     def __init__(self, config):
         self._config = config
@@ -120,10 +137,10 @@ class Bind:
         self._open()
         self._gui()
 
-        self._common()
         ModeMulti(self._config)
         self._mode_command()
         self._mode_prompt()
+        ModePrompt(self._config)
 
     def _navigation(self) -> None:
         cmd_up, cmd_down = "scroll up", "scroll down"
@@ -194,20 +211,6 @@ class Bind:
             return f"{base}--space :{cmd}"
 
         return f"{base}:{cmd}"
-
-    def _common(self) -> None:
-        for m in [
-            "command",
-            "insert",
-            "hint",
-            "caret",
-            "prompt",
-            "register",
-            "yesno",
-        ]:
-            self._bind("<Escape>", "mode-leave", mode=m)
-
-        self._bind("<Shift+Escape>", "mode-leave", mode="passthrough")
 
     def _mode_command(self) -> None:
         ModeCommand(self._config)
