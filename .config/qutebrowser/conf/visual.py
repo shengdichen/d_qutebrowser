@@ -144,6 +144,9 @@ class Visual:
 
     def _set_statusbar(self) -> None:
         self._config.set("statusbar.show", "in-mode")
+        self._config.set("statusbar.position", "bottom")
+        # default: ["keypress", "url", "scroll", "history", "tabs", "progress"]
+        self._config.set("statusbar.widgets", ["keypress", "url"])
 
         base = "colors.statusbar."
 
