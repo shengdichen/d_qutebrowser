@@ -7,6 +7,10 @@ class Cmd:
         return ";; ".join(commands)
 
     @staticmethod
+    def repeat(command: str, repeat_for: int) -> list[str]:
+        return repeat_for * [command]
+
+    @staticmethod
     def set_config_items(items_values: Iterable[tuple[str, str | dict]]) -> str:
         return Cmd.concat(
             (Cmd.set_config_item(item, value) for item, value in items_values)
@@ -44,3 +48,19 @@ class Cmd:
     @staticmethod
     def _reformat_dict(d: dict) -> str:
         return f'"{d}"'
+
+    @staticmethod
+    def enter_as_prompt(cmd: str, append_space: bool = True) -> str:
+        base = "set-cmd-text "
+        if append_space:
+            return f"{base}--space :{cmd}"
+
+        return f"{base}:{cmd}"
+
+    @staticmethod
+    def do_in_new_tab(cmd: str) -> str:
+        base = "open --tab"
+
+        if not cmd:
+            return base
+        return Cmd.concat([base, cmd])

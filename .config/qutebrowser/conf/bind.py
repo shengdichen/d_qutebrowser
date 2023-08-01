@@ -1,32 +1,6 @@
 from .util.cmd import Cmd
 
 
-class _Util:
-    @staticmethod
-    def concat(commands: list[str]) -> str:
-        return ";; ".join(commands)
-
-    @staticmethod
-    def repeat(command: str, repeat_for: int) -> list[str]:
-        return repeat_for * [command]
-
-    @staticmethod
-    def enter_as_prompt(cmd: str, append_space: bool = True) -> str:
-        base = "set-cmd-text "
-        if append_space:
-            return f"{base}--space :{cmd}"
-
-        return f"{base}:{cmd}"
-
-    @staticmethod
-    def do_in_new_tab(cmd: str) -> str:
-        base = "open --tab"
-
-        if not cmd:
-            return base
-        return Cmd.concat([base, cmd])
-
-
 class ModeMulti:
     def __init__(self, config):
         self._config = config
@@ -105,10 +79,10 @@ class ModeNormal(_ModeSpecific):
         self._bind("h", cmd_left)
         self._bind("l", cmd_right)
 
-        self._bind("K", _Util.concat(_Util.repeat(cmd_up, 7)))
-        self._bind("J", _Util.concat(_Util.repeat(cmd_down, 7)))
-        self._bind("H", _Util.concat(_Util.repeat(cmd_left, 4)))
-        self._bind("L", _Util.concat(_Util.repeat(cmd_right, 4)))
+        self._bind("K", Cmd.concat(Cmd.repeat(cmd_up, 7)))
+        self._bind("J", Cmd.concat(Cmd.repeat(cmd_down, 7)))
+        self._bind("H", Cmd.concat(Cmd.repeat(cmd_left, 4)))
+        self._bind("L", Cmd.concat(Cmd.repeat(cmd_right, 4)))
         self._bind("u", "scroll-page 0 -0.5")
         self._bind("d", "scroll-page 0 +0.5")
         self._bind("b", "scroll-page 0 -1.0")
@@ -122,21 +96,21 @@ class ModeNormal(_ModeSpecific):
         self._bind("<Ctrl+l>", "tab-next")
 
     def _command(self) -> None:
-        self._bind(":", _Util.enter_as_prompt("", append_space=False))
+        self._bind(":", Cmd.enter_as_prompt("", append_space=False))
 
     def _open(self) -> None:
-        self._bind("o", _Util.enter_as_prompt(_Util.do_in_new_tab("")))
-        self._bind("O", _Util.enter_as_prompt("open --window"))
+        self._bind("o", Cmd.enter_as_prompt(Cmd.do_in_new_tab("")))
+        self._bind("O", Cmd.enter_as_prompt("open --window"))
 
     def _hint(self) -> None:
         self._bind("M", "hint links spawn mpv {hint-url}")
 
     def _mark(self) -> None:
-        self._bind("ba", _Util.enter_as_prompt("bookmark-add"))
-        self._bind("Ba", _Util.enter_as_prompt("quickmark-add"))
+        self._bind("ba", Cmd.enter_as_prompt("bookmark-add"))
+        self._bind("Ba", Cmd.enter_as_prompt("quickmark-add"))
 
-        self._bind("bo", _Util.enter_as_prompt("bookmark-load --tab"))
-        self._bind("Bo", _Util.enter_as_prompt("quickmark-load --tab"))
+        self._bind("bo", Cmd.enter_as_prompt("bookmark-load --tab"))
+        self._bind("Bo", Cmd.enter_as_prompt("quickmark-load --tab"))
 
     def _gui(self) -> None:
         self._bind("z", "gui_toggle")
