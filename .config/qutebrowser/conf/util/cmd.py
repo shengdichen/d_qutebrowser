@@ -13,11 +13,11 @@ class Cmd:
     @staticmethod
     def set_config_items(items_values: Iterable[tuple[str, str | dict]]) -> str:
         return Cmd.concat(
-            (Cmd.set_config_item(item, value) for item, value in items_values)
+            (Cmd._set_config_item(item, value) for item, value in items_values)
         )
 
     @staticmethod
-    def set_config_item(item: str, value: str | dict) -> str:
+    def _set_config_item(item: str, value: str | dict) -> str:
         return " ".join(["set", item, Cmd._reformat_value(value)])
 
     @staticmethod
@@ -26,13 +26,13 @@ class Cmd:
     ) -> str:
         return Cmd.concat(
             (
-                Cmd.cycle_config_item(item, candidates)
+                Cmd._cycle_config_item(item, candidates)
                 for item, candidates in item_candidates_pairs
             )
         )
 
     @staticmethod
-    def cycle_config_item(item: str, candidates: Iterable[str | dict]) -> str:
+    def _cycle_config_item(item: str, candidates: Iterable[str | dict]) -> str:
         candidates_as_str = " ".join(
             (Cmd._reformat_value(value) for value in candidates)
         )
