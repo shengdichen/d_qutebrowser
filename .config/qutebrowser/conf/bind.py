@@ -4,6 +4,10 @@ from .util.cmd import Cmd
 class Bind:
     def __init__(self, config):
         self._config = config
+        self._remove_default()
+
+    def _remove_default(self) -> None:
+        self._config.set("bindings.default", {})
 
     def apply(self):
         self._config.set(
