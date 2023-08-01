@@ -100,11 +100,17 @@ class ModeNormal(_ModeSpecific):
         super().__init__("normal", config)
 
         self._navigate()
+        self._search()
+        self._hint()
+        self._macro()
         self._navigate_tab()
+        self._to_other_modes()
         self._command()
+
         self._open()
         self._hint()
         self._mark()
+
         self._gui()
 
     def _navigate(self) -> None:
@@ -120,17 +126,49 @@ class ModeNormal(_ModeSpecific):
         self._bind("J", Cmd.concat(Cmd.repeat(cmd_down, 7)))
         self._bind("H", Cmd.concat(Cmd.repeat(cmd_left, 4)))
         self._bind("L", Cmd.concat(Cmd.repeat(cmd_right, 4)))
-        self._bind("u", "scroll-page 0 -0.5")
-        self._bind("d", "scroll-page 0 +0.5")
-        self._bind("b", "scroll-page 0 -1.0")
-        self._bind("f", "scroll-page 0 +1.0")
 
-        self._bind("gg", "scroll-to-perc 0")
-        self._bind("G", "scroll-to-perc")
+        cmd_scroll = "scroll-page "
+        self._bind("u", f"{cmd_scroll}0 -0.5")
+        self._bind("d", f"{cmd_scroll}0 +0.5")
+        self._bind("b", f"{cmd_scroll}0 -1.0")
+        self._bind("f", f"{cmd_scroll}0 +1.0")
+
+        cmd_scroll_perc = "scroll-to-perc "
+        self._bind("gg", f"{cmd_scroll_perc} 0")
+        self._bind("G", f"{cmd_scroll_perc} 100")
+
+    def _search(self) -> None:
+        self._bind("/", "set-cmd-text /")
+        self._bind("?", "set-cmd-text ?")
+
+        self._bind("n", "search-next")
+        self._bind("N", "search-prev")
+
+    def _hint(self) -> None:
+        base = "hint "
+        hint_links, hint_inputs, hint_all = "links", "input", "all"
+
+        self._bind("tt", f"{base}{hint_links}")
+        self._bind("ti", f"{base}{hint_inputs}")
+        self._bind("ta", f"{base}{hint_all}")
+
+        self._bind("tm", "hint links spawn mpv {hint-url}")
+
+    def _macro(self) -> None:
+        self._bind("q", "macro-record")
+        self._bind("@", "macro-run")
 
     def _navigate_tab(self) -> None:
         self._bind("<Ctrl+h>", "tab-prev")
         self._bind("<Ctrl+l>", "tab-next")
+
+    def _to_other_modes(self) -> None:
+        self._bind(":", "set-cmd-text :")
+        self._bind("i", "mode-enter insert")
+        self._bind("I", "hint inputs --first")
+
+        self._bind("v", "mode-enter caret")
+        self._bind("V", "mode-enter caret ;; selection-toggle --line")
 
     def _command(self) -> None:
         self._bind(":", Cmd.enter_as_prompt("", append_space=False))
@@ -139,8 +177,12 @@ class ModeNormal(_ModeSpecific):
         self._bind("o", Cmd.enter_as_prompt(Cmd.do_in_new_tab("")))
         self._bind("O", Cmd.enter_as_prompt("open --window"))
 
-    def _hint(self) -> None:
-        self._bind("M", "hint links spawn mpv {hint-url}")
+        self._bind(_Util.make_combi("r", "c"), "reload --force")
+        self._bind("u", "undo")
+        self._bind("U", "undo -w")
+
+        self._bind(_Util.make_combi("h", "a"), "back")
+        self._bind(_Util.make_combi("l", "a"), "forward")
 
     def _mark(self) -> None:
         self._bind("ba", Cmd.enter_as_prompt("bookmark-add"))
