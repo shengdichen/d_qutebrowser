@@ -30,13 +30,33 @@ class Bind:
 
         self._config.bind("<Ctrl+h>", "tab-prev")
         self._config.bind("<Ctrl+l>", "tab-next")
-        self._config.bind("K", self._concat(Bind._repeat("scroll up", 7)))
-        self._config.bind("J", self._concat(Bind._repeat("scroll down", 7)))
 
-        self._unbind("d")
-
+        self._navigation()
+        self._command()
         self._open()
         self._gui()
+
+    def _navigation(self) -> None:
+        cmd_up, cmd_down = "scroll up", "scroll down"
+        cmd_left, cmd_right = "scroll left", "scroll right"
+
+        self._bind("k", cmd_up)
+        self._bind("j", cmd_down)
+        self._bind("h", cmd_left)
+        self._bind("l", cmd_right)
+
+        self._bind("K", self._concat(self._repeat(cmd_up, 7)))
+        self._bind("J", self._concat(self._repeat(cmd_down, 7)))
+        self._bind("H", self._concat(self._repeat(cmd_left, 4)))
+        self._bind("L", self._concat(self._repeat(cmd_right, 4)))
+        self._bind("<Ctrl+D>", "scroll-page 0 +0.5")
+        self._bind("<Ctrl+U>", "scroll-page 0 -0.5")
+
+        self._bind("gg", "scroll-to-perc 0")
+        self._bind("G", "scroll-to-perc")
+
+    def _command(self) -> None:
+        self._bind(":", self._enter_as_prompt("", append_space=False))
 
     def _open(self) -> None:
         self._unbind(["o", "O"])
