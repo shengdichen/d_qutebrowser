@@ -4,6 +4,8 @@ from collections.abc import Iterable
 class Cmd:
     @staticmethod
     def concat(commands: Iterable[str]) -> str:
+        if isinstance(commands, str):
+            return commands
         return ";; ".join(commands)
 
     @staticmethod
