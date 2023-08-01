@@ -139,8 +139,8 @@ class Bind:
         self._gui()
 
         ModeMulti(self._config)
-        self._mode_command()
-        self._mode_prompt()
+        ModeCommand(self._config)
+        ModePrompt(self._config)
         ModePrompt(self._config)
 
     def _navigation(self) -> None:
@@ -212,9 +212,3 @@ class Bind:
             return f"{base}--space :{cmd}"
 
         return f"{base}:{cmd}"
-
-    def _mode_command(self) -> None:
-        ModeCommand(self._config)
-
-    def _mode_prompt(self) -> None:
-        ModePrompt(self._config)
