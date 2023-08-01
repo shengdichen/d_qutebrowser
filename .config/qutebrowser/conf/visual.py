@@ -182,16 +182,15 @@ class Visual:
         self._config.set(
             "tabs.show", "multiple"
         )  # only show if multiple tabs are present
-        self._config.set("tabs.position", "left")
-        self._config.set("tabs.width", "11%")
-        self._config.set("tabs.title.alignment", "left")
-
-        self._config.set("tabs.favicons.show", "never")
+        self._config.set("tabs.position", "bottom")
+        self._config.set("tabs.title.alignment", "center")
         self._config.set("tabs.title.format", "{index}/{current_title}")
         self._config.set(
             "tabs.padding",
-            {"top": 0, "bottom": 5, "left": 2, "right": 5},
+            {"top": 1, "bottom": 1, "left": 2, "right": 2},
         )
+
+        self._config.set("tabs.favicons.show", "never")
         self._config.set("tabs.indicator.width", 0)  # disable completely
 
         item_base = "colors.tabs"
