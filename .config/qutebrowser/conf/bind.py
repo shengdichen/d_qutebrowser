@@ -15,7 +15,8 @@ class ModeMulti:
         cmd = "mode-leave"
         modes = ["command", "insert", "hint", "caret", "prompt", "register", "yesno"]
 
-        self._bind_modes("<Escape>", cmd, modes)
+        for combi in ["<Ctrl+c>", "<Escape>"]:
+            self._bind_modes(combi, cmd, modes)
 
     def _navigate(self) -> None:
         modes = ["command", "prompt"]
