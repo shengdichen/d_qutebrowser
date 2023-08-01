@@ -1,6 +1,32 @@
 from .util.cmd import Cmd
 
 
+class _Util:
+    @staticmethod
+    def concat(commands: list[str]) -> str:
+        return ";; ".join(commands)
+
+    @staticmethod
+    def repeat(command: str, repeat_for: int) -> list[str]:
+        return repeat_for * [command]
+
+    @staticmethod
+    def enter_as_prompt(cmd: str, append_space: bool = True) -> str:
+        base = "set-cmd-text "
+        if append_space:
+            return f"{base}--space :{cmd}"
+
+        return f"{base}:{cmd}"
+
+    @staticmethod
+    def do_in_new_tab(cmd: str) -> str:
+        base = "open --tab"
+
+        if not cmd:
+            return base
+        return Cmd.concat([base, cmd])
+
+
 class ModeMulti:
     def __init__(self, config):
         self._config = config
@@ -56,6 +82,64 @@ class _ModeSpecific:
 
     def _bind(self, combi: str, cmd: str = "") -> None:
         self._config.bind(combi, cmd, mode=self._mode)
+
+
+class ModeNormal(_ModeSpecific):
+    def __init__(self, config):
+        super().__init__("normal", config)
+
+        self._navigate()
+        self._navigate_tab()
+        self._command()
+        self._open()
+        self._hint()
+        self._mark()
+        self._gui()
+
+    def _navigate(self) -> None:
+        cmd_up, cmd_down = "scroll up", "scroll down"
+        cmd_left, cmd_right = "scroll left", "scroll right"
+
+        self._bind("k", cmd_up)
+        self._bind("j", cmd_down)
+        self._bind("h", cmd_left)
+        self._bind("l", cmd_right)
+
+        self._bind("K", _Util.concat(_Util.repeat(cmd_up, 7)))
+        self._bind("J", _Util.concat(_Util.repeat(cmd_down, 7)))
+        self._bind("H", _Util.concat(_Util.repeat(cmd_left, 4)))
+        self._bind("L", _Util.concat(_Util.repeat(cmd_right, 4)))
+        self._bind("u", "scroll-page 0 -0.5")
+        self._bind("d", "scroll-page 0 +0.5")
+        self._bind("b", "scroll-page 0 -1.0")
+        self._bind("f", "scroll-page 0 +1.0")
+
+        self._bind("gg", "scroll-to-perc 0")
+        self._bind("G", "scroll-to-perc")
+
+    def _navigate_tab(self) -> None:
+        self._bind("<Ctrl+h>", "tab-prev")
+        self._bind("<Ctrl+l>", "tab-next")
+
+    def _command(self) -> None:
+        self._bind(":", _Util.enter_as_prompt("", append_space=False))
+
+    def _open(self) -> None:
+        self._bind("o", _Util.enter_as_prompt(_Util.do_in_new_tab("")))
+        self._bind("O", _Util.enter_as_prompt("open --window"))
+
+    def _hint(self) -> None:
+        self._bind("M", "hint links spawn mpv {hint-url}")
+
+    def _mark(self) -> None:
+        self._bind("ba", _Util.enter_as_prompt("bookmark-add"))
+        self._bind("Ba", _Util.enter_as_prompt("quickmark-add"))
+
+        self._bind("bo", _Util.enter_as_prompt("bookmark-load --tab"))
+        self._bind("Bo", _Util.enter_as_prompt("quickmark-load --tab"))
+
+    def _gui(self) -> None:
+        self._bind("z", "gui_toggle")
 
 
 class ModeCommand(_ModeSpecific):
@@ -127,76 +211,11 @@ class Bind:
             },
         )
 
-        # Bindings for normal mode
-        self._config.bind("M", "hint links spawn mpv {hint-url}")
-
-        self._config.bind("<Ctrl+h>", "tab-prev")
-        self._config.bind("<Ctrl+l>", "tab-next")
-
-        self._navigation()
-        self._command()
-        self._open()
-        self._mark()
-        self._gui()
-
         ModeMulti(self._config)
+        ModeNormal(self._config)
         ModeCommand(self._config)
         ModePrompt(self._config)
         ModePrompt(self._config)
-
-    def _navigation(self) -> None:
-        cmd_up, cmd_down = "scroll up", "scroll down"
-        cmd_left, cmd_right = "scroll left", "scroll right"
-
-        self._bind("k", cmd_up)
-        self._bind("j", cmd_down)
-        self._bind("h", cmd_left)
-        self._bind("l", cmd_right)
-
-        self._bind("K", self._concat(self._repeat(cmd_up, 7)))
-        self._bind("J", self._concat(self._repeat(cmd_down, 7)))
-        self._bind("H", self._concat(self._repeat(cmd_left, 4)))
-        self._bind("L", self._concat(self._repeat(cmd_right, 4)))
-        self._bind("u", "scroll-page 0 -0.5")
-        self._bind("d", "scroll-page 0 +0.5")
-        self._bind("b", "scroll-page 0 -1.0")
-        self._bind("f", "scroll-page 0 +1.0")
-
-        self._bind("gg", "scroll-to-perc 0")
-        self._bind("G", "scroll-to-perc")
-
-    def _command(self) -> None:
-        self._bind(":", self._enter_as_prompt("", append_space=False))
-
-    def _open(self) -> None:
-        self._bind("o", self._enter_as_prompt(self._do_in_new_tab("")))
-        self._bind("O", self._enter_as_prompt("open --window"))
-
-    def _mark(self) -> None:
-        self._bind("ba", self._enter_as_prompt("bookmark-add"))
-        self._bind("Ba", self._enter_as_prompt("quickmark-add"))
-
-        self._bind("bo", self._enter_as_prompt("bookmark-load --tab"))
-        self._bind("Bo", self._enter_as_prompt("quickmark-load --tab"))
-
-    @staticmethod
-    def _do_in_new_tab(cmd: str) -> str:
-        base = "open --tab"
-
-        if not cmd:
-            return base
-        return Cmd.concat([base, cmd])
-
-    def _gui(self) -> None:
-        self._bind("z", "gui_toggle")
-
-    @staticmethod
-    def _concat(commands: list[str]) -> str:
-        return ";; ".join(commands)
-
-    @staticmethod
-    def _repeat(command: str, repeat_for: int) -> list[str]:
-        return repeat_for * [command]
 
     def _bind(self, combi: str, cmd: str = "", mode: str = "normal") -> None:
         if not cmd:
@@ -210,11 +229,3 @@ class Bind:
 
         for combi in combis:
             self._config.bind(combi, "nop", mode)
-
-    @staticmethod
-    def _enter_as_prompt(cmd: str, append_space: bool = True) -> str:
-        base = "set-cmd-text "
-        if append_space:
-            return f"{base}--space :{cmd}"
-
-        return f"{base}:{cmd}"
