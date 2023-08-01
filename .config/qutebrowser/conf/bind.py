@@ -2,8 +2,23 @@ from .util.cmd import Cmd
 
 
 class _Util:
+    _key_translation: dict = {"esc": "Escape", "enter": "Return"}
+
+    _decorator_translation: dict = {"c": "Ctrl", "s": "Shift", "a": "Alt"}
+
     def __init__(self, config):
         self._config = config
+
+    @staticmethod
+    def make_combi(key_base: str, decorators: str = None) -> str:
+        if decorators is None:
+            return key_base
+
+        decorators_translated = "+".join(
+            (_Util._decorator_translation.get(decorator) for decorator in decorators)
+        )
+        key_translated = _Util._key_translation.get(key_base, key_base)
+        return f"<{decorators_translated}+{key_translated}>"
 
     def bind(self, combis: list[str] | str, cmd: str, mode: str) -> None:
         if isinstance(combis, str):
