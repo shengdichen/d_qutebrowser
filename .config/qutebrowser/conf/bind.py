@@ -1,6 +1,46 @@
 from .util.cmd import Cmd
 
 
+class ModeMulti:
+    def __init__(self, config):
+        self._config = config
+
+        self._cmd_edit = "rl-"
+
+        self._navigate()
+        self._edit()
+
+    def _navigate(self) -> None:
+        modes = ["command", "prompt"]
+
+        self._bind_modes("<Ctrl+h>", f"{self._cmd_edit}backward-char", modes)
+        self._bind_modes("<Ctrl+l>", f"{self._cmd_edit}forward-char", modes)
+        self._bind_modes("<Ctrl+b>", f"{self._cmd_edit}backward-word", modes)
+        self._bind_modes("<Ctrl+f>", f"{self._cmd_edit}forward-word", modes)
+        self._bind_modes("<Ctrl+a>", f"{self._cmd_edit}beginning-of-line", modes)
+        self._bind_modes("<Ctrl+e>", f"{self._cmd_edit}end-of-line", modes)
+
+    def _edit(self) -> None:
+        modes = ["command", "prompt"]
+
+        self._bind_modes(
+            "<Ctrl+j>", f"{self._cmd_edit}unix-line-discard", modes
+        )  # delete  beg-o-l
+        self._bind_modes(
+            "<Ctrl+k>", f"{self._cmd_edit}kill-line", modes
+        )  # delete until end-o-l
+        self._bind_modes(
+            "<Ctrl+w>", f'{self._cmd_edit}rubout " "', modes
+        )  # delete until beg-o-w
+        self._bind_modes(
+            "<Ctrl+d>", f"{self._cmd_edit}kill-word", modes
+        )  # delete until end-o-w
+
+    def _bind_modes(self, combi: str, cmd: str, modes: list[str]) -> None:
+        for mode in modes:
+            self._config.bind(combi, cmd, mode=mode)
+
+
 class _ModeSpecific:
     def __init__(self, mode: str, config):
         self._mode = mode
@@ -13,12 +53,9 @@ class _ModeSpecific:
 class ModeCommand(_ModeSpecific):
     def __init__(self, config):
         super().__init__("command", config)
-        self._cmd_edit = "rl-"
 
         self._basic()
         self._completion()
-        self._navigate()
-        self._edit()
 
     def _basic(self) -> None:
         self._bind("<Return>", "command-accept")
@@ -34,19 +71,18 @@ class ModeCommand(_ModeSpecific):
         self._bind("<Ctrl+k>", "command-history-prev")
         self._bind("<Ctrl+j>", "command-history-next")
 
-    def _navigate(self) -> None:
-        self._bind("<Ctrl+h>", f"{self._cmd_edit}backward-char")
-        self._bind("<Ctrl+l>", f"{self._cmd_edit}forward-char")
-        self._bind("<Ctrl+b>", f"{self._cmd_edit}backward-word")
-        self._bind("<Ctrl+f>", f"{self._cmd_edit}forward-word")
-        self._bind("<Ctrl+a>", f"{self._cmd_edit}beginning-of-line")
-        self._bind("<Ctrl+e>", f"{self._cmd_edit}end-of-line")
 
-    def _edit(self) -> None:
-        self._bind("<Ctrl+j>", f"{self._cmd_edit}unix-line-discard")  # delete  beg-o-l
-        self._bind("<Ctrl+k>", f"{self._cmd_edit}kill-line")  # delete until end-o-l
-        self._bind("<Ctrl+w>", f'{self._cmd_edit}rubout " "')  # delete until beg-o-w
-        self._bind("<Ctrl+d>", f"{self._cmd_edit}kill-word")  # delete until end-o-w
+class ModePrompt(_ModeSpecific):
+    def __init__(self, config):
+        super().__init__("prompt", config)
+
+        self._basic()
+
+    def _basic(self) -> None:
+        self._bind("<Return>", "prompt-accept")
+
+        self._bind("<Tab>", "prompt-item-focus next")
+        self._bind("<Shift+Tab>", "prompt-item-focus prev")
 
 
 class Bind:
@@ -85,7 +121,9 @@ class Bind:
         self._gui()
 
         self._common()
+        ModeMulti(self._config)
         self._mode_command()
+        self._mode_prompt()
 
     def _navigation(self) -> None:
         cmd_up, cmd_down = "scroll up", "scroll down"
@@ -173,3 +211,6 @@ class Bind:
 
     def _mode_command(self) -> None:
         ModeCommand(self._config)
+
+    def _mode_prompt(self) -> None:
+        ModePrompt(self._config)
