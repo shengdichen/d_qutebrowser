@@ -162,6 +162,17 @@ class ModeNormal(_ModeSpecific):
         self._bind("<Ctrl+h>", "tab-prev")
         self._bind("<Ctrl+l>", "tab-next")
 
+        cmd_focus = "tab-focus --no-last "  # do NOT switch back on multiple inputs of same index
+        for num in range(1, 4):  # [1, 2, 3]
+            self._bind(_Util.make_combi(str(num), decorators="a"), f"{cmd_focus}{num}")
+
+        idx_rev = -1
+        for num in [0, 9, 8]:
+            self._bind(
+                _Util.make_combi(str(num), decorators="a"), f"{cmd_focus}{idx_rev}"
+            )
+            idx_rev -= 1
+
     def _to_other_modes(self) -> None:
         self._bind(":", "set-cmd-text :")
         self._bind("i", "mode-enter insert")
