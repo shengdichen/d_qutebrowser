@@ -163,8 +163,6 @@ class ModeNormal(_ModeSpecific):
         self._bind("tT", f"{base}{hint_links} {in_tab}")
         self._bind("tA", f"{base}{hint_all} {in_tab}")
 
-        self._bind("tm", f"{base}{hint_links} spawn mpv {{hint-url}}")
-
     def _macro(self) -> None:
         self._bind("q", "macro-record")
         self._bind("@", "macro-run")

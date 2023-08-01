@@ -39,6 +39,8 @@ class Alias:
             for hint_type in [hint_links, hint_all]
         }
 
+        self._aliases |= {f"{base}_mpv": f"{base} {hint_links} spawn mpv {{hint-url}}"}
+
     def apply(self) -> None:
         self._config.set("aliases", self._aliases)
 
