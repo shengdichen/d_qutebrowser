@@ -245,3 +245,5 @@ class Visual:
     def _set_window(self) -> None:
         self._config.set("window.hide_decoration", True)
         self._config.set("window.title_format", "{current_title}")
+
+        self._config.set("zoom.default", "123%")
