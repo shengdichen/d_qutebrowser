@@ -60,6 +60,45 @@ class Tab(_VisualItem):
             )
 
 
+class Statusbar(_VisualItem):
+    def apply(self) -> None:
+        base = "statusbar."
+        self._set(f"{base}show", "always")
+        self._set(f"{base}position", "bottom")
+        # default: ["keypress", "url", "scroll", "history", "tabs", "progress"]
+        self._set(f"{base}widgets", ["keypress", "url"])
+
+        base = "colors.statusbar."
+
+        for mode in [
+            "normal",
+            "private",
+            "insert",
+            "command",
+            "command.private",
+            "caret",
+            "caret.selection",
+            "passthrough",
+        ]:
+            self._set(f"{base}{mode}.bg", _Util.palette["black"])
+            self._set(f"{base}{mode}.fg", _Util.palette["white"])
+
+        self._set(f"{base}progress.bg", _Util.palette["grey_bright"])
+
+        self._set(f"{base}url.fg", _Util.palette["white"])
+        self._set(f"{base}url.success.http.fg", _Util.palette["white"])
+        self._set(f"{base}url.success.https.fg", _Util.palette["white"])
+
+        self._set(f"{base}url.hover.fg", _Util.palette["cyan"])
+        self._set(f"{base}url.warn.fg", _Util.palette["red"])
+        self._set(f"{base}url.error.fg", _Util.palette["red"])
+
+        self._set(
+            "statusbar.padding",
+            {"top": 0, "bottom": 0, "left": 2, "right": 2},
+        )
+
+
 class Visual:
     def __init__(self, config):
         self._config = config
@@ -90,7 +129,7 @@ class Visual:
         self._set_keyhint()
         self._set_messages()
         self._set_prompts()
-        self._set_statusbar()
+        Statusbar(self._config).apply()
         Tab(self._config).apply()
 
     def _set_completion(self) -> None:
@@ -181,43 +220,6 @@ class Visual:
         self._config.set(f"{base}selected.bg", self._palette["grey_dark"])
         self._config.set(f"{base}selected.fg", self._palette["white"])
         self._config.set(f"{base}border", f"1px solid {self._palette['white']}")
-
-    def _set_statusbar(self) -> None:
-        base = "statusbar."
-        self._config.set(f"{base}show", "always")
-        self._config.set(f"{base}position", "bottom")
-        # default: ["keypress", "url", "scroll", "history", "tabs", "progress"]
-        self._config.set(f"{base}widgets", ["keypress", "url"])
-
-        base = "colors.statusbar."
-
-        for mode in [
-            "normal",
-            "private",
-            "insert",
-            "command",
-            "command.private",
-            "caret",
-            "caret.selection",
-            "passthrough",
-        ]:
-            self._config.set(f"{base}{mode}.bg", self._palette["black"])
-            self._config.set(f"{base}{mode}.fg", self._palette["white"])
-
-        self._config.set(f"{base}progress.bg", self._palette["grey_bright"])
-
-        self._config.set(f"{base}url.fg", self._palette["white"])
-        self._config.set(f"{base}url.success.http.fg", self._palette["white"])
-        self._config.set(f"{base}url.success.https.fg", self._palette["white"])
-
-        self._config.set(f"{base}url.hover.fg", self._palette["cyan"])
-        self._config.set(f"{base}url.warn.fg", self._palette["red"])
-        self._config.set(f"{base}url.error.fg", self._palette["red"])
-
-        self._config.set(
-            "statusbar.padding",
-            {"top": 0, "bottom": 0, "left": 2, "right": 2},
-        )
 
     def _set_font(self) -> None:
         fonts = {
