@@ -192,8 +192,8 @@ class ModeNormal(_ModeSpecific):
         self._bind("@", "macro-run")
 
     def _navigate_tab(self) -> None:
-        self._bind(_Util.make_combi("h", decorators="c"), "tab-prev")
-        self._bind(_Util.make_combi("l", decorators="c"), "tab-next")
+        self._bind(_Util.make_combi("h", decorators="a"), "tab-prev")
+        self._bind(_Util.make_combi("l", decorators="a"), "tab-next")
 
         self._bind(_Util.make_combi("tab", decorators="c"), "tab-focus last")
         self._bind(
@@ -228,8 +228,8 @@ class ModeNormal(_ModeSpecific):
 
         self._bind(_Util.make_combi("r", "c"), "reload --force")
 
-        self._bind(_Util.make_combi("h", "a"), "back")
-        self._bind(_Util.make_combi("l", "a"), "forward")
+        self._bind(_Util.make_combi("h", "c"), "back")
+        self._bind(_Util.make_combi("l", "c"), "forward")
 
     def _mark(self) -> None:
         self._bind("ba", Cmd.enter_as_prompt("bookmark-add"))
