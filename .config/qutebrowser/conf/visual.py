@@ -1,3 +1,65 @@
+import typing
+
+
+class _Util:
+    palette = {
+        "black": "#000000",
+        "grey_dark": "#352c37",
+        "grey_bright": "#897397",
+        "white": "#ede3f7",
+        "red": "#ef3347",
+        "pink": "#ff79c6",
+        "magenta": "#bd93f9",
+        "cyan": "#8be9fd",
+    }
+
+
+class _VisualItem:
+    def __init__(self, config):
+        self._config = config
+
+    def _set(self, key: str, value: typing.Any) -> None:
+        self._config.set(key, value)
+
+
+class Tab(_VisualItem):
+    def apply(self) -> None:
+        self._set("tabs.show", "always")
+        self._set("tabs.position", "bottom")
+        self._set("tabs.title.alignment", "center")
+        self._set("tabs.title.format", "{perc}{index}/{current_title}")
+        self._set(
+            "tabs.padding",
+            {"top": 1, "bottom": 0, "left": 2, "right": 2},
+        )
+
+        self._set("tabs.favicons.show", "never")
+        self._set("tabs.indicator.width", 0)  # disable completely
+
+        item_base = "colors.tabs"
+
+        for specification in ["bar", "even", "odd"]:
+            self._set(
+                ".".join([item_base, specification, "bg"]), _Util.palette["black"]
+            )
+        for specification in ["even", "odd"]:
+            self._set(
+                ".".join([item_base, specification, "fg"]),
+                _Util.palette["grey_bright"],
+            )
+
+        for specification in ["even", "odd"]:
+            self._set(
+                ".".join([item_base, "selected", specification, "bg"]),
+                _Util.palette["black"],
+            )
+        for specification in ["even", "odd"]:
+            self._set(
+                ".".join([item_base, "selected", specification, "fg"]),
+                _Util.palette["white"],
+            )
+
+
 class Visual:
     def __init__(self, config):
         self._config = config
@@ -29,7 +91,7 @@ class Visual:
         self._set_messages()
         self._set_prompts()
         self._set_statusbar()
-        self._set_tabs()
+        Tab(self._config).apply()
 
     def _set_completion(self) -> None:
         base = "colors.completion."
@@ -156,42 +218,6 @@ class Visual:
             "statusbar.padding",
             {"top": 0, "bottom": 0, "left": 2, "right": 2},
         )
-
-    def _set_tabs(self) -> None:
-        self._config.set("tabs.show", "always")
-        self._config.set("tabs.position", "bottom")
-        self._config.set("tabs.title.alignment", "center")
-        self._config.set("tabs.title.format", "{perc}{index}/{current_title}")
-        self._config.set(
-            "tabs.padding",
-            {"top": 1, "bottom": 0, "left": 2, "right": 2},
-        )
-
-        self._config.set("tabs.favicons.show", "never")
-        self._config.set("tabs.indicator.width", 0)  # disable completely
-
-        item_base = "colors.tabs"
-
-        for specification in ["bar", "even", "odd"]:
-            self._config.set(
-                ".".join([item_base, specification, "bg"]), self._palette["black"]
-            )
-        for specification in ["even", "odd"]:
-            self._config.set(
-                ".".join([item_base, specification, "fg"]),
-                self._palette["grey_bright"],
-            )
-
-        for specification in ["even", "odd"]:
-            self._config.set(
-                ".".join([item_base, "selected", specification, "bg"]),
-                self._palette["black"],
-            )
-        for specification in ["even", "odd"]:
-            self._config.set(
-                ".".join([item_base, "selected", specification, "fg"]),
-                self._palette["white"],
-            )
 
     def _set_font(self) -> None:
         fonts = {
