@@ -13,6 +13,12 @@ class _Util:
         "cyan": "#8be9fd",
     }
 
+    fonts = {
+        "shevska": "Shevska",
+        "avenir": "Avenir LT Std",
+        "constantia": "Constantia",
+    }
+
 
 class _VisualItem:
     def __init__(self, config):
@@ -198,13 +204,40 @@ class Statusbar(_VisualItem):
         )
 
 
+class Font(_VisualItem):
+    def apply(self) -> None:
+        base = "fonts"
+        for specification in ["default_family", "web.family.fixed"]:
+            self._config.set(".".join([base, specification]), _Util.fonts["shevska"])
+        self._config.set("fonts.default_size", "11pt")
+        self._config.set("fonts.hints", "14pt default_family")
+        self._config.set("fonts.statusbar", "14pt default_family")
+        self._config.set("fonts.prompts", "13pt default_family")
+
+        # do our best at using our font (some sites will still use their theirs)
+        self._config.get("qt.args").append("disable-remote-fonts")
+        for specification in ["standard", "sans_serif", "cursive", "fantasy"]:
+            self._config.set(
+                ".".join([base, "web", "family", specification]), _Util.fonts["avenir"]
+            )
+        for specification in ["serif"]:
+            self._config.set(
+                ".".join([base, "web", "family", specification]),
+                _Util.fonts["constantia"],
+            )
+
+        # common default (also seen in firefox)
+        self._config.set("fonts.web.size.default", 16)
+        self._config.set("fonts.web.size.default_fixed", 13)
+
+
 class Visual:
     def __init__(self, config):
         self._config = config
 
     def apply(self) -> None:
         self._set_colorscheme()
-        self._set_font()
+        Font(self._config).apply()
         self._set_window()
 
         self._config.set("colors.webpage.preferred_color_scheme", "dark")
@@ -219,36 +252,6 @@ class Visual:
         Prompt(self._config).apply()
         Statusbar(self._config).apply()
         Tab(self._config).apply()
-
-    def _set_font(self) -> None:
-        fonts = {
-            "shevska": "Shevska",
-            "avenir": "Avenir LT Std",
-            "constantia": "Constantia",
-        }
-
-        base = "fonts"
-        for specification in ["default_family", "web.family.fixed"]:
-            self._config.set(".".join([base, specification]), fonts["shevska"])
-        self._config.set("fonts.default_size", "11pt")
-        self._config.set("fonts.hints", "14pt default_family")
-        self._config.set("fonts.statusbar", "14pt default_family")
-        self._config.set("fonts.prompts", "13pt default_family")
-
-        # do our best at using our font (some sites will still use their theirs)
-        self._config.get("qt.args").append("disable-remote-fonts")
-        for specification in ["standard", "sans_serif", "cursive", "fantasy"]:
-            self._config.set(
-                ".".join([base, "web", "family", specification]), fonts["avenir"]
-            )
-        for specification in ["serif"]:
-            self._config.set(
-                ".".join([base, "web", "family", specification]), fonts["constantia"]
-            )
-
-        # common default (also seen in firefox)
-        self._config.set("fonts.web.size.default", 16)
-        self._config.set("fonts.web.size.default_fixed", 13)
 
     def _set_window(self) -> None:
         self._config.set("window.hide_decoration", True)
