@@ -2,25 +2,6 @@ class Visual:
     def __init__(self, config):
         self._config = config
 
-        self._palette = {
-            "background": "#282a36",
-            "background-alt": "#282a36",
-            "background-attention": "#181920",
-            "border": "#282a36",
-            "current-line": "#44475a",
-            "selection": "#44475a",
-            "foreground": "#f8f8f2",
-            "foreground-alt": "#e0e0e0",
-            "foreground-attention": "#ffffff",
-            "comment": "#6272a4",
-            "cyan": "#8be9fd",
-            "green": "#50fa7b",
-            "orange": "#ffb86c",
-            "pink": "#ff79c6",
-            "purple": "#bd93f9",
-            "red": "#ff5555",
-            "yellow": "#f1fa8c",
-        }
         self._palette_ours = {
             "black": "#000000",
             "grey_dark": "#352c37",
@@ -30,14 +11,6 @@ class Visual:
             "pink": "#ff79c6",
             "magenta": "#bd93f9",
             "cyan": "#8be9fd",
-        }
-
-        spacing = {"vertical": 6, "horizontal": 8}
-        self._padding = {
-            "top": spacing["vertical"],
-            "right": spacing["horizontal"],
-            "bottom": spacing["vertical"],
-            "left": spacing["horizontal"],
         }
 
     def apply(self) -> None:
