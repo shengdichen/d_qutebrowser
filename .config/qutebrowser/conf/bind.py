@@ -197,6 +197,14 @@ class ModeNormal(_ModeSpecific):
         self._bind(_Util.make_combi("h", decorators="as"), "tab-move -")
         self._bind(_Util.make_combi("l", decorators="as"), "tab-move +")
 
+        self._bind(
+            _Util.make_combi("p", decorators="a"), Cmd.enter_as_prompt("tab-give")
+        )
+        self._bind(
+            _Util.make_combi("p", decorators="as"),
+            Cmd.enter_as_prompt("tab-give --private"),
+        )
+
         self._bind(_Util.make_combi("tab", decorators="c"), "tab-focus last")
         self._bind(
             _Util.make_combi("`", decorators="a"), Cmd.enter_as_prompt("tab-select")
