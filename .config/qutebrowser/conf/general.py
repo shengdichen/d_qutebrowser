@@ -32,7 +32,7 @@ class MiscConf:
 
     def _tabs(self) -> None:
         base = "tabs."
-        self._config.set(f"{base}last_close", "default-page")
+        self._config.set(f"{base}last_close", "close")
         self._config.set(f"{base}mousewheel_switching", False)
         for item in ["related", "unrelated"]:
             self._config.set(f"{base}new_position.{item}", "next")
