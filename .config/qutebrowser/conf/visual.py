@@ -143,7 +143,7 @@ class Visual:
         self._config.set(base + "border", "1px solid " + self._palette_ours["white"])
 
     def _set_statusbar(self) -> None:
-        self._config.set("statusbar.show", "in-mode")
+        self._config.set("statusbar.show", "always")
         self._config.set("statusbar.position", "bottom")
         # default: ["keypress", "url", "scroll", "history", "tabs", "progress"]
         self._config.set("statusbar.widgets", ["keypress", "url"])
@@ -175,19 +175,17 @@ class Visual:
 
         self._config.set(
             "statusbar.padding",
-            {"top": 1, "bottom": 1, "left": 2, "right": 2},
+            {"top": 0, "bottom": 0, "left": 2, "right": 2},
         )
 
     def _set_tabs(self) -> None:
-        self._config.set(
-            "tabs.show", "multiple"
-        )  # only show if multiple tabs are present
+        self._config.set("tabs.show", "always")
         self._config.set("tabs.position", "bottom")
         self._config.set("tabs.title.alignment", "center")
-        self._config.set("tabs.title.format", "{index}/{current_title}")
+        self._config.set("tabs.title.format", "{perc}{index}/{current_title}")
         self._config.set(
             "tabs.padding",
-            {"top": 1, "bottom": 1, "left": 2, "right": 2},
+            {"top": 1, "bottom": 0, "left": 2, "right": 2},
         )
 
         self._config.set("tabs.favicons.show", "never")
@@ -228,7 +226,7 @@ class Visual:
             self._config.set(".".join([base, specification]), fonts["shevska"])
         self._config.set("fonts.default_size", "11pt")
         self._config.set("fonts.hints", "14pt default_family")
-        self._config.set("fonts.statusbar", "17pt default_family")
+        self._config.set("fonts.statusbar", "14pt default_family")
         self._config.set("fonts.prompts", "13pt default_family")
 
         for specification in ["standard", "sans_serif", "cursive", "fantasy"]:
@@ -240,9 +238,12 @@ class Visual:
                 ".".join([base, "web", "family", specification]), fonts["constantia"]
             )
 
-        self._config.set("fonts.web.size.default", 19)
-        self._config.set("fonts.web.size.default_fixed", 15)
+        # common default (also seen in firefox)
+        self._config.set("fonts.web.size.default", 16)
+        self._config.set("fonts.web.size.default_fixed", 13)
 
     def _set_window(self) -> None:
         self._config.set("window.hide_decoration", True)
         self._config.set("window.title_format", "{current_title}")
+
+        self._config.set("zoom.default", "123%")
