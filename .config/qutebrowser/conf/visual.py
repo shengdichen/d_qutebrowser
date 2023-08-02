@@ -22,6 +22,18 @@ class _VisualItem:
         self._config.set(key, value)
 
 
+class Prompt(_VisualItem):
+    def apply(self) -> None:
+        base = "colors.prompts."
+        self._set("prompt.radius", 0)
+
+        self._set(f"{base}bg", _Util.palette["black"])
+        self._set(f"{base}fg", _Util.palette["white"])
+        self._set(f"{base}selected.bg", _Util.palette["grey_dark"])
+        self._set(f"{base}selected.fg", _Util.palette["white"])
+        self._set(f"{base}border", f"1px solid {_Util.palette['white']}")
+
+
 class Tab(_VisualItem):
     def apply(self) -> None:
         self._set("tabs.show", "always")
@@ -128,7 +140,7 @@ class Visual:
         self._set_hints()
         self._set_keyhint()
         self._set_messages()
-        self._set_prompts()
+        Prompt(self._config).apply()
         Statusbar(self._config).apply()
         Tab(self._config).apply()
 
@@ -210,16 +222,6 @@ class Visual:
         self._config.set(f"{base}error.bg", self._palette["black"])
         self._config.set(f"{base}error.border", self._palette["black"])
         self._config.set(f"{base}error.fg", self._palette["red"])
-
-    def _set_prompts(self) -> None:
-        base = "colors.prompts."
-        self._config.set("prompt.radius", 0)
-
-        self._config.set(f"{base}bg", self._palette["black"])
-        self._config.set(f"{base}fg", self._palette["white"])
-        self._config.set(f"{base}selected.bg", self._palette["grey_dark"])
-        self._config.set(f"{base}selected.fg", self._palette["white"])
-        self._config.set(f"{base}border", f"1px solid {self._palette['white']}")
 
     def _set_font(self) -> None:
         fonts = {
