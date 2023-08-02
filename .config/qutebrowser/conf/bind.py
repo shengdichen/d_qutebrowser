@@ -130,8 +130,8 @@ class ModeNormal(_ModeSpecific):
         self._bind("L", Cmd.concat(Cmd.repeat(cmd_right, 4)))
 
         cmd_scroll = "scroll-page "
-        self._bind("u", f"{cmd_scroll}0 -0.5")
-        self._bind("d", f"{cmd_scroll}0 +0.5")
+        self._bind("u", f"{cmd_scroll}0 -0.37")
+        self._bind("d", f"{cmd_scroll}0 +0.37")
         self._bind("b", f"{cmd_scroll}0 -1.0")
         self._bind("f", f"{cmd_scroll}0 +1.0")
 
