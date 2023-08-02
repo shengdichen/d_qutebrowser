@@ -190,7 +190,7 @@ class ModeNormal(_ModeSpecific):
     def _to_other_modes(self) -> None:
         self._bind(":", "set-cmd-text :")
         self._bind("i", "mode-enter insert")
-        self._bind("I", "hint inputs --first")
+        self._bind(_Util.make_combi("i", decorators="c"), "hint inputs --first")
 
         self._bind("v", "mode-enter caret")
         self._bind("V", "mode-enter caret ;; selection-toggle --line")
