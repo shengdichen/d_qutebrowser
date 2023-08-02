@@ -236,14 +236,23 @@ class Visual:
         self._config = config
 
     def apply(self) -> None:
-        self._set_colorscheme()
-        Font(self._config).apply()
+        self._set_general()
         self._set_window()
+        self._set_components()
 
+        Font(self._config).apply()
+
+    def _set_general(self) -> None:
         self._config.set("colors.webpage.preferred_color_scheme", "dark")
         self._config.set("colors.webpage.darkmode.enabled", True)
 
-    def _set_colorscheme(self) -> None:
+    def _set_window(self) -> None:
+        self._config.set("window.hide_decoration", True)
+        self._config.set("window.title_format", "{current_title}")
+
+        self._config.set("zoom.default", "123%")
+
+    def _set_components(self) -> None:
         Completion(self._config).apply()
         Download(self._config).apply()
         Hint(self._config).apply()
@@ -252,9 +261,3 @@ class Visual:
         Prompt(self._config).apply()
         Statusbar(self._config).apply()
         Tab(self._config).apply()
-
-    def _set_window(self) -> None:
-        self._config.set("window.hide_decoration", True)
-        self._config.set("window.title_format", "{current_title}")
-
-        self._config.set("zoom.default", "123%")
