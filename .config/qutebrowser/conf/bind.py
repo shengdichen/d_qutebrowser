@@ -194,6 +194,8 @@ class ModeNormal(_ModeSpecific):
     def _navigate_tab(self) -> None:
         self._bind(_Util.make_combi("h", decorators="a"), "tab-prev")
         self._bind(_Util.make_combi("l", decorators="a"), "tab-next")
+        self._bind(_Util.make_combi("h", decorators="as"), "tab-move -")
+        self._bind(_Util.make_combi("l", decorators="as"), "tab-move +")
 
         self._bind(_Util.make_combi("tab", decorators="c"), "tab-focus last")
         self._bind(
