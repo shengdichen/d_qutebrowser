@@ -143,7 +143,7 @@ class Visual:
         self._config.set(base + "border", "1px solid " + self._palette_ours["white"])
 
     def _set_statusbar(self) -> None:
-        self._config.set("statusbar.show", "in-mode")
+        self._config.set("statusbar.show", "always")
         self._config.set("statusbar.position", "bottom")
         # default: ["keypress", "url", "scroll", "history", "tabs", "progress"]
         self._config.set("statusbar.widgets", ["keypress", "url"])
@@ -179,9 +179,7 @@ class Visual:
         )
 
     def _set_tabs(self) -> None:
-        self._config.set(
-            "tabs.show", "multiple"
-        )  # only show if multiple tabs are present
+        self._config.set("tabs.show", "always")
         self._config.set("tabs.position", "bottom")
         self._config.set("tabs.title.alignment", "center")
         self._config.set("tabs.title.format", "{index}/{current_title}")
