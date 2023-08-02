@@ -22,6 +22,23 @@ class _VisualItem:
         self._config.set(key, value)
 
 
+class Message(_VisualItem):
+    def apply(self) -> None:
+        base = "colors.messages."
+
+        self._set(f"{base}info.bg", _Util.palette["black"])
+        self._set(f"{base}info.border", _Util.palette["black"])
+        self._set(f"{base}info.fg", _Util.palette["white"])
+
+        self._set(f"{base}warning.bg", _Util.palette["black"])
+        self._set(f"{base}warning.border", _Util.palette["red"])
+        self._set(f"{base}warning.fg", _Util.palette["white"])
+
+        self._set(f"{base}error.bg", _Util.palette["black"])
+        self._set(f"{base}error.border", _Util.palette["black"])
+        self._set(f"{base}error.fg", _Util.palette["red"])
+
+
 class Prompt(_VisualItem):
     def apply(self) -> None:
         base = "colors.prompts."
@@ -139,7 +156,7 @@ class Visual:
         self._set_downloads()
         self._set_hints()
         self._set_keyhint()
-        self._set_messages()
+        Message(self._config).apply()
         Prompt(self._config).apply()
         Statusbar(self._config).apply()
         Tab(self._config).apply()
@@ -207,21 +224,6 @@ class Visual:
         self._config.set(f"{base}bg", self._palette["black"])
         self._config.set(f"{base}fg", self._palette["white"])
         self._config.set(f"{base}suffix.fg", self._palette["magenta"])
-
-    def _set_messages(self) -> None:
-        base = "colors.messages."
-
-        self._config.set(f"{base}info.bg", self._palette["black"])
-        self._config.set(f"{base}info.border", self._palette["black"])
-        self._config.set(f"{base}info.fg", self._palette["white"])
-
-        self._config.set(f"{base}warning.bg", self._palette["black"])
-        self._config.set(f"{base}warning.border", self._palette["red"])
-        self._config.set(f"{base}warning.fg", self._palette["white"])
-
-        self._config.set(f"{base}error.bg", self._palette["black"])
-        self._config.set(f"{base}error.border", self._palette["black"])
-        self._config.set(f"{base}error.fg", self._palette["red"])
 
     def _set_font(self) -> None:
         fonts = {
