@@ -22,6 +22,16 @@ class _VisualItem:
         self._config.set(key, value)
 
 
+class Keyhint(_VisualItem):
+    def apply(self) -> None:
+        base = "colors.keyhint."
+        self._set("keyhint.radius", 0)
+
+        self._set(f"{base}bg", _Util.palette["black"])
+        self._set(f"{base}fg", _Util.palette["white"])
+        self._set(f"{base}suffix.fg", _Util.palette["magenta"])
+
+
 class Message(_VisualItem):
     def apply(self) -> None:
         base = "colors.messages."
@@ -155,7 +165,7 @@ class Visual:
         self._set_completion()
         self._set_downloads()
         self._set_hints()
-        self._set_keyhint()
+        Keyhint(self._config).apply()
         Message(self._config).apply()
         Prompt(self._config).apply()
         Statusbar(self._config).apply()
@@ -216,14 +226,6 @@ class Visual:
         self._config.set(f"{base}bg", self._palette["black"])
         self._config.set(f"{base}fg", self._palette["magenta"])
         self._config.set(f"{base}match.fg", self._palette["white"])
-
-    def _set_keyhint(self) -> None:
-        base = "colors.keyhint."
-        self._config.set("keyhint.radius", 0)
-
-        self._config.set(f"{base}bg", self._palette["black"])
-        self._config.set(f"{base}fg", self._palette["white"])
-        self._config.set(f"{base}suffix.fg", self._palette["magenta"])
 
     def _set_font(self) -> None:
         fonts = {
