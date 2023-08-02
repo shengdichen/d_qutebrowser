@@ -3,6 +3,7 @@ class MiscConf:
         self._config = config
 
         self._misc()
+        self._hint()
         self._default_pages()
         self._tabs()
         self._edit()
@@ -12,6 +13,14 @@ class MiscConf:
         self._config.load_autoconfig(False)
 
         self._config.set("changelog_after_upgrade", "never")
+
+    def _hint(self) -> None:
+        base = "hints."
+
+        self._config.set(f"{base}chars", "qwefv" + "poijn")
+        self._config.set(f"{base}mode", "letter")
+
+        self._config.set(f"{base}uppercase", True)
 
     def _default_pages(self) -> None:
         self._config.set("auto_save.session", False)

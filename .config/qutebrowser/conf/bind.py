@@ -152,13 +152,16 @@ class ModeNormal(_ModeSpecific):
 
     def _hint(self) -> None:
         base = "hint "
-        hint_links, hint_inputs, hint_all = "links", "input", "all"
 
+        self._bind("ti", f"{base}inputs")
+
+        hint_links, hint_all = "links", "all"
         self._bind("tt", f"{base}{hint_links}")
-        self._bind("ti", f"{base}{hint_inputs}")
         self._bind("ta", f"{base}{hint_all}")
 
-        self._bind("tm", "hint links spawn mpv {hint-url}")
+        in_tab = "tab-fg"
+        self._bind("tT", f"{base}{hint_links} {in_tab}")
+        self._bind("tA", f"{base}{hint_all} {in_tab}")
 
     def _macro(self) -> None:
         self._bind("q", "macro-record")
