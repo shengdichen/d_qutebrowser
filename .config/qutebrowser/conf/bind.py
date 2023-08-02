@@ -2,7 +2,7 @@ from .util.cmd import Cmd
 
 
 class _Util:
-    _key_translation: dict = {"esc": "Escape", "enter": "Return"}
+    _key_translation: dict = {"esc": "Escape", "enter": "Return", "tab": "Tab"}
 
     _decorator_translation: dict = {"c": "Ctrl", "s": "Shift", "a": "Alt"}
 
@@ -171,6 +171,7 @@ class ModeNormal(_ModeSpecific):
         self._bind("<Ctrl+h>", "tab-prev")
         self._bind("<Ctrl+l>", "tab-next")
 
+        self._bind(_Util.make_combi("tab", decorators="c"), "tab-focus last")
         self._bind(
             _Util.make_combi("`", decorators="a"), Cmd.enter_as_prompt("tab-select")
         )
