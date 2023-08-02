@@ -22,6 +22,23 @@ class _VisualItem:
         self._config.set(key, value)
 
 
+class Download(_VisualItem):
+    def apply(self) -> None:
+        base = "colors.downloads."
+
+        # disable gradient
+        self._set(f"{base}system.bg", "none")
+        self._set(f"{base}system.fg", "none")
+
+        for item in ["bar", "start", "stop"]:
+            self._set(f"{base}{item}.bg", _Util.palette["black"])
+        for item in ["start", "stop"]:
+            self._set(f"{base}{item}.fg", _Util.palette["white"])
+
+        self._set(f"{base}error.bg", _Util.palette["black"])
+        self._set(f"{base}error.fg", _Util.palette["red"])
+
+
 class Hint(_VisualItem):
     def apply(self) -> None:
         base = "hints."
@@ -177,7 +194,7 @@ class Visual:
 
     def _set_colorscheme(self) -> None:
         self._set_completion()
-        self._set_downloads()
+        Download(self._config).apply()
         Hint(self._config).apply()
         Keyhint(self._config).apply()
         Message(self._config).apply()
@@ -211,21 +228,6 @@ class Visual:
 
         self._config.set(f"{base}scrollbar.bg", self._palette["black"])
         self._config.set(f"{base}scrollbar.fg", self._palette["grey_dark"])
-
-    def _set_downloads(self) -> None:
-        base = "colors.downloads."
-
-        # disable gradient
-        self._config.set(f"{base}system.bg", "none")
-        self._config.set(f"{base}system.fg", "none")
-
-        for item in ["bar", "start", "stop"]:
-            self._config.set(f"{base}{item}.bg", self._palette["black"])
-        for item in ["start", "stop"]:
-            self._config.set(f"{base}{item}.fg", self._palette["white"])
-
-        self._config.set(f"{base}error.bg", self._palette["black"])
-        self._config.set(f"{base}error.fg", self._palette["red"])
 
     def _set_font(self) -> None:
         fonts = {
