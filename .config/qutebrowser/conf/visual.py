@@ -22,6 +22,35 @@ class _VisualItem:
         self._config.set(key, value)
 
 
+class Completion(_VisualItem):
+    def apply(self) -> None:
+        base = "colors.completion."
+
+        self._set(f"{base}even.bg", _Util.palette["black"])
+        self._set(f"{base}odd.bg", _Util.palette["black"])
+        self._set(f"{base}fg", _Util.palette["white"])
+        self._set(f"{base}match.fg", _Util.palette["pink"])
+
+        self._set(f"{base}category.bg", _Util.palette["black"])
+        self._set(f"{base}category.fg", _Util.palette["white"])
+        for specification in ["bottom", "top"]:
+            self._set(
+                ".".join([f"{base}category.border", specification]),
+                _Util.palette["grey_bright"],
+            )
+
+        self._set(f"{base}item.selected.bg", _Util.palette["grey_dark"])
+        self._set(f"{base}item.selected.fg", _Util.palette["white"])
+        for specification in ["bottom", "top"]:
+            self._set(
+                ".".join([f"{base}item.selected.border", specification]),
+                _Util.palette["white"],
+            )
+
+        self._set(f"{base}scrollbar.bg", _Util.palette["black"])
+        self._set(f"{base}scrollbar.fg", _Util.palette["grey_dark"])
+
+
 class Download(_VisualItem):
     def apply(self) -> None:
         base = "colors.downloads."
@@ -193,7 +222,7 @@ class Visual:
         self._config.set("colors.webpage.darkmode.enabled", True)
 
     def _set_colorscheme(self) -> None:
-        self._set_completion()
+        Completion(self._config).apply()
         Download(self._config).apply()
         Hint(self._config).apply()
         Keyhint(self._config).apply()
@@ -201,33 +230,6 @@ class Visual:
         Prompt(self._config).apply()
         Statusbar(self._config).apply()
         Tab(self._config).apply()
-
-    def _set_completion(self) -> None:
-        base = "colors.completion."
-
-        self._config.set(f"{base}even.bg", self._palette["black"])
-        self._config.set(f"{base}odd.bg", self._palette["black"])
-        self._config.set(f"{base}fg", self._palette["white"])
-        self._config.set(f"{base}match.fg", self._palette["pink"])
-
-        self._config.set(f"{base}category.bg", self._palette["black"])
-        self._config.set(f"{base}category.fg", self._palette["white"])
-        for specification in ["bottom", "top"]:
-            self._config.set(
-                ".".join([f"{base}category.border", specification]),
-                self._palette["grey_bright"],
-            )
-
-        self._config.set(f"{base}item.selected.bg", self._palette["grey_dark"])
-        self._config.set(f"{base}item.selected.fg", self._palette["white"])
-        for specification in ["bottom", "top"]:
-            self._config.set(
-                ".".join([f"{base}item.selected.border", specification]),
-                self._palette["white"],
-            )
-
-        self._config.set(f"{base}scrollbar.bg", self._palette["black"])
-        self._config.set(f"{base}scrollbar.fg", self._palette["grey_dark"])
 
     def _set_font(self) -> None:
         fonts = {
