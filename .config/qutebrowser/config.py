@@ -25,7 +25,7 @@ class Configuration:
 
     def _tor(self) -> None:
         conf = tor.Tor()
-        conf.activate(self._config)
+        conf.deactivate(self._config)
 
         self._alias.add("tor_on", conf.as_cmd(activate=True))
         self._alias.add("tor_off", conf.as_cmd(activate=False))

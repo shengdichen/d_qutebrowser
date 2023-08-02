@@ -2,7 +2,7 @@ from .util.cmd import Cmd
 
 
 class _Util:
-    _key_translation: dict = {"esc": "Escape", "enter": "Return"}
+    _key_translation: dict = {"esc": "Escape", "enter": "Return", "tab": "Tab"}
 
     _decorator_translation: dict = {"c": "Ctrl", "s": "Shift", "a": "Alt"}
 
@@ -130,8 +130,8 @@ class ModeNormal(_ModeSpecific):
         self._bind("L", Cmd.concat(Cmd.repeat(cmd_right, 4)))
 
         cmd_scroll = "scroll-page "
-        self._bind("u", f"{cmd_scroll}0 -0.5")
-        self._bind("d", f"{cmd_scroll}0 +0.5")
+        self._bind("u", f"{cmd_scroll}0 -0.37")
+        self._bind("d", f"{cmd_scroll}0 +0.37")
         self._bind("b", f"{cmd_scroll}0 -1.0")
         self._bind("f", f"{cmd_scroll}0 +1.0")
 
@@ -171,6 +171,7 @@ class ModeNormal(_ModeSpecific):
         self._bind("<Ctrl+h>", "tab-prev")
         self._bind("<Ctrl+l>", "tab-next")
 
+        self._bind(_Util.make_combi("tab", decorators="c"), "tab-focus last")
         self._bind(
             _Util.make_combi("`", decorators="a"), Cmd.enter_as_prompt("tab-select")
         )
@@ -189,7 +190,7 @@ class ModeNormal(_ModeSpecific):
     def _to_other_modes(self) -> None:
         self._bind(":", "set-cmd-text :")
         self._bind("i", "mode-enter insert")
-        self._bind("I", "hint inputs --first")
+        self._bind(_Util.make_combi("i", decorators="c"), "hint inputs --first")
 
         self._bind("v", "mode-enter caret")
         self._bind("V", "mode-enter caret ;; selection-toggle --line")
@@ -202,8 +203,6 @@ class ModeNormal(_ModeSpecific):
         self._bind("O", Cmd.enter_as_prompt("open --window"))
 
         self._bind(_Util.make_combi("r", "c"), "reload --force")
-        self._bind("u", "undo")
-        self._bind("U", "undo -w")
 
         self._bind(_Util.make_combi("h", "a"), "back")
         self._bind(_Util.make_combi("l", "a"), "forward")
@@ -218,7 +217,9 @@ class ModeNormal(_ModeSpecific):
     def _gui(self) -> None:
         self._bind("z", "gui_toggle")
 
-        self._bind("Z", Cmd.enter_as_prompt("zoom 1", append_space=False))
+        self._bind("Z", Cmd.enter_as_prompt("zoom --quiet 1", append_space=False))
+
+        self._bind(_Util.make_combi("esc"), "jseval -q document.activeElement.blur()")
 
 
 class ModeCommand(_ModeSpecific):
@@ -248,14 +249,19 @@ class ModeInsert(_ModeSpecific):
         super().__init__("insert", config)
 
         self._exit()
+        self._edit()
 
     def _exit(self) -> None:
         # REF:
         #   https://github.com/qutebrowser/qutebrowser/issues/2668
+        #   https://stackoverflow.com/questions/2520650/how-do-you-clear-the-focus-in-javascript
         self._bind(
             [_Util.make_combi("esc"), _Util.make_combi("c", decorators="c")],
             Cmd.concat(["mode-leave", "jseval -q document.activeElement.blur()"]),
         )
+
+    def _edit(self) -> None:
+        self._bind(_Util.make_combi("e", decorators="c"), "edit-text")
 
 
 class ModePrompt(_ModeSpecific):

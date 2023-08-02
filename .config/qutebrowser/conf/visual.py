@@ -234,6 +234,8 @@ class Visual:
         self._config.set("fonts.statusbar", "14pt default_family")
         self._config.set("fonts.prompts", "13pt default_family")
 
+        # do our best at using our font (some sites will still use their theirs)
+        self._config.get("qt.args").append("disable-remote-fonts")
         for specification in ["standard", "sans_serif", "cursive", "fantasy"]:
             self._config.set(
                 ".".join([base, "web", "family", specification]), fonts["avenir"]
