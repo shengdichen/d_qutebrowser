@@ -226,7 +226,7 @@ class Visual:
             self._config.set(".".join([base, specification]), fonts["shevska"])
         self._config.set("fonts.default_size", "11pt")
         self._config.set("fonts.hints", "14pt default_family")
-        self._config.set("fonts.statusbar", "17pt default_family")
+        self._config.set("fonts.statusbar", "14pt default_family")
         self._config.set("fonts.prompts", "13pt default_family")
 
         for specification in ["standard", "sans_serif", "cursive", "fantasy"]:
