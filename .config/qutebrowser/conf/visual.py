@@ -34,44 +34,44 @@ class Visual:
     def _set_completion(self) -> None:
         base = "colors.completion."
 
-        self._config.set(base + "even.bg", self._palette["black"])
-        self._config.set(base + "odd.bg", self._palette["black"])
-        self._config.set(base + "fg", self._palette["white"])
-        self._config.set(base + "match.fg", self._palette["pink"])
+        self._config.set(f"{base}even.bg", self._palette["black"])
+        self._config.set(f"{base}odd.bg", self._palette["black"])
+        self._config.set(f"{base}fg", self._palette["white"])
+        self._config.set(f"{base}match.fg", self._palette["pink"])
 
-        self._config.set(base + "category.bg", self._palette["black"])
-        self._config.set(base + "category.fg", self._palette["white"])
+        self._config.set(f"{base}category.bg", self._palette["black"])
+        self._config.set(f"{base}category.fg", self._palette["white"])
         for specification in ["bottom", "top"]:
             self._config.set(
-                ".".join([base + "category.border", specification]),
+                ".".join([f"{base}category.border", specification]),
                 self._palette["grey_bright"],
             )
 
-        self._config.set(base + "item.selected.bg", self._palette["grey_dark"])
-        self._config.set(base + "item.selected.fg", self._palette["white"])
+        self._config.set(f"{base}item.selected.bg", self._palette["grey_dark"])
+        self._config.set(f"{base}item.selected.fg", self._palette["white"])
         for specification in ["bottom", "top"]:
             self._config.set(
-                ".".join([base + "item.selected.border", specification]),
+                ".".join([f"{base}item.selected.border", specification]),
                 self._palette["white"],
             )
 
-        self._config.set(base + "scrollbar.bg", self._palette["black"])
-        self._config.set(base + "scrollbar.fg", self._palette["grey_dark"])
+        self._config.set(f"{base}scrollbar.bg", self._palette["black"])
+        self._config.set(f"{base}scrollbar.fg", self._palette["grey_dark"])
 
     def _set_downloads(self) -> None:
         base = "colors.downloads."
 
         # disable gradient
-        self._config.set(base + "system.bg", "none")
-        self._config.set(base + "system.fg", "none")
+        self._config.set(f"{base}system.bg", "none")
+        self._config.set(f"{base}system.fg", "none")
 
         for item in ["bar", "start", "stop"]:
             self._config.set(f"{base}{item}.bg", self._palette["black"])
         for item in ["start", "stop"]:
             self._config.set(f"{base}{item}.fg", self._palette["white"])
 
-        self._config.set(base + "error.bg", self._palette["black"])
-        self._config.set(base + "error.fg", self._palette["red"])
+        self._config.set(f"{base}error.bg", self._palette["black"])
+        self._config.set(f"{base}error.fg", self._palette["red"])
 
     def _set_hints(self) -> None:
         base = "hints."
@@ -96,33 +96,36 @@ class Visual:
         self._config.set(f"{base}suffix.fg", self._palette["magenta"])
 
     def _set_messages(self) -> None:
-        self._config.set("colors.messages.info.bg", self._palette["black"])
-        self._config.set("colors.messages.info.border", self._palette["black"])
-        self._config.set("colors.messages.info.fg", self._palette["white"])
+        base = "colors.messages."
 
-        self._config.set("colors.messages.warning.bg", self._palette["black"])
-        self._config.set("colors.messages.warning.border", self._palette["red"])
-        self._config.set("colors.messages.warning.fg", self._palette["white"])
+        self._config.set(f"{base}info.bg", self._palette["black"])
+        self._config.set(f"{base}info.border", self._palette["black"])
+        self._config.set(f"{base}info.fg", self._palette["white"])
 
-        self._config.set("colors.messages.error.bg", self._palette["black"])
-        self._config.set("colors.messages.error.border", self._palette["black"])
-        self._config.set("colors.messages.error.fg", self._palette["red"])
+        self._config.set(f"{base}warning.bg", self._palette["black"])
+        self._config.set(f"{base}warning.border", self._palette["red"])
+        self._config.set(f"{base}warning.fg", self._palette["white"])
+
+        self._config.set(f"{base}error.bg", self._palette["black"])
+        self._config.set(f"{base}error.border", self._palette["black"])
+        self._config.set(f"{base}error.fg", self._palette["red"])
 
     def _set_prompts(self) -> None:
         base = "colors.prompts."
         self._config.set("prompt.radius", 0)
 
-        self._config.set(base + "bg", self._palette["black"])
-        self._config.set(base + "fg", self._palette["white"])
-        self._config.set(base + "selected.bg", self._palette["grey_dark"])
-        self._config.set(base + "selected.fg", self._palette["white"])
-        self._config.set(base + "border", "1px solid " + self._palette["white"])
+        self._config.set(f"{base}bg", self._palette["black"])
+        self._config.set(f"{base}fg", self._palette["white"])
+        self._config.set(f"{base}selected.bg", self._palette["grey_dark"])
+        self._config.set(f"{base}selected.fg", self._palette["white"])
+        self._config.set(f"{base}border", f"1px solid {self._palette['white']}")
 
     def _set_statusbar(self) -> None:
-        self._config.set("statusbar.show", "always")
-        self._config.set("statusbar.position", "bottom")
+        base = "statusbar."
+        self._config.set(f"{base}show", "always")
+        self._config.set(f"{base}position", "bottom")
         # default: ["keypress", "url", "scroll", "history", "tabs", "progress"]
-        self._config.set("statusbar.widgets", ["keypress", "url"])
+        self._config.set(f"{base}widgets", ["keypress", "url"])
 
         base = "colors.statusbar."
 
@@ -136,18 +139,18 @@ class Visual:
             "caret.selection",
             "passthrough",
         ]:
-            self._config.set(base + mode + ".bg", self._palette["black"])
-            self._config.set(base + mode + ".fg", self._palette["white"])
+            self._config.set(f"{base}{mode}.bg", self._palette["black"])
+            self._config.set(f"{base}{mode}.fg", self._palette["white"])
 
-        self._config.set(base + "progress.bg", self._palette["grey_bright"])
+        self._config.set(f"{base}progress.bg", self._palette["grey_bright"])
 
-        self._config.set(base + "url.fg", self._palette["white"])
-        self._config.set(base + "url.success.http.fg", self._palette["white"])
-        self._config.set(base + "url.success.https.fg", self._palette["white"])
+        self._config.set(f"{base}url.fg", self._palette["white"])
+        self._config.set(f"{base}url.success.http.fg", self._palette["white"])
+        self._config.set(f"{base}url.success.https.fg", self._palette["white"])
 
-        self._config.set(base + "url.hover.fg", self._palette["cyan"])
-        self._config.set(base + "url.warn.fg", self._palette["red"])
-        self._config.set(base + "url.error.fg", self._palette["red"])
+        self._config.set(f"{base}url.hover.fg", self._palette["cyan"])
+        self._config.set(f"{base}url.warn.fg", self._palette["red"])
+        self._config.set(f"{base}url.error.fg", self._palette["red"])
 
         self._config.set(
             "statusbar.padding",
