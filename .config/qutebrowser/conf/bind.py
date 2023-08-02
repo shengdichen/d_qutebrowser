@@ -2,7 +2,12 @@ from .util.cmd import Cmd
 
 
 class _Util:
-    _key_translation: dict = {"esc": "Escape", "enter": "Return", "tab": "Tab"}
+    _key_translation: dict = {
+        "esc": "Escape",
+        "enter": "Return",
+        "tab": "Tab",
+        "space": "Space",
+    }
 
     _decorator_translation: dict = {"c": "Ctrl", "s": "Shift", "a": "Alt"}
 
@@ -300,6 +305,49 @@ class ModeInsert(_ModeSpecific):
         self._bind(_Util.make_combi("e", decorators="c"), "edit-text")
 
 
+class ModeVisual(_ModeSpecific):
+    def __init__(self, config):
+        super().__init__("caret", config)
+
+        self._basic()
+        self._navigate()
+        self._copy()
+
+    def _basic(self) -> None:
+        base = "selection-"
+
+        self._bind("v", f"{base}toggle")
+        self._bind("V", f"{base}toggle --line")
+
+        self._bind(_Util.make_combi("space"), f"{base}reverse")
+
+    def _navigate(self) -> None:
+        base = "move-to-"
+
+        self._bind("h", f"{base}prev-char")
+        self._bind("l", f"{base}next-char")
+        self._bind("b", f"{base}prev-word")
+        self._bind("w", f"{base}next-word")
+        self._bind("0", f"{base}start-of-line")
+        self._bind("$", f"{base}end-of-line")
+
+        self._bind("k", f"{base}prev-line")
+        self._bind("j", f"{base}next-line")
+        self._bind("K", Cmd.concat(Cmd.repeat(f"{base}prev-line", 4)))
+        self._bind("J", Cmd.concat(Cmd.repeat(f"{base}next-line", 4)))
+
+        self._bind("u", f"{base}start-of-prev-block")
+        self._bind("d", f"{base}start-of-next-block")
+        self._bind("gg", f"{base}start-of-document")
+        self._bind("G", f"{base}end-of-document")
+
+    def _copy(self) -> None:
+        base = "yank selection "
+
+        self._bind("y", base)
+        self._bind("Y", f"{base}-s")
+
+
 class ModePrompt(_ModeSpecific):
     def __init__(self, config):
         super().__init__("prompt", config)
@@ -356,5 +404,6 @@ class Bind:
         ModeNormal(self._config)
         ModeCommand(self._config)
         ModeInsert(self._config)
+        ModeVisual(self._config)
         ModePrompt(self._config)
         ModePassthrough(self._config)
