@@ -203,8 +203,6 @@ class ModeNormal(_ModeSpecific):
         self._bind("O", Cmd.enter_as_prompt("open --window"))
 
         self._bind(_Util.make_combi("r", "c"), "reload --force")
-        self._bind("u", "undo")
-        self._bind("U", "undo -w")
 
         self._bind(_Util.make_combi("h", "a"), "back")
         self._bind(_Util.make_combi("l", "a"), "forward")
