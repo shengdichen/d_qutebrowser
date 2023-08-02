@@ -22,6 +22,20 @@ class _VisualItem:
         self._config.set(key, value)
 
 
+class Hint(_VisualItem):
+    def apply(self) -> None:
+        base = "hints."
+        self._set(f"{base}radius", 0)
+        self._set(f"{base}scatter", True)  # scatter chars used for hinting
+        self._set(f"{base}padding", {"top": 1, "bottom": 1, "left": 3, "right": 3})
+        self._set(f"{base}border", f"1.7px solid {_Util.palette['grey_dark']}")
+
+        base = "colors.hints."
+        self._set(f"{base}bg", _Util.palette["black"])
+        self._set(f"{base}fg", _Util.palette["magenta"])
+        self._set(f"{base}match.fg", _Util.palette["white"])
+
+
 class Keyhint(_VisualItem):
     def apply(self) -> None:
         base = "colors.keyhint."
@@ -164,7 +178,7 @@ class Visual:
     def _set_colorscheme(self) -> None:
         self._set_completion()
         self._set_downloads()
-        self._set_hints()
+        Hint(self._config).apply()
         Keyhint(self._config).apply()
         Message(self._config).apply()
         Prompt(self._config).apply()
@@ -212,20 +226,6 @@ class Visual:
 
         self._config.set(f"{base}error.bg", self._palette["black"])
         self._config.set(f"{base}error.fg", self._palette["red"])
-
-    def _set_hints(self) -> None:
-        base = "hints."
-        self._config.set(f"{base}radius", 0)
-        self._config.set(f"{base}scatter", True)  # scatter chars used for hinting
-        self._config.set(
-            f"{base}padding", {"top": 1, "bottom": 1, "left": 3, "right": 3}
-        )
-        self._config.set(f"{base}border", f"1.7px solid {self._palette['grey_dark']}")
-
-        base = "colors.hints."
-        self._config.set(f"{base}bg", self._palette["black"])
-        self._config.set(f"{base}fg", self._palette["magenta"])
-        self._config.set(f"{base}match.fg", self._palette["white"])
 
     def _set_font(self) -> None:
         fonts = {
