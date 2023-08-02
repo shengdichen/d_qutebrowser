@@ -232,7 +232,6 @@ class ModeNormal(_ModeSpecific):
         self._bind(_Util.make_combi("i", decorators="c"), "hint inputs --first")
 
         self._bind("v", "mode-enter caret")
-        self._bind("V", "mode-enter caret ;; selection-toggle --line")
 
     def _command(self) -> None:
         self._bind(":", Cmd.enter_as_prompt("", append_space=False))
