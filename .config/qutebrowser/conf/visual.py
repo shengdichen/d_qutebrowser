@@ -102,6 +102,7 @@ class Visual:
 
     def _set_hints(self) -> None:
         base = "colors.hints."
+        self._config.set("hints.radius", 0)
 
         self._config.set(f"{base}bg", self._palette_ours["black"])
         self._config.set(f"{base}fg", self._palette_ours["magenta"])
@@ -112,6 +113,7 @@ class Visual:
 
     def _set_keyhint(self) -> None:
         base = "colors.keyhint."
+        self._config.set("keyhint.radius", 0)
 
         self._config.set(f"{base}bg", self._palette_ours["black"])
         self._config.set(f"{base}fg", self._palette_ours["white"])
@@ -132,6 +134,7 @@ class Visual:
 
     def _set_prompts(self) -> None:
         base = "colors.prompts."
+        self._config.set("prompt.radius", 0)
 
         self._config.set(base + "bg", self._palette_ours["black"])
         self._config.set(base + "fg", self._palette_ours["white"])
@@ -141,6 +144,9 @@ class Visual:
 
     def _set_statusbar(self) -> None:
         self._config.set("statusbar.show", "in-mode")
+        self._config.set("statusbar.position", "bottom")
+        # default: ["keypress", "url", "scroll", "history", "tabs", "progress"]
+        self._config.set("statusbar.widgets", ["keypress", "url"])
 
         base = "colors.statusbar."
 
@@ -176,16 +182,15 @@ class Visual:
         self._config.set(
             "tabs.show", "multiple"
         )  # only show if multiple tabs are present
-        self._config.set("tabs.position", "left")
-        self._config.set("tabs.width", "11%")
-        self._config.set("tabs.title.alignment", "left")
-
-        self._config.set("tabs.favicons.show", "never")
-        self._config.set("tabs.title.format", "{current_title}")
+        self._config.set("tabs.position", "bottom")
+        self._config.set("tabs.title.alignment", "center")
+        self._config.set("tabs.title.format", "{index}/{current_title}")
         self._config.set(
             "tabs.padding",
-            {"top": 0, "bottom": 5, "left": 2, "right": 5},
+            {"top": 1, "bottom": 1, "left": 2, "right": 2},
         )
+
+        self._config.set("tabs.favicons.show", "never")
         self._config.set("tabs.indicator.width", 0)  # disable completely
 
         item_base = "colors.tabs"
