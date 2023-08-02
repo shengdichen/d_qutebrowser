@@ -103,6 +103,7 @@ class Visual:
     def _set_hints(self) -> None:
         base = "hints."
         self._config.set(f"{base}radius", 0)
+        self._config.set(f"{base}scatter", True)  # scatter chars used for hinting
         self._config.set(
             f"{base}padding", {"top": 1, "bottom": 1, "left": 3, "right": 3}
         )
