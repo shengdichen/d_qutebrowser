@@ -215,6 +215,8 @@ class ModeNormal(_ModeSpecific):
     def _gui(self) -> None:
         self._bind("z", "gui_toggle")
 
+        self._bind("Z", Cmd.enter_as_prompt("zoom 1", append_space=False))
+
 
 class ModeCommand(_ModeSpecific):
     def __init__(self, config):
