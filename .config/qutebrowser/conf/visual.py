@@ -238,8 +238,9 @@ class Visual:
                 ".".join([base, "web", "family", specification]), fonts["constantia"]
             )
 
-        self._config.set("fonts.web.size.default", 19)
-        self._config.set("fonts.web.size.default_fixed", 15)
+        # common default (also seen in firefox)
+        self._config.set("fonts.web.size.default", 16)
+        self._config.set("fonts.web.size.default_fixed", 13)
 
     def _set_window(self) -> None:
         self._config.set("window.hide_decoration", True)
