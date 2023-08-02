@@ -175,7 +175,7 @@ class Visual:
 
         self._config.set(
             "statusbar.padding",
-            {"top": 1, "bottom": 1, "left": 2, "right": 2},
+            {"top": 0, "bottom": 0, "left": 2, "right": 2},
         )
 
     def _set_tabs(self) -> None:
@@ -185,7 +185,7 @@ class Visual:
         self._config.set("tabs.title.format", "{perc}{index}/{current_title}")
         self._config.set(
             "tabs.padding",
-            {"top": 1, "bottom": 1, "left": 2, "right": 2},
+            {"top": 1, "bottom": 0, "left": 2, "right": 2},
         )
 
         self._config.set("tabs.favicons.show", "never")
