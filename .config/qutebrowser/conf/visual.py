@@ -182,7 +182,7 @@ class Visual:
         self._config.set("tabs.show", "always")
         self._config.set("tabs.position", "bottom")
         self._config.set("tabs.title.alignment", "center")
-        self._config.set("tabs.title.format", "{index}/{current_title}")
+        self._config.set("tabs.title.format", "{perc}{index}/{current_title}")
         self._config.set(
             "tabs.padding",
             {"top": 1, "bottom": 1, "left": 2, "right": 2},
