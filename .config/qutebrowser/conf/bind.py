@@ -249,6 +249,7 @@ class ModeInsert(_ModeSpecific):
         super().__init__("insert", config)
 
         self._exit()
+        self._edit()
 
     def _exit(self) -> None:
         # REF:
@@ -257,6 +258,9 @@ class ModeInsert(_ModeSpecific):
             [_Util.make_combi("esc"), _Util.make_combi("c", decorators="c")],
             Cmd.concat(["mode-leave", "jseval -q document.activeElement.blur()"]),
         )
+
+    def _edit(self) -> None:
+        self._bind(_Util.make_combi("e", decorators="c"), "edit-text")
 
 
 class ModePrompt(_ModeSpecific):
