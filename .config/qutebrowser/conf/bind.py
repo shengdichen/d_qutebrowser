@@ -208,9 +208,9 @@ class ModeNormal(_ModeSpecific):
             Cmd.enter_as_prompt("tab-give --private"),
         )
 
-        self._bind(_Util.make_combi("tab", decorators="c"), "tab-focus last")
+        self._bind(_Util.make_combi("`", decorators="a"), "tab-focus last")
         self._bind(
-            _Util.make_combi("`", decorators="a"), Cmd.enter_as_prompt("tab-select")
+            _Util.make_combi("-", decorators="a"), Cmd.enter_as_prompt("tab-select")
         )
 
         cmd_focus = "tab-focus --no-last "  # do NOT switch back on multiple inputs of same index
