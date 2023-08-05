@@ -53,11 +53,9 @@ class WebContent:
     def _ad_block(self) -> None:
         self._config.set("content.blocking.method", "both")
 
+        # REF:
+        #   https://github.com/bromite/filters/blob/master/lists.txt
         adblock_lists = [
-            (
-                "https://pgl.yoyo.org/adservers/serverlist.php?"
-                "hostformat=adblockplus&showintro=1&mimetype=plaintext"
-            ),
             "https://github.com/uBlockOrigin/uAssets/raw/master/filters/filters.txt",
             "https://github.com/uBlockOrigin/uAssets/raw/master/filters/badware.txt",
             "https://github.com/uBlockOrigin/uAssets/raw/master/filters/privacy.txt",
@@ -65,6 +63,10 @@ class WebContent:
             "https://github.com/uBlockOrigin/uAssets/raw/master/filters/unbreak.txt",
             "https://easylist.to/easylist/easylist.txt",
             "https://easylist.to/easylist/easyprivacy.txt",
+            (
+                "https://pgl.yoyo.org/adservers/serverlist.php?"
+                "hostformat=adblockplus&showintro=1&mimetype=plaintext"
+            ),
         ]
         self._config.set("content.blocking.adblock.lists", adblock_lists)
 
