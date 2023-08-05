@@ -250,7 +250,10 @@ class Visual:
         self._config.set("window.hide_decoration", True)
         self._config.set("window.title_format", "{current_title}")
 
-        self._config.set("zoom.default", "123%")
+        self._config.set("zoom.default", "127%")
+
+        levels = [f"{int(100 * (1.07 ** power))}%" for power in range(-9, +10)]
+        self._config.set("zoom.levels", levels)
 
     def _set_components(self) -> None:
         Completion(self._config).apply()
