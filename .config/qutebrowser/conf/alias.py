@@ -16,7 +16,7 @@ class Alias:
         cmd_restart = "restart"
 
         self._aliases |= {
-            "q": "tab-close",
+            "q": Cmd.concat([cmd_history_clear, "tab-close"]),
             "w": Cmd.concat([cmd_history_clear, f"session-save {session_name}"]),
             "wq": Cmd.concat([cmd_history_clear, f"quit --save {session_name}"]),
             cmd_restart: Cmd.concat([cmd_history_clear, cmd_restart]),
