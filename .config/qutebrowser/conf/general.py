@@ -17,10 +17,10 @@ class MiscConf:
     def _hint(self) -> None:
         base = "hints."
 
-        self._config.set(f"{base}chars", "qwefv" + "poijn")
-        self._config.set(f"{base}mode", "letter")
-
         self._config.set(f"{base}uppercase", True)
+        self._config.set(f"{base}mode", "letter")
+        # use easily distinguishable majuscules
+        self._config.set(f"{base}chars", "azwsxeholp")
 
     def _default_pages(self) -> None:
         self._config.set("auto_save.session", False)
