@@ -11,9 +11,11 @@ class Alias:
         self._hint()
 
     def _exit(self) -> None:
+        session_name = "def"
+
         self._aliases |= {
-            "w": "session-save def",
-            "wq": "quit --save def",
+            "w": f"session-save {session_name}",
+            "wq": f"quit --save {session_name}",
             "q": "tab-close",
         }
 
