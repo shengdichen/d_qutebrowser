@@ -12,10 +12,11 @@ class Alias:
 
     def _exit(self) -> None:
         session_name = "def"
+        cmd_history_clear = "history-clear --force"
 
         self._aliases |= {
-            "w": f"session-save {session_name}",
-            "wq": f"quit --save {session_name}",
+            "w": Cmd.concat([cmd_history_clear, f"session-save {session_name}"]),
+            "wq": Cmd.concat([cmd_history_clear, f"quit --save {session_name}"]),
             "q": "tab-close",
         }
 
