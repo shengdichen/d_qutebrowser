@@ -205,7 +205,7 @@ class Statusbar(_VisualItem):
 
 
 class Font(_VisualItem):
-    def apply(self) -> None:
+    def apply(self, disable_remote: bool = False) -> None:
         base = "fonts"
         for specification in ["default_family", "web.family.fixed"]:
             self._config.set(".".join([base, specification]), _Util.fonts["shevska"])
@@ -214,7 +214,8 @@ class Font(_VisualItem):
         self._config.set("fonts.statusbar", "14pt default_family")
         self._config.set("fonts.prompts", "13pt default_family")
 
-        self._disable_remote()
+        if disable_remote:
+            self._disable_remote()
         for specification in ["standard", "sans_serif", "cursive", "fantasy"]:
             self._config.set(
                 ".".join([base, "web", "family", specification]), _Util.fonts["avenir"]
@@ -230,7 +231,9 @@ class Font(_VisualItem):
         self._config.set("fonts.web.size.default_fixed", 13)
 
     def _disable_remote(self) -> None:
-        # do our best at using our font (some sites will still use their theirs)
+        # might be problematic due to:
+        #   1. missing glyph in our font
+        #   2. some sites will still use their font(s)
         self._config.get("qt.args").append("disable-remote-fonts")
 
 
