@@ -2,7 +2,12 @@ from .util.cmd import Cmd
 
 
 class _Util:
-    _key_translation: dict = {"esc": "Escape", "enter": "Return", "tab": "Tab"}
+    _key_translation: dict = {
+        "esc": "Escape",
+        "enter": "Return",
+        "tab": "Tab",
+        "space": "Space",
+    }
 
     _decorator_translation: dict = {"c": "Ctrl", "s": "Shift", "a": "Alt"}
 
@@ -54,33 +59,57 @@ class ModeMulti:
         cmd = "mode-leave"
         modes = ["command", "hint", "caret", "prompt", "register", "yesno"]
 
-        for combi in ["<Ctrl+c>", "<Escape>"]:
+        for combi in [_Util.make_combi("c", decorators="c"), _Util.make_combi("esc")]:
             self._bind_modes(combi, cmd, modes)
 
     def _navigate(self) -> None:
         modes = ["command", "prompt"]
 
-        self._bind_modes("<Ctrl+h>", f"{self._cmd_edit}backward-char", modes)
-        self._bind_modes("<Ctrl+l>", f"{self._cmd_edit}forward-char", modes)
-        self._bind_modes("<Ctrl+b>", f"{self._cmd_edit}backward-word", modes)
-        self._bind_modes("<Ctrl+f>", f"{self._cmd_edit}forward-word", modes)
-        self._bind_modes("<Ctrl+a>", f"{self._cmd_edit}beginning-of-line", modes)
-        self._bind_modes("<Ctrl+e>", f"{self._cmd_edit}end-of-line", modes)
+        self._bind_modes(
+            _Util.make_combi("h", decorators="c"),
+            f"{self._cmd_edit}backward-char",
+            modes,
+        )
+        self._bind_modes(
+            _Util.make_combi("l", decorators="c"),
+            f"{self._cmd_edit}forward-char",
+            modes,
+        )
+        self._bind_modes(
+            _Util.make_combi("b", decorators="c"),
+            f"{self._cmd_edit}backward-word",
+            modes,
+        )
+        self._bind_modes(
+            _Util.make_combi("f", decorators="c"),
+            f"{self._cmd_edit}forward-word",
+            modes,
+        )
+        self._bind_modes(
+            _Util.make_combi("a", decorators="c"),
+            f"{self._cmd_edit}beginning-of-line",
+            modes,
+        )
+        self._bind_modes(
+            _Util.make_combi("e", decorators="c"), f"{self._cmd_edit}end-of-line", modes
+        )
 
     def _edit(self) -> None:
         modes = ["command", "prompt"]
 
         self._bind_modes(
-            "<Ctrl+j>", f"{self._cmd_edit}unix-line-discard", modes
+            _Util.make_combi("j", decorators="c"),
+            f"{self._cmd_edit}unix-line-discard",
+            modes,
         )  # delete  beg-o-l
         self._bind_modes(
-            "<Ctrl+k>", f"{self._cmd_edit}kill-line", modes
+            _Util.make_combi("k", decorators="c"), f"{self._cmd_edit}kill-line", modes
         )  # delete until end-o-l
         self._bind_modes(
-            "<Ctrl+w>", f'{self._cmd_edit}rubout " "', modes
+            _Util.make_combi("w", decorators="c"), f'{self._cmd_edit}rubout " "', modes
         )  # delete until beg-o-w
         self._bind_modes(
-            "<Ctrl+d>", f"{self._cmd_edit}kill-word", modes
+            _Util.make_combi("d", decorators="c"), f"{self._cmd_edit}kill-word", modes
         )  # delete until end-o-w
 
     def _bind_modes(self, combis: list[str] | str, cmd: str, modes: list[str]) -> None:
@@ -130,10 +159,8 @@ class ModeNormal(_ModeSpecific):
         self._bind("L", Cmd.concat(Cmd.repeat(cmd_right, 4)))
 
         cmd_scroll = "scroll-page "
-        self._bind("u", f"{cmd_scroll}0 -0.37")
-        self._bind("d", f"{cmd_scroll}0 +0.37")
-        self._bind("b", f"{cmd_scroll}0 -1.0")
-        self._bind("f", f"{cmd_scroll}0 +1.0")
+        self._bind("u", f"{cmd_scroll}0 -0.67")
+        self._bind("d", f"{cmd_scroll}0 +0.67")
 
         cmd_scroll_perc = "scroll-to-perc "
         self._bind("gg", f"{cmd_scroll_perc} 0")
@@ -168,12 +195,22 @@ class ModeNormal(_ModeSpecific):
         self._bind("@", "macro-run")
 
     def _navigate_tab(self) -> None:
-        self._bind("<Ctrl+h>", "tab-prev")
-        self._bind("<Ctrl+l>", "tab-next")
+        self._bind(_Util.make_combi("h", decorators="a"), "tab-prev")
+        self._bind(_Util.make_combi("l", decorators="a"), "tab-next")
+        self._bind(_Util.make_combi("h", decorators="as"), "tab-move -")
+        self._bind(_Util.make_combi("l", decorators="as"), "tab-move +")
 
-        self._bind(_Util.make_combi("tab", decorators="c"), "tab-focus last")
         self._bind(
-            _Util.make_combi("`", decorators="a"), Cmd.enter_as_prompt("tab-select")
+            _Util.make_combi("p", decorators="a"), Cmd.enter_as_prompt("tab-give")
+        )
+        self._bind(
+            _Util.make_combi("p", decorators="as"),
+            Cmd.enter_as_prompt("tab-give --private"),
+        )
+
+        self._bind(_Util.make_combi("`", decorators="a"), "tab-focus last")
+        self._bind(
+            _Util.make_combi("-", decorators="a"), Cmd.enter_as_prompt("tab-select")
         )
 
         cmd_focus = "tab-focus --no-last "  # do NOT switch back on multiple inputs of same index
@@ -193,7 +230,6 @@ class ModeNormal(_ModeSpecific):
         self._bind(_Util.make_combi("i", decorators="c"), "hint inputs --first")
 
         self._bind("v", "mode-enter caret")
-        self._bind("V", "mode-enter caret ;; selection-toggle --line")
 
     def _command(self) -> None:
         self._bind(":", Cmd.enter_as_prompt("", append_space=False))
@@ -204,8 +240,8 @@ class ModeNormal(_ModeSpecific):
 
         self._bind(_Util.make_combi("r", "c"), "reload --force")
 
-        self._bind(_Util.make_combi("h", "a"), "back")
-        self._bind(_Util.make_combi("l", "a"), "forward")
+        self._bind(_Util.make_combi("h", "c"), "back")
+        self._bind(_Util.make_combi("l", "c"), "forward")
 
     def _mark(self) -> None:
         self._bind("ba", Cmd.enter_as_prompt("bookmark-add"))
@@ -230,18 +266,20 @@ class ModeCommand(_ModeSpecific):
         self._completion()
 
     def _basic(self) -> None:
-        self._bind("<Return>", "command-accept")
-        self._bind("<Ctrl+Return>", "command-accept --rapid")
+        self._bind(_Util.make_combi("enter"), "command-accept")
+        self._bind(_Util.make_combi("enter", decorators="c"), "command-accept --rapid")
 
     def _completion(self) -> None:
         cmd_completion = "completion-item-focus "
-        self._bind("<Ctrl+p>", f"{cmd_completion} prev")
-        self._bind("<Ctrl+n>", f"{cmd_completion} next")
-        self._bind("<Shift+Tab>", f"{cmd_completion} prev-category")
-        self._bind("<Tab>", f"{cmd_completion} next-category")
+        self._bind(_Util.make_combi("p", decorators="c"), f"{cmd_completion} prev")
+        self._bind(_Util.make_combi("n", decorators="c"), f"{cmd_completion} next")
+        self._bind(
+            _Util.make_combi("tab", decorators="s"), f"{cmd_completion} prev-category"
+        )
+        self._bind(_Util.make_combi("tab"), f"{cmd_completion} next-category")
 
-        self._bind("<Ctrl+k>", "command-history-prev")
-        self._bind("<Ctrl+j>", "command-history-next")
+        self._bind(_Util.make_combi("k", decorators="c"), "command-history-prev")
+        self._bind(_Util.make_combi("j", decorators="c"), "command-history-next")
 
 
 class ModeInsert(_ModeSpecific):
@@ -264,6 +302,49 @@ class ModeInsert(_ModeSpecific):
         self._bind(_Util.make_combi("e", decorators="c"), "edit-text")
 
 
+class ModeVisual(_ModeSpecific):
+    def __init__(self, config):
+        super().__init__("caret", config)
+
+        self._basic()
+        self._navigate()
+        self._copy()
+
+    def _basic(self) -> None:
+        base = "selection-"
+
+        self._bind("v", f"{base}toggle")
+        self._bind("V", f"{base}toggle --line")
+
+        self._bind(_Util.make_combi("space"), f"{base}reverse")
+
+    def _navigate(self) -> None:
+        base = "move-to-"
+
+        self._bind("h", f"{base}prev-char")
+        self._bind("l", f"{base}next-char")
+        self._bind("b", f"{base}prev-word")
+        self._bind("w", f"{base}next-word")
+        self._bind("0", f"{base}start-of-line")
+        self._bind("$", f"{base}end-of-line")
+
+        self._bind("k", f"{base}prev-line")
+        self._bind("j", f"{base}next-line")
+        self._bind("K", Cmd.concat(Cmd.repeat(f"{base}prev-line", 4)))
+        self._bind("J", Cmd.concat(Cmd.repeat(f"{base}next-line", 4)))
+
+        self._bind("u", f"{base}start-of-prev-block")
+        self._bind("d", f"{base}start-of-next-block")
+        self._bind("gg", f"{base}start-of-document")
+        self._bind("G", f"{base}end-of-document")
+
+    def _copy(self) -> None:
+        base = "yank selection "
+
+        self._bind("y", base)
+        self._bind("Y", f"{base}-s")
+
+
 class ModePrompt(_ModeSpecific):
     def __init__(self, config):
         super().__init__("prompt", config)
@@ -271,10 +352,10 @@ class ModePrompt(_ModeSpecific):
         self._basic()
 
     def _basic(self) -> None:
-        self._bind("<Return>", "prompt-accept")
+        self._bind(_Util.make_combi("enter"), "prompt-accept")
 
-        self._bind("<Tab>", "prompt-item-focus next")
-        self._bind("<Shift+Tab>", "prompt-item-focus prev")
+        self._bind(_Util.make_combi("tab"), "prompt-item-focus next")
+        self._bind(_Util.make_combi("tab", decorators="s"), "prompt-item-focus prev")
 
 
 class ModePassthrough(_ModeSpecific):
@@ -284,7 +365,7 @@ class ModePassthrough(_ModeSpecific):
         self._exit()
 
     def _exit(self) -> None:
-        self._bind("<Shift+Escape>", "mode-leave")
+        self._bind(_Util.make_combi("esc", decorators="s"), "mode-leave")
 
 
 class Bind:
@@ -320,5 +401,6 @@ class Bind:
         ModeNormal(self._config)
         ModeCommand(self._config)
         ModeInsert(self._config)
+        ModeVisual(self._config)
         ModePrompt(self._config)
         ModePassthrough(self._config)
