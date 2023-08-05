@@ -214,8 +214,7 @@ class Font(_VisualItem):
         self._config.set("fonts.statusbar", "14pt default_family")
         self._config.set("fonts.prompts", "13pt default_family")
 
-        # do our best at using our font (some sites will still use their theirs)
-        self._config.get("qt.args").append("disable-remote-fonts")
+        self._disable_remote()
         for specification in ["standard", "sans_serif", "cursive", "fantasy"]:
             self._config.set(
                 ".".join([base, "web", "family", specification]), _Util.fonts["avenir"]
@@ -229,6 +228,10 @@ class Font(_VisualItem):
         # common default (also seen in firefox)
         self._config.set("fonts.web.size.default", 16)
         self._config.set("fonts.web.size.default_fixed", 13)
+
+    def _disable_remote(self) -> None:
+        # do our best at using our font (some sites will still use their theirs)
+        self._config.get("qt.args").append("disable-remote-fonts")
 
 
 class Visual:
