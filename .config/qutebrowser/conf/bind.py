@@ -257,7 +257,7 @@ class ModeNormal(_ModeSpecific):
         self._bind(_Util.make_combi("6", decorators="c"), "zoom-in")
         self._bind("Z", Cmd.enter_as_prompt("zoom --quiet 1", append_space=False))
 
-        self._bind(_Util.make_combi("esc"), "jseval -q document.activeElement.blur()")
+        self._bind(_Util.make_combi("esc"), Cmd.unfocus())
 
 
 class ModeCommand(_ModeSpecific):
@@ -292,12 +292,9 @@ class ModeInsert(_ModeSpecific):
         self._edit()
 
     def _exit(self) -> None:
-        # REF:
-        #   https://github.com/qutebrowser/qutebrowser/issues/2668
-        #   https://stackoverflow.com/questions/2520650/how-do-you-clear-the-focus-in-javascript
         self._bind(
             [_Util.make_combi("esc"), _Util.make_combi("c", decorators="c")],
-            Cmd.concat(["mode-leave", "jseval -q document.activeElement.blur()"]),
+            Cmd.concat(["mode-leave", Cmd.unfocus()]),
         )
 
     def _edit(self) -> None:

@@ -66,3 +66,22 @@ class Cmd:
         if not cmd:
             return base
         return Cmd.concat([base, cmd])
+
+    @staticmethod
+    def run_javascript(cmd: str, quiet: bool = True) -> str:
+        base = "jseval"
+        construction = [base]
+
+        if quiet:
+            construction.append("--quiet")
+        construction.append(cmd)
+
+        return " ".join(construction)
+
+    @staticmethod
+    def unfocus() -> str:
+        # REF:
+        #   https://github.com/qutebrowser/qutebrowser/issues/2668
+        #   https://stackoverflow.com/questions/2520650/how-do-you-clear-the-focus-in-javascript
+
+        return Cmd.run_javascript("document.activeElement.blur()")
