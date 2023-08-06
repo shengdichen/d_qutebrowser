@@ -370,6 +370,24 @@ class ModePassthrough(_ModeSpecific):
         self._bind(_Util.make_combi("esc", decorators="s"), "mode-leave")
 
 
+class ModeBinary(_ModeSpecific):
+    def __init__(self, config):
+        super().__init__("yesno", config)
+
+        self._basic()
+
+    def _basic(self) -> None:
+        cmd_enter_value = "prompt-accept"
+
+        self._bind(
+            _Util.make_combi("enter", decorators="c"), cmd_enter_value
+        )  # accept default value
+
+        self._bind("y", "prompt-yank")
+        self._bind("Y", f"{cmd_enter_value} yes")
+        self._bind("N", f"{cmd_enter_value} no")
+
+
 class Bind:
     def __init__(self, config):
         self._config = config
@@ -406,3 +424,4 @@ class Bind:
         ModeVisual(self._config)
         ModePrompt(self._config)
         ModePassthrough(self._config)
+        ModeBinary(self._config)
