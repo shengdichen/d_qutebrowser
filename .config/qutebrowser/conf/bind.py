@@ -247,13 +247,13 @@ class ModeNormal(_ModeSpecific):
         self._bind(_Util.make_combi("l", "c"), "forward")
 
     def _mark(self) -> None:
-        self._bind("ba", Cmd.enter_as_prompt("bookmark-add {url}"))
+        self._bind("Ba", Cmd.enter_as_prompt("bookmark-add {url}"))
         self._bind(
-            "Ba", Cmd.enter_as_prompt('quickmark-add {url} "', append_space=False)
+            "ba", Cmd.enter_as_prompt('quickmark-add {url} "', append_space=False)
         )
 
-        self._bind("bo", Cmd.enter_as_prompt("bookmark-load --tab"))
-        self._bind("Bo", Cmd.enter_as_prompt("quickmark-load --tab"))
+        self._bind("bo", Cmd.enter_as_prompt("quickmark-load --tab"))
+        self._bind("Bo", Cmd.enter_as_prompt("bookmark-load --tab"))
 
     def _gui(self) -> None:
         self._bind("z", "gui_toggle")
