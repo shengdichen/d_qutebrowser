@@ -13,12 +13,6 @@ class _Util:
         "cyan": "#8be9fd",
     }
 
-    fonts = {
-        "shevska": "Shevska",
-        "avenir": "Avenir LT Std",
-        "constantia": "Constantia",
-    }
-
 
 class _VisualItem:
     def __init__(self, config):
@@ -209,9 +203,9 @@ class Font(_VisualItem):
         super().__init__(config)
 
         self._config_base = "fonts."
-        self._monospace = _Util.fonts["shevska"]
-        self._sans = _Util.fonts["avenir"]
-        self._serif = _Util.fonts["constantia"]
+        self._monospace = "Shevska"
+        self._sans = "Avenir LT Std"
+        self._serif = "Constantia"
 
     def apply(self, disable_remote: bool = False) -> None:
         if disable_remote:
