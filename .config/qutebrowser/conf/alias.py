@@ -11,17 +11,21 @@ class Alias:
         self._hint()
 
     def _exit(self) -> None:
-        session_name = "def"
         cmd_history_clear = "history-clear --force"
-        cmd_restart = "restart"
 
         self._aliases |= {
             "q": Cmd.concat([cmd_history_clear, "tab-close"]),
             "wq": Cmd.concat([cmd_history_clear, "bookmark-add", "tab-close"]),
+        }
+
+        session_name = "def"
+        self._aliases |= {
             "wa": Cmd.concat([cmd_history_clear, f"session-save {session_name}"]),
             "wqa": Cmd.concat([cmd_history_clear, f"quit --save {session_name}"]),
-            cmd_restart: Cmd.concat([cmd_history_clear, cmd_restart]),
         }
+
+        cmd_restart = "restart"
+        self._aliases[cmd_restart] = Cmd.concat([cmd_history_clear, cmd_restart])
 
     def _gui(self) -> None:
         items = ["statusbar.show", "tabs.show"]
