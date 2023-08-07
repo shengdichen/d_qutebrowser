@@ -17,8 +17,9 @@ class Alias:
 
         self._aliases |= {
             "q": Cmd.concat([cmd_history_clear, "tab-close"]),
-            "w": Cmd.concat([cmd_history_clear, f"session-save {session_name}"]),
-            "wq": Cmd.concat([cmd_history_clear, f"quit --save {session_name}"]),
+            "wq": Cmd.concat([cmd_history_clear, "bookmark-add", "tab-close"]),
+            "wa": Cmd.concat([cmd_history_clear, f"session-save {session_name}"]),
+            "wqa": Cmd.concat([cmd_history_clear, f"quit --save {session_name}"]),
             cmd_restart: Cmd.concat([cmd_history_clear, cmd_restart]),
         }
 
