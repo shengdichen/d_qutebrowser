@@ -83,7 +83,7 @@ class Tor:
             zip([self._config_proxy, self._config_engines], [proxy, engines])
         )
         cmd_check_site = (
-            f"open -w https://check.torproject.org/?lang={tor_check_site_lang}"
+            f"open --private https://check.torproject.org/?lang={tor_check_site_lang}"
         )
 
         return Cmd.concat([cmd_config, cmd_check_site])
