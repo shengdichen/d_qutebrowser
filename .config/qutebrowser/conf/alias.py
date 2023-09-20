@@ -13,19 +13,23 @@ class Alias:
     def _exit(self) -> None:
         cmd_history_clear = "history-clear --force"
 
+        cmd_close_tab = "tab-close"
         self._aliases |= {
-            "q": Cmd.concat([cmd_history_clear, "tab-close"]),
-            "wq": Cmd.concat([cmd_history_clear, "bookmark-add", "tab-close"]),
+            "q": Cmd.concat([cmd_history_clear, cmd_close_tab]),
+            "wq": Cmd.concat([cmd_history_clear, "bookmark-add", cmd_close_tab]),
         }
 
         session_name = "def"
+        cmd_save = f"session-save {session_name}"
         self._aliases |= {
-            "wa": Cmd.concat([cmd_history_clear, f"session-save {session_name}"]),
+            "wa": Cmd.concat([cmd_history_clear, cmd_save]),
             "wqa": Cmd.concat([cmd_history_clear, f"quit --save {session_name}"]),
         }
 
         cmd_restart = "restart"
-        self._aliases[cmd_restart] = Cmd.concat([cmd_history_clear, cmd_restart])
+        self._aliases[cmd_restart] = Cmd.concat(
+            [cmd_history_clear, cmd_save, cmd_restart]
+        )
 
     def _gui(self) -> None:
         items = ["statusbar.show", "tabs.show"]
