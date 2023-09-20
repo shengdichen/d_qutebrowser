@@ -178,17 +178,10 @@ class ModeNormal(_ModeSpecific):
         self._bind(_Util.make_combi("enter", decorators="c"), f"{cmd_follow} --tab")
 
     def _hint(self) -> None:
-        base = "hint "
+        self._bind("ti", "hint inputs")
 
-        self._bind("ti", f"{base}inputs")
-
-        hint_links, hint_all = "links", "all"
-        self._bind("tt", f"{base}{hint_links}")
-        self._bind("ta", f"{base}{hint_all}")
-
-        in_tab = "tab-fg"
-        self._bind("tT", f"{base}{hint_links} {in_tab}")
-        self._bind("tA", f"{base}{hint_all} {in_tab}")
+        self._bind("tt", "hint_links_jump")
+        self._bind("tT", "hint_all_jump")
 
         self._bind("th", Cmd.enter_as_prompt("hint_links_", append_space=False))
         self._bind("tH", Cmd.enter_as_prompt("hint_all_", append_space=False))
