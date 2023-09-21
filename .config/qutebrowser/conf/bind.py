@@ -272,6 +272,8 @@ class ModeCommand(_ModeSpecific):
         self._bind(_Util.make_combi("enter"), "command-accept")
         self._bind(_Util.make_combi("enter", decorators="c"), "command-accept --rapid")
 
+        self._bind(_Util.make_combi("e", decorators="c"), "edit-command")
+
     def _completion(self) -> None:
         cmd_completion = "completion-item-focus "
         self._bind(_Util.make_combi("p", decorators="c"), f"{cmd_completion} prev")
