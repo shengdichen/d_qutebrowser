@@ -13,12 +13,6 @@ class _Util:
         "cyan": "#8be9fd",
     }
 
-    fonts = {
-        "shevska": "Shevska",
-        "avenir": "Avenir LT Std",
-        "constantia": "Constantia",
-    }
-
 
 class _VisualItem:
     def __init__(self, config):
@@ -55,6 +49,19 @@ class Completion(_VisualItem):
 
         self._set(f"{base}scrollbar.bg", _Util.palette["black"])
         self._set(f"{base}scrollbar.fg", _Util.palette["grey_dark"])
+
+        self._general()
+
+    def _general(self) -> None:
+        base = "completion."
+
+        self._set(
+            f"{base}open_categories",
+            ["bookmarks", "filesystem"],
+        )
+
+        self._set(f"{base}height", "37%")
+        self._set(f"{base}shrink", False)
 
 
 class Download(_VisualItem):
@@ -205,36 +212,53 @@ class Statusbar(_VisualItem):
 
 
 class Font(_VisualItem):
-    def apply(self, disable_remote: bool = False) -> None:
-        base = "fonts"
-        for specification in ["default_family", "web.family.fixed"]:
-            self._config.set(".".join([base, specification]), _Util.fonts["shevska"])
-        self._config.set("fonts.default_size", "11pt")
-        self._config.set("fonts.hints", "14pt default_family")
-        self._config.set("fonts.statusbar", "14pt default_family")
-        self._config.set("fonts.prompts", "13pt default_family")
+    def __init__(self, config):
+        super().__init__(config)
 
+        self._config_base = "fonts."
+        self._monospace = "Shevska"
+        self._sans = "Avenir LT Std"
+        self._serif = "Constantia"
+
+    def apply(self, disable_remote: bool = False) -> None:
         if disable_remote:
             self._disable_remote()
-        for specification in ["standard", "sans_serif", "cursive", "fantasy"]:
-            self._config.set(
-                ".".join([base, "web", "family", specification]), _Util.fonts["avenir"]
-            )
-        for specification in ["serif"]:
-            self._config.set(
-                ".".join([base, "web", "family", specification]),
-                _Util.fonts["constantia"],
-            )
 
-        # common default (also seen in firefox)
-        self._config.set("fonts.web.size.default", 16)
-        self._config.set("fonts.web.size.default_fixed", 13)
+        self._set_default_family()
+        self._set_ui()
+        self._set_web()
 
     def _disable_remote(self) -> None:
         # might be problematic due to:
         #   1. missing glyph in our font
         #   2. some sites will still use their font(s)
         self._config.get("qt.args").append("disable-remote-fonts")
+
+    def _set_default_family(self) -> None:
+        self._config.set(f"{self._config_base}default_family", self._monospace)
+        self._config.set(f"{self._config_base}default_size", "11pt")
+
+    def _set_ui(self) -> None:
+        for item, size in zip(["hints", "statusbar", "prompts"], [14, 14, 13]):
+            self._use_default_family(item, size)
+
+    def _use_default_family(self, item: str, size: int) -> None:
+        self._config.set(f"{self._config_base}{item}", f"{size}pt default_family")
+
+    def _set_web(self) -> None:
+        base = f"{self._config_base}web."
+
+        base_family = f"{base}family."
+        self._config.set(f"{base_family}fixed", self._monospace)
+        for specification in ["standard", "sans_serif", "cursive", "fantasy"]:
+            self._config.set(f"{base_family}{specification}", self._sans)
+        for specification in ["serif"]:
+            self._config.set(f"{base_family}{specification}", self._serif)
+
+        base_size = f"{base}size."
+        # common default (also seen in firefox)
+        self._config.set(f"{base_size}default", 16)
+        self._config.set(f"{base_size}default_fixed", 13)
 
 
 class Visual:
