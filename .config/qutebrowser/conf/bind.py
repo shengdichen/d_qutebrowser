@@ -190,6 +190,9 @@ class ModeNormal(_ModeSpecific):
         self._bind("tT", f"{base}{hint_links} {in_tab}")
         self._bind("tA", f"{base}{hint_all} {in_tab}")
 
+        self._bind("th", Cmd.enter_as_prompt("hint_links_", append_space=False))
+        self._bind("tH", Cmd.enter_as_prompt("hint_all_", append_space=False))
+
     def _macro(self) -> None:
         self._bind("q", "macro-record")
         self._bind("@", "macro-run")

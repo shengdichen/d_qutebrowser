@@ -37,14 +37,28 @@ class Alias:
 
     def _hint(self) -> None:
         base = "hint"
-        hint_links, hint_inputs, hint_all = "links", "inputs", "all"
-
-        self._aliases |= {
-            f"{base}_{hint_type}_rapid": f"{base} {hint_type} tab-bg --rapid"
-            for hint_type in [hint_links, hint_all]
+        candidates = ["links", "all"]
+        name_to_op = {
+            "jump": "normal",
+            "tab": "tab-fg",
+            "window": "window",
+            "download": "download",
+            "copy": "yank",
+            "play": "spawn mpv {hint-url}",
+            "hover": "hover",
         }
 
-        self._aliases |= {f"{base}_mpv": f"{base} {hint_links} spawn mpv {{hint-url}}"}
+        commands = {}
+        for candidate in candidates:
+            for name in name_to_op:
+                commands[
+                    f"{base}_{candidate}_{name}"
+                ] = f"{base} {candidate} {name_to_op[name]}"
+                commands[
+                    f"{base}_{candidate}_{name}_rapid"
+                ] = f"{base} {candidate} {name_to_op[name]} --rapid"
+
+        self._aliases |= commands
 
     def apply(self) -> None:
         self._config.set("aliases", self._aliases)
