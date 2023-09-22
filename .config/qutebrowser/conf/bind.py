@@ -359,6 +359,8 @@ class ModePrompt(_ModeSpecific):
         self._bind(_Util.make_combi("tab"), "prompt-item-focus next")
         self._bind(_Util.make_combi("tab", decorators="s"), "prompt-item-focus prev")
 
+        self._bind(_Util.make_combi("w", decorators="c"), "rl-filename-rubout")
+
 
 class ModePassthrough(_ModeSpecific):
     def __init__(self, config):
