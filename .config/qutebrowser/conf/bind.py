@@ -167,8 +167,8 @@ class ModeNormal(_ModeSpecific):
         self._bind("G", f"{cmd_scroll_perc} 100")
 
     def _search(self) -> None:
-        self._bind("/", "set-cmd-text /")
-        self._bind("?", "set-cmd-text ?")
+        self._bind("/", "cmd-set-text /")
+        self._bind("?", "cmd-set-text ?")
 
         self._bind("n", "search-next")
         self._bind("N", "search-prev")
@@ -221,7 +221,7 @@ class ModeNormal(_ModeSpecific):
             idx_rev -= 1
 
     def _to_other_modes(self) -> None:
-        self._bind(":", "set-cmd-text :")
+        self._bind(":", "cmd-set-text :")
         self._bind("i", "mode-enter insert")
         self._bind(_Util.make_combi("i", decorators="c"), "hint inputs --first")
 

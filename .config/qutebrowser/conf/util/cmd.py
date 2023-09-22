@@ -53,7 +53,7 @@ class Cmd:
 
     @staticmethod
     def enter_as_prompt(cmd: str, append_space: bool = True) -> str:
-        base = "set-cmd-text "
+        base = "cmd-set-text "
         if append_space:
             return f"{base}--space :{cmd}"
 
