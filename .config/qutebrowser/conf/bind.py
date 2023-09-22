@@ -362,6 +362,19 @@ class ModePrompt(_ModeSpecific):
         self._bind(_Util.make_combi("w", decorators="c"), "rl-filename-rubout")
 
 
+class ModeHint(_ModeSpecific):
+    def __init__(self, config):
+        super().__init__("hint", config)
+
+        self._basic()
+
+    def _basic(self) -> None:
+        self._bind(_Util.make_combi("f"), "hint-follow --select")
+
+        self._bind(_Util.make_combi("d", decorators="c"), "hint links tab-bg --rapid")
+        self._bind(_Util.make_combi("r", decorators="c"), "hint links tab-bg --rapid")
+
+
 class ModePassthrough(_ModeSpecific):
     def __init__(self, config):
         super().__init__("passthrough", config)
@@ -425,5 +438,6 @@ class Bind:
         ModeInsert(self._config)
         ModeVisual(self._config)
         ModePrompt(self._config)
+        ModeHint(self._config)
         ModePassthrough(self._config)
         ModeBinary(self._config)
