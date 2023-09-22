@@ -50,6 +50,19 @@ class Completion(_VisualItem):
         self._set(f"{base}scrollbar.bg", _Util.palette["black"])
         self._set(f"{base}scrollbar.fg", _Util.palette["grey_dark"])
 
+        self._general()
+
+    def _general(self) -> None:
+        base = "completion."
+
+        self._set(
+            f"{base}open_categories",
+            ["bookmarks", "filesystem"],
+        )
+
+        self._set(f"{base}height", "37%")
+        self._set(f"{base}shrink", False)
+
 
 class Download(_VisualItem):
     def apply(self) -> None:
