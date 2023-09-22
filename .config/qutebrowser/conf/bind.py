@@ -178,17 +178,10 @@ class ModeNormal(_ModeSpecific):
         self._bind(_Util.make_combi("enter", decorators="c"), f"{cmd_follow} --tab")
 
     def _hint(self) -> None:
-        base = "hint "
+        self._bind("ti", "hint inputs")
 
-        self._bind("ti", f"{base}inputs")
-
-        hint_links, hint_all = "links", "all"
-        self._bind("tt", f"{base}{hint_links}")
-        self._bind("ta", f"{base}{hint_all}")
-
-        in_tab = "tab-fg"
-        self._bind("tT", f"{base}{hint_links} {in_tab}")
-        self._bind("tA", f"{base}{hint_all} {in_tab}")
+        self._bind("tt", "hint_links_jump")
+        self._bind("tT", "hint_all_jump")
 
         self._bind("th", Cmd.enter_as_prompt("hint_links_", append_space=False))
         self._bind("tH", Cmd.enter_as_prompt("hint_all_", append_space=False))
@@ -238,6 +231,9 @@ class ModeNormal(_ModeSpecific):
         self._bind(":", Cmd.enter_as_prompt("", append_space=False))
 
     def _open(self) -> None:
+        self._bind(
+            _Util.make_combi("o", decorators="c"), Cmd.enter_as_prompt("open {url}")
+        )
         self._bind("o", Cmd.enter_as_prompt(Cmd.do_in_new_tab("")))
         self._bind("O", Cmd.enter_as_prompt("open --window"))
 
@@ -247,11 +243,13 @@ class ModeNormal(_ModeSpecific):
         self._bind(_Util.make_combi("l", "c"), "forward")
 
     def _mark(self) -> None:
-        self._bind("ba", Cmd.enter_as_prompt("bookmark-add"))
-        self._bind("Ba", Cmd.enter_as_prompt("quickmark-add"))
+        self._bind(
+            "ba", Cmd.enter_as_prompt('quickmark-add {url} "', append_space=False)
+        )
+        self._bind("bo", Cmd.enter_as_prompt("quickmark-load --tab"))
 
-        self._bind("bo", Cmd.enter_as_prompt("bookmark-load --tab"))
-        self._bind("Bo", Cmd.enter_as_prompt("quickmark-load --tab"))
+        self._bind("bd", Cmd.enter_as_prompt("quickmark-del {url}"))
+        self._bind("Bd", Cmd.enter_as_prompt("bookmark-del {url}"))
 
     def _gui(self) -> None:
         self._bind("z", "gui_toggle")
@@ -273,6 +271,8 @@ class ModeCommand(_ModeSpecific):
     def _basic(self) -> None:
         self._bind(_Util.make_combi("enter"), "command-accept")
         self._bind(_Util.make_combi("enter", decorators="c"), "command-accept --rapid")
+
+        self._bind(_Util.make_combi("e", decorators="c"), "edit-command")
 
     def _completion(self) -> None:
         cmd_completion = "completion-item-focus "
@@ -359,6 +359,21 @@ class ModePrompt(_ModeSpecific):
         self._bind(_Util.make_combi("tab"), "prompt-item-focus next")
         self._bind(_Util.make_combi("tab", decorators="s"), "prompt-item-focus prev")
 
+        self._bind(_Util.make_combi("w", decorators="c"), "rl-filename-rubout")
+
+
+class ModeHint(_ModeSpecific):
+    def __init__(self, config):
+        super().__init__("hint", config)
+
+        self._basic()
+
+    def _basic(self) -> None:
+        self._bind(_Util.make_combi("f"), "hint-follow --select")
+
+        self._bind(_Util.make_combi("d", decorators="c"), "hint links tab-bg --rapid")
+        self._bind(_Util.make_combi("r", decorators="c"), "hint links tab-bg --rapid")
+
 
 class ModePassthrough(_ModeSpecific):
     def __init__(self, config):
@@ -368,6 +383,24 @@ class ModePassthrough(_ModeSpecific):
 
     def _exit(self) -> None:
         self._bind(_Util.make_combi("esc", decorators="s"), "mode-leave")
+
+
+class ModeBinary(_ModeSpecific):
+    def __init__(self, config):
+        super().__init__("yesno", config)
+
+        self._basic()
+
+    def _basic(self) -> None:
+        cmd_enter_value = "prompt-accept"
+
+        self._bind(
+            _Util.make_combi("enter", decorators="c"), cmd_enter_value
+        )  # accept default value
+
+        self._bind("y", "prompt-yank")
+        self._bind("Y", f"{cmd_enter_value} yes")
+        self._bind("N", f"{cmd_enter_value} no")
 
 
 class Bind:
@@ -405,4 +438,6 @@ class Bind:
         ModeInsert(self._config)
         ModeVisual(self._config)
         ModePrompt(self._config)
+        ModeHint(self._config)
         ModePassthrough(self._config)
+        ModeBinary(self._config)
