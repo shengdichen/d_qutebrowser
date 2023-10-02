@@ -254,8 +254,6 @@ class ModeNormal(_ModeSpecific):
         self._bind("Bd", Cmd.enter_as_prompt("bookmark-del {url}"))
 
     def _gui(self) -> None:
-        self._bind("z", "gui_toggle")
-
         self._bind(_Util.make_combi("5", decorators="c"), "zoom-out")
         self._bind(_Util.make_combi("6", decorators="c"), "zoom-in")
         self._bind("Z", Cmd.enter_as_prompt("zoom --quiet 1", append_space=False))

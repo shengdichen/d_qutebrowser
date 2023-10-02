@@ -175,10 +175,10 @@ class Tab(_VisualItem):
 class Statusbar(_VisualItem):
     def apply(self) -> None:
         base = "statusbar."
-        self._set(f"{base}show", "always")
+        self._set(f"{base}show", "never")
         self._set(f"{base}position", "bottom")
         # default: ["keypress", "url", "scroll", "history", "tabs", "progress"]
-        self._set(f"{base}widgets", ["keypress", "url"])
+        self._set(f"{base}widgets", ["keypress"])
 
         base = "colors.statusbar."
 

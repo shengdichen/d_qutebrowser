@@ -34,14 +34,10 @@ class Alias:
     def _gui(self) -> None:
         items = ["statusbar.show", "tabs.show"]
         states = ["always", "never"]
-        cmd_toggle = Cmd.cycle_config_items(zip(items, 2 * [states]))
-        cmd_show = Cmd.set_config_items(zip(items, 2 * [states[0]]))
-        cmd_hide = Cmd.set_config_items(zip(items, 2 * [states[1]]))
 
         self._aliases |= {
-            "gui_show": cmd_show,
-            "gui_hide": cmd_hide,
-            "gui_toggle": cmd_toggle,
+            "statusbar_toggle": Cmd.cycle_config_items(((items[0], states),)),
+            "tabbar_toggle": Cmd.cycle_config_items(((items[1], states),)),
         }
 
     def _hint(self) -> None:
