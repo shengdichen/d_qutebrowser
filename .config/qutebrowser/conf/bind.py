@@ -180,8 +180,12 @@ class ModeNormal(_ModeSpecific):
     def _hint(self) -> None:
         self._bind("ti", "hint inputs")
         self._bind("tt", "hint_jump")
+        self._bind("to", "hint_tab")
 
-        self._bind("th", Cmd.enter_as_prompt("hint_", append_space=False))
+        self._bind("td", "hint_download")
+        self._bind("ty", "hint_copy")
+        self._bind("tp", "hint_play")
+        self._bind("th", "hint_hover")
 
     def _macro(self) -> None:
         self._bind("q", "macro-record")
@@ -366,10 +370,14 @@ class ModeHint(_ModeSpecific):
         self._basic()
 
     def _basic(self) -> None:
-        self._bind(_Util.make_combi("f"), "hint-follow --select")
+        self._bind("i", "hint inputs")
+        self._bind("t", "hint_jump")
+        self._bind("o", "hint_tab")
 
-        self._bind(_Util.make_combi("d", decorators="c"), "hint links tab-bg --rapid")
-        self._bind(_Util.make_combi("r", decorators="c"), "hint links tab-bg --rapid")
+        self._bind("d", "hint_download")
+        self._bind("y", "hint_copy")
+        self._bind("p", "hint_play")
+        self._bind("h", "hint_hover")
 
 
 class ModePassthrough(_ModeSpecific):
