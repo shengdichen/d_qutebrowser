@@ -143,6 +143,7 @@ class ModeNormal(_ModeSpecific):
         self._mark()
 
         self._gui()
+        self._yank()
 
     def _navigate(self) -> None:
         cmd_up, cmd_down = "scroll up", "scroll down"
@@ -260,6 +261,9 @@ class ModeNormal(_ModeSpecific):
         self._bind("Z", Cmd.enter_as_prompt("zoom --quiet 1", append_space=False))
 
         self._bind(_Util.make_combi("esc"), Cmd.unfocus())
+
+    def _yank(self) -> None:
+        self._bind("yy", "yank --quiet url")
 
 
 class ModeCommand(_ModeSpecific):
