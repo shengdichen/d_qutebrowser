@@ -179,12 +179,9 @@ class ModeNormal(_ModeSpecific):
 
     def _hint(self) -> None:
         self._bind("ti", "hint inputs")
+        self._bind("tt", "hint_jump")
 
-        self._bind("tt", "hint_links_jump")
-        self._bind("tT", "hint_all_jump")
-
-        self._bind("th", Cmd.enter_as_prompt("hint_links_", append_space=False))
-        self._bind("tH", Cmd.enter_as_prompt("hint_all_", append_space=False))
+        self._bind("th", Cmd.enter_as_prompt("hint_", append_space=False))
 
     def _macro(self) -> None:
         self._bind("q", "macro-record")

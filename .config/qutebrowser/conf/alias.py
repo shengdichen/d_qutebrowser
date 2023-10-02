@@ -46,7 +46,6 @@ class Alias:
 
     def _hint(self) -> None:
         base = "hint"
-        candidates = ["links", "all"]
         name_to_op = {
             "jump": "normal",
             "tab": "tab-fg",
@@ -58,14 +57,9 @@ class Alias:
         }
 
         commands = {}
-        for candidate in candidates:
-            for name in name_to_op:
-                commands[
-                    f"{base}_{candidate}_{name}"
-                ] = f"{base} {candidate} {name_to_op[name]}"
-                commands[
-                    f"{base}_{candidate}_{name}_rapid"
-                ] = f"{base} {candidate} {name_to_op[name]} --rapid"
+        for name in name_to_op:
+            commands[f"{base}_{name}"] = f"{base} all {name_to_op[name]}"
+            commands[f"{base}_{name}_rapid"] = f"{base} all {name_to_op[name]} --rapid"
 
         self._aliases |= commands
 
