@@ -233,11 +233,12 @@ class ModeNormal(_ModeSpecific):
         self._bind(":", Cmd.enter_as_prompt("", append_space=False))
 
     def _open(self) -> None:
-        self._bind(
-            _Util.make_combi("o", decorators="c"), Cmd.enter_as_prompt("open {url}")
-        )
         self._bind("o", Cmd.enter_as_prompt(Cmd.do_in_new_tab("")))
-        self._bind("O", Cmd.enter_as_prompt("open --window"))
+        self._bind(
+            _Util.make_combi("o", decorators="c"),
+            Cmd.enter_as_prompt("open {url}", append_space=False),
+        )
+        self._bind("O", Cmd.enter_as_prompt("open --window {url}", append_space=False))
 
         self._bind(_Util.make_combi("r", "c"), "reload --force")
 
