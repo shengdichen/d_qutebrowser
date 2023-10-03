@@ -282,7 +282,11 @@ class Visual:
 
         self._config.set("zoom.default", "127%")
 
-        levels = [f"{int(100 * (1.07 ** power))}%" for power in range(-9, +10)]
+        n_steps_oneside = 20
+        levels = [
+            f"{int(100 * (1.07 ** power))}%"
+            for power in range(-n_steps_oneside, +n_steps_oneside + 1)
+        ]
         self._config.set("zoom.levels", levels)
 
     def _set_components(self) -> None:
