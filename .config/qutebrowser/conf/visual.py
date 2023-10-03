@@ -8,8 +8,8 @@ class _Util:
         "grey_bright": "#97879f",
         "white": "#efe3fb",
         "red": "#ef1757",
-        "pink": "#ef77c7",
-        "magenta": "#a787f7",
+        "magenta": "#ef77c7",
+        "purple": "#a787f7",
         "cyan": "#7fd7f3",
     }
 
@@ -29,7 +29,7 @@ class Completion(_VisualItem):
         self._set(f"{base}even.bg", _Util.palette["black"])
         self._set(f"{base}odd.bg", _Util.palette["black"])
         self._set(f"{base}fg", _Util.palette["white"])
-        self._set(f"{base}match.fg", _Util.palette["pink"])
+        self._set(f"{base}match.fg", _Util.palette["magenta"])
 
         self._set(f"{base}category.bg", _Util.palette["black"])
         self._set(f"{base}category.fg", _Util.palette["white"])
@@ -91,7 +91,7 @@ class Hint(_VisualItem):
 
         base = "colors.hints."
         self._set(f"{base}bg", _Util.palette["black"])
-        self._set(f"{base}fg", _Util.palette["magenta"])
+        self._set(f"{base}fg", _Util.palette["purple"])
         self._set(f"{base}match.fg", _Util.palette["white"])
 
 
@@ -102,7 +102,7 @@ class Keyhint(_VisualItem):
 
         self._set(f"{base}bg", _Util.palette["black"])
         self._set(f"{base}fg", _Util.palette["white"])
-        self._set(f"{base}suffix.fg", _Util.palette["magenta"])
+        self._set(f"{base}suffix.fg", _Util.palette["purple"])
 
 
 class Message(_VisualItem):
