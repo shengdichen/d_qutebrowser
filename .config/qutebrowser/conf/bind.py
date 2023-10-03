@@ -426,15 +426,7 @@ class Bind:
         self._config.set(
             "bindings.key_mappings",
             {
-                "<Ctrl+6>": "<Ctrl+^>",
-                "<Ctrl+Enter>": "<Ctrl+Return>",
-                "<Ctrl+i>": "<Tab>",
-                "<Ctrl+j>": "<Return>",
-                "<Ctrl+m>": "<Return>",
-                "<Ctrl+[>": "<Escape>",
                 "<Enter>": "<Return>",
-                "<Shift+Enter>": "<Return>",
-                "<Shift+Return>": "<Return>",
             },
         )
 
