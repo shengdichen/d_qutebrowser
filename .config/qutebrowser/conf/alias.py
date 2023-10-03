@@ -34,19 +34,14 @@ class Alias:
     def _gui(self) -> None:
         items = ["statusbar.show", "tabs.show"]
         states = ["always", "never"]
-        cmd_toggle = Cmd.cycle_config_items(zip(items, 2 * [states]))
-        cmd_show = Cmd.set_config_items(zip(items, 2 * [states[0]]))
-        cmd_hide = Cmd.set_config_items(zip(items, 2 * [states[1]]))
 
         self._aliases |= {
-            "gui_show": cmd_show,
-            "gui_hide": cmd_hide,
-            "gui_toggle": cmd_toggle,
+            "statusbar_toggle": Cmd.cycle_config_items(((items[0], states),)),
+            "tabbar_toggle": Cmd.cycle_config_items(((items[1], states),)),
         }
 
     def _hint(self) -> None:
         base = "hint"
-        candidates = ["links", "all"]
         name_to_op = {
             "jump": "normal",
             "tab": "tab-fg",
@@ -58,14 +53,9 @@ class Alias:
         }
 
         commands = {}
-        for candidate in candidates:
-            for name in name_to_op:
-                commands[
-                    f"{base}_{candidate}_{name}"
-                ] = f"{base} {candidate} {name_to_op[name]}"
-                commands[
-                    f"{base}_{candidate}_{name}_rapid"
-                ] = f"{base} {candidate} {name_to_op[name]} --rapid"
+        for name in name_to_op:
+            commands[f"{base}_{name}"] = f"{base} all {name_to_op[name]}"
+            commands[f"{base}_{name}_rapid"] = f"{base} all {name_to_op[name]} --rapid"
 
         self._aliases |= commands
 

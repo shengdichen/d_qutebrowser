@@ -143,6 +143,7 @@ class ModeNormal(_ModeSpecific):
         self._mark()
 
         self._gui()
+        self._yank()
 
     def _navigate(self) -> None:
         cmd_up, cmd_down = "scroll up", "scroll down"
@@ -167,8 +168,8 @@ class ModeNormal(_ModeSpecific):
         self._bind("G", f"{cmd_scroll_perc} 100")
 
     def _search(self) -> None:
-        self._bind("/", "set-cmd-text /")
-        self._bind("?", "set-cmd-text ?")
+        self._bind("/", "cmd-set-text /")
+        self._bind("?", "cmd-set-text ?")
 
         self._bind("n", "search-next")
         self._bind("N", "search-prev")
@@ -179,12 +180,13 @@ class ModeNormal(_ModeSpecific):
 
     def _hint(self) -> None:
         self._bind("ti", "hint inputs")
+        self._bind("tt", "hint_jump")
+        self._bind("to", "hint_tab")
 
-        self._bind("tt", "hint_links_jump")
-        self._bind("tT", "hint_all_jump")
-
-        self._bind("th", Cmd.enter_as_prompt("hint_links_", append_space=False))
-        self._bind("tH", Cmd.enter_as_prompt("hint_all_", append_space=False))
+        self._bind("td", "hint_download")
+        self._bind("ty", "hint_copy")
+        self._bind("tp", "hint_play")
+        self._bind("th", "hint_hover")
 
     def _macro(self) -> None:
         self._bind("q", "macro-record")
@@ -221,7 +223,7 @@ class ModeNormal(_ModeSpecific):
             idx_rev -= 1
 
     def _to_other_modes(self) -> None:
-        self._bind(":", "set-cmd-text :")
+        self._bind(":", "cmd-set-text :")
         self._bind("i", "mode-enter insert")
         self._bind(_Util.make_combi("i", decorators="c"), "hint inputs --first")
 
@@ -231,11 +233,12 @@ class ModeNormal(_ModeSpecific):
         self._bind(":", Cmd.enter_as_prompt("", append_space=False))
 
     def _open(self) -> None:
-        self._bind(
-            _Util.make_combi("o", decorators="c"), Cmd.enter_as_prompt("open {url}")
-        )
         self._bind("o", Cmd.enter_as_prompt(Cmd.do_in_new_tab("")))
-        self._bind("O", Cmd.enter_as_prompt("open --window"))
+        self._bind(
+            _Util.make_combi("o", decorators="c"),
+            Cmd.enter_as_prompt("open {url}", append_space=False),
+        )
+        self._bind("O", Cmd.enter_as_prompt("open --window {url}", append_space=False))
 
         self._bind(_Util.make_combi("r", "c"), "reload --force")
 
@@ -252,13 +255,14 @@ class ModeNormal(_ModeSpecific):
         self._bind("Bd", Cmd.enter_as_prompt("bookmark-del {url}"))
 
     def _gui(self) -> None:
-        self._bind("z", "gui_toggle")
-
         self._bind(_Util.make_combi("5", decorators="c"), "zoom-out")
         self._bind(_Util.make_combi("6", decorators="c"), "zoom-in")
         self._bind("Z", Cmd.enter_as_prompt("zoom --quiet 1", append_space=False))
 
         self._bind(_Util.make_combi("esc"), Cmd.unfocus())
+
+    def _yank(self) -> None:
+        self._bind("yy", "yank --quiet url")
 
 
 class ModeCommand(_ModeSpecific):
@@ -369,10 +373,14 @@ class ModeHint(_ModeSpecific):
         self._basic()
 
     def _basic(self) -> None:
-        self._bind(_Util.make_combi("f"), "hint-follow --select")
+        self._bind("i", "hint inputs")
+        self._bind("t", "hint_jump")
+        self._bind("o", "hint_tab")
 
-        self._bind(_Util.make_combi("d", decorators="c"), "hint links tab-bg --rapid")
-        self._bind(_Util.make_combi("r", decorators="c"), "hint links tab-bg --rapid")
+        self._bind("d", "hint_download")
+        self._bind("y", "hint_copy")
+        self._bind("p", "hint_play")
+        self._bind("h", "hint_hover")
 
 
 class ModePassthrough(_ModeSpecific):
@@ -418,15 +426,7 @@ class Bind:
         self._config.set(
             "bindings.key_mappings",
             {
-                "<Ctrl+6>": "<Ctrl+^>",
-                "<Ctrl+Enter>": "<Ctrl+Return>",
-                "<Ctrl+i>": "<Tab>",
-                "<Ctrl+j>": "<Return>",
-                "<Ctrl+m>": "<Return>",
-                "<Ctrl+[>": "<Escape>",
                 "<Enter>": "<Return>",
-                "<Shift+Enter>": "<Return>",
-                "<Shift+Return>": "<Return>",
             },
         )
 

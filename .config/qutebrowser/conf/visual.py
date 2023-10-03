@@ -4,13 +4,13 @@ import typing
 class _Util:
     palette = {
         "black": "#000000",
-        "grey_dark": "#352c37",
-        "grey_bright": "#897397",
-        "white": "#ede3f7",
-        "red": "#ef3347",
-        "pink": "#ff79c6",
-        "magenta": "#bd93f9",
-        "cyan": "#8be9fd",
+        "grey_dark": "#2b272f",
+        "grey_bright": "#97879f",
+        "white": "#efe3fb",
+        "red": "#ef1757",
+        "magenta": "#ef77c7",
+        "purple": "#a787f7",
+        "cyan": "#7fd7f3",
     }
 
 
@@ -29,7 +29,7 @@ class Completion(_VisualItem):
         self._set(f"{base}even.bg", _Util.palette["black"])
         self._set(f"{base}odd.bg", _Util.palette["black"])
         self._set(f"{base}fg", _Util.palette["white"])
-        self._set(f"{base}match.fg", _Util.palette["pink"])
+        self._set(f"{base}match.fg", _Util.palette["magenta"])
 
         self._set(f"{base}category.bg", _Util.palette["black"])
         self._set(f"{base}category.fg", _Util.palette["white"])
@@ -91,7 +91,7 @@ class Hint(_VisualItem):
 
         base = "colors.hints."
         self._set(f"{base}bg", _Util.palette["black"])
-        self._set(f"{base}fg", _Util.palette["magenta"])
+        self._set(f"{base}fg", _Util.palette["purple"])
         self._set(f"{base}match.fg", _Util.palette["white"])
 
 
@@ -102,7 +102,7 @@ class Keyhint(_VisualItem):
 
         self._set(f"{base}bg", _Util.palette["black"])
         self._set(f"{base}fg", _Util.palette["white"])
-        self._set(f"{base}suffix.fg", _Util.palette["magenta"])
+        self._set(f"{base}suffix.fg", _Util.palette["purple"])
 
 
 class Message(_VisualItem):
@@ -175,10 +175,10 @@ class Tab(_VisualItem):
 class Statusbar(_VisualItem):
     def apply(self) -> None:
         base = "statusbar."
-        self._set(f"{base}show", "always")
+        self._set(f"{base}show", "never")
         self._set(f"{base}position", "bottom")
         # default: ["keypress", "url", "scroll", "history", "tabs", "progress"]
-        self._set(f"{base}widgets", ["keypress", "url"])
+        self._set(f"{base}widgets", ["keypress"])
 
         base = "colors.statusbar."
 
@@ -282,7 +282,11 @@ class Visual:
 
         self._config.set("zoom.default", "127%")
 
-        levels = [f"{int(100 * (1.07 ** power))}%" for power in range(-9, +10)]
+        n_steps_oneside = 20
+        levels = [
+            f"{int(100 * (1.07 ** power))}%"
+            for power in range(-n_steps_oneside, +n_steps_oneside + 1)
+        ]
         self._config.set("zoom.levels", levels)
 
     def _set_components(self) -> None:
