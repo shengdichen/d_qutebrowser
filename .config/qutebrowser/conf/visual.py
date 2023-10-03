@@ -4,13 +4,13 @@ import typing
 class _Util:
     palette = {
         "black": "#000000",
-        "grey_dark": "#352c37",
-        "grey_bright": "#897397",
-        "white": "#ede3f7",
-        "red": "#ef3347",
-        "pink": "#ff79c6",
-        "magenta": "#bd93f9",
-        "cyan": "#8be9fd",
+        "grey_dark": "#2b272f",
+        "grey_bright": "#97879f",
+        "white": "#efe3fb",
+        "red": "#ef1757",
+        "pink": "#ef77c7",
+        "magenta": "#a787f7",
+        "cyan": "#7fd7f3",
     }
 
 
