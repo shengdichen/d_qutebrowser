@@ -6,4 +6,4 @@ __pycache__/
 .config/qutebrowser/bookmarks/
 .config/qutebrowser/quickmarks
 
-.local/share/qutebrowser/sessions/
+.local/share/qutebrowser/
