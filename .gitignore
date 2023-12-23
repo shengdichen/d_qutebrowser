@@ -1,4 +1,5 @@
 __pycache__/
+.mypy_cache/
 
 # only use config.py
 .config/qutebrowser/autoconfig.yml
@@ -6,4 +7,4 @@ __pycache__/
 .config/qutebrowser/bookmarks/
 .config/qutebrowser/quickmarks
 
-.local/share/qutebrowser/sessions/
+.local/share/qutebrowser/

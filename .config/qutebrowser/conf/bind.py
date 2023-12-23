@@ -368,19 +368,15 @@ class ModePrompt(_ModeSpecific):
 
 class ModeHint(_ModeSpecific):
     def __init__(self, config):
+        # NOTE:
+        #   1. make sure the binds do NOT conflict with the hint-keys
+
         super().__init__("hint", config)
 
-        self._basic()
+        self._exit()
 
-    def _basic(self) -> None:
-        self._bind("i", "hint inputs")
-        self._bind("t", "hint_jump")
-        self._bind("o", "hint_tab")
-
-        self._bind("d", "hint_download")
-        self._bind("y", "hint_copy")
-        self._bind("p", "hint_play")
-        self._bind("h", "hint_hover")
+    def _exit(self) -> None:
+        self._bind("q", "mode-leave")
 
 
 class ModePassthrough(_ModeSpecific):
